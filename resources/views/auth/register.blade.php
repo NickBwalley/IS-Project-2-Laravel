@@ -1,60 +1,81 @@
-<x-guest-layout>
-    <x-authentication-card>
-        <x-slot name="logo">
-            <x-authentication-card-logo />
-        </x-slot>
-
-        <x-validation-errors class="mb-4" />
-
-        <form method="POST" action="{{ route('register') }}">
-            @csrf
-
-            <div>
-                <x-label for="name" value="{{ __('Name') }}" />
-                <x-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
-            </div>
-
-            <div class="mt-4">
-                <x-label for="email" value="{{ __('Email') }}" />
-                <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
-            </div>
-
-            <div class="mt-4">
-                <x-label for="password" value="{{ __('Password') }}" />
-                <x-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="new-password" />
-            </div>
-
-            <div class="mt-4">
-                <x-label for="password_confirmation" value="{{ __('Confirm Password') }}" />
-                <x-input id="password_confirmation" class="block mt-1 w-full" type="password" name="password_confirmation" required autocomplete="new-password" />
-            </div>
-
-            @if (Laravel\Jetstream\Jetstream::hasTermsAndPrivacyPolicyFeature())
-                <div class="mt-4">
-                    <x-label for="terms">
-                        <div class="flex items-center">
-                            <x-checkbox name="terms" id="terms" required />
-
-                            <div class="ml-2">
-                                {!! __('I agree to the :terms_of_service and :privacy_policy', [
-                                        'terms_of_service' => '<a target="_blank" href="'.route('terms.show').'" class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800">'.__('Terms of Service').'</a>',
-                                        'privacy_policy' => '<a target="_blank" href="'.route('policy.show').'" class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800">'.__('Privacy Policy').'</a>',
-                                ]) !!}
-                            </div>
-                        </div>
-                    </x-label>
+@extends('layouts.app')
+@section('content')
+    <div class="main-wrapper">
+        <div class="account-content">
+            <a href="{{ route('form/job/list') }}" class="btn btn-primary apply-btn">Apply Job</a>
+            <div class="container">
+                <!-- Account Logo -->
+                <div class="account-logo">
+                    <a href="index.html"><img src="{{ URL::to('assets/img/logo2.png') }}" alt="SoengSouy"></a>
                 </div>
-            @endif
+                <!-- /Account Logo -->
+                <div class="account-box">
+                    <div class="account-wrapper">
+                        <h3 class="account-title">Register</h3>
+                        <p class="account-subtitle">Access to our dashboard</p>
+                        
+                        <!-- Account Form -->
+                        <form method="POST" action="{{ route('register') }}">
+                            @csrf
+                            <div class="form-group">
+                                <label>Full Name</label>
+                                <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" placeholder="Enter Your Name">
+                                @error('name')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" placeholder="Enter Your Email">
+                                @error('email')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                            {{-- insert defaults --}}
+                            <input type="hidden" class="image" name="image" value="photo_defaults.jpg">
+                            <div class="form-group">
+                                <label class="col-form-label">Role Name</label>
+                                <select class="select @error('role_name') is-invalid @enderror" name="role_name" id="role_name">
+                                    <option selected disabled>-- Select Role Name --</option>
+                                    @foreach ($role as $name)
+                                        <option value="{{ $name->role_type }}">{{ $name->role_type }}</option>
+                                    @endforeach
+                                </select>
+                                @error('role_name')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
 
-            <div class="flex items-center justify-end mt-4">
-                <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800" href="{{ route('login') }}">
-                    {{ __('Already registered?') }}
-                </a>
-
-                <x-button class="ml-4">
-                    {{ __('Register') }}
-                </x-button>
+                            <div class="form-group">
+                                <label>Password</label>
+                                <input type="password" class="form-control @error('password') is-invalid @enderror" name="password" placeholder="Enter Password">
+                                @error('password')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                            <div class="form-group">
+                                <label><strong>Repeat Password</strong></label>
+                                <input type="password" class="form-control" name="password_confirmation" placeholder="Choose Repeat Password">
+                            </div>
+                            <div class="form-group text-center">
+                                <button class="btn btn-primary account-btn" type="submit">Register</button>
+                            </div>
+                            <div class="account-footer">
+                                <p>Already have an account? <a href="{{ route('login') }}">Login</a></p>
+                            </div>
+                        </form>
+                        <!-- /Account Form -->
+                    </div>
+                </div>
             </div>
-        </form>
-    </x-authentication-card>
-</x-guest-layout>
+        </div>
+    </div>
+@endsection
