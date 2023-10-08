@@ -94,7 +94,7 @@
                         <li><a class="{{set_active(['form/daily/reports/page'])}}" href="{{ route('form/daily/reports/page') }}"> Daily Report </a></li>
                     </ul>
                 </li>
-                <li class="menu-title"> <span>Performance</span> </li>
+                <li class="menu-title"> <span>Analysis</span> </li>
                 <li class="{{set_active(['form/performance/indicator/page','form/performance/page','form/performance/appraisal/page'])}} submenu">
                     <a href="#" class="{{ set_active(['form/performance/indicator/page','form/performance/page','form/performance/appraisal/page']) ? 'noti-dot' : '' }}"><i class="la la-graduation-cap"></i>
                     <span> Performance </span> <span class="menu-arrow"></span></a>
