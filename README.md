@@ -1,6 +1,6 @@
-# hr_ms_laravel_9
+# Kinyanjui-Employee-Resource-Management-System
 
-hr_ms_laravel_9
+hr_ms_laravel_10
 
 ## Getting started
 
