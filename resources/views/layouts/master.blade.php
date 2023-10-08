@@ -81,7 +81,7 @@
 			<!-- Header Menu -->
 			<ul class="nav user-menu">
 				<!-- Search -->
-				<li class="nav-item">
+				<!-- <li class="nav-item">
 					<div class="top-nav-search">
 						<a href="javascript:void(0);" class="responsive-search"> <i class="fa fa-search"></i> </a>
 						<form action="search.html">
@@ -91,11 +91,11 @@
 							</button>
 						</form>
 					</div>
-				</li>
+				</li> -->
 				<!-- /Search -->
 
 				<!-- Flag -->
-				<li class="nav-item dropdown has-arrow flag-nav">
+				<!-- <li class="nav-item dropdown has-arrow flag-nav">
 					<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button">
 						<img src="{{ URL::to('assets/img/flags/us.png') }}" alt="" height="20"> <span>English</span>
 					</a>
@@ -105,7 +105,7 @@
 						<a href="javascript:void(0);" class="dropdown-item">
 						<img src="{{ URL::to('assets/img/flags/kh.png') }}" alt="" height="16"> Khmer </a>
 					</div>
-				</li>
+				</li> -->
 				<!-- /Flag -->
 
 				<!-- Notifications -->

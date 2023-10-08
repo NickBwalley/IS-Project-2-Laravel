@@ -24,6 +24,8 @@ class RegisterController extends Controller
         $request->validate([
             'name'      => 'required|string|max:255',
             'email'     => 'required|string|email|max:255|unique:users',
+            'phone_number' => 'required|regex:/^\d{10}$/',
+            'department' => 'required|in:picking,cleaning',
             'role_name' => 'required|string|max:255',
             'password'  => 'required|string|min:8|confirmed',
             'password_confirmation' => 'required',
@@ -36,12 +38,14 @@ class RegisterController extends Controller
             'name'      => $request->name,
             'avatar'    => $request->image,
             'email'     => $request->email,
+            'phone_number' => $request->phone_number,
+            'department' => $request->department,
             'join_date' => $todayDate,
             'role_name' => $request->role_name,
             'status'    => 'Active',
             'password'  => Hash::make($request->password),
         ]);
-        Toastr::success('Create new account successfully :)','Success');
+        Toastr::success('Account Created Successfully :)','Success');
         return redirect('login');
     }
 }
