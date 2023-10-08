@@ -1,0 +1,87 @@
+@import url("https://fonts.googleapis.com/css?family=Lobster");
+@import url("https://fonts.googleapis.com/css?family=Montserrat:400,700");
+
+body {
+  background-image: url('../images/banner.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  margin: 0px;
+}
+
+header {
+  background-color: rgba(7, 7, 7, 0.13);
+  padding: 20px;
+  color: white;
+  height: 50px;
+}
+
+header h1 {
+    display: inline;
+    font-family: "Lobster", cursive;
+    font-weight: 400;
+    font-size: 32px;
+    float: left;
+    margin-top: 0px;
+    margin-right: 10px;
+    color: #1f1e1e;
+}
+
+nav ul {
+  display: inline;
+  padding: 20px;
+  margin: 0px;
+  float: right;
+}
+
+nav ul li {
+  display: inline-block;
+  list-style-type: none;
+  color: white;
+  float: left;
+  margin-left: 12px;
+}
+
+nav ul li a {
+    color: #1f1e1e;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+nav ul ul {
+  display: none;
+  position: absolute;
+}
+
+#navli ul li ul:hover {
+  visibility: visible;
+  display: block;
+}
+
+#navli {
+  font-family: 'Montserrat', sans-serif;
+}
+
+.homered {
+  background-color: rgb(142, 179, 0);
+  padding: 30px 10px 22px 10px;
+}
+
+.homeblack:hover {
+  background-color: rgb(102, 109, 109);
+  padding: 30px 10px 21px 10px;
+}
+h1 {
+    font-family: 'Lobster', cursive;
+    font-weight: 200;
+    font-size: 70px;
+    text-align: center;
+    margin-top: 100px;
+    color: #1f1e1e; /* Text color */
+  }
+  p {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 30px;
+    text-align: center;
+    color: #f1ecec; /* Text color */
+  }
