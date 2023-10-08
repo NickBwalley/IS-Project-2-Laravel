@@ -6,7 +6,7 @@
             <div class="container">
                 <!-- Account Logo -->
                 {{-- <div class="account-logo">
-                    <a href="index.html"><img src="{{ URL::to('assets/img/logo2.png') }}" alt="SoengSouy"></a>
+                    <a href="index.html"><img src="{{ URL::to('assets/img/logo2.png') }}" alt="kinyanjui"></a>
                 </div> --}}
                 <!-- /Account Logo -->
                 <div class="account-box">
@@ -26,6 +26,9 @@
                                     </span>
                                 @enderror
                             </div>
+
+                            
+
                             <div class="form-group">
                                 <label>Email</label>
                                 <input type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" placeholder="Enter Your Email">
@@ -35,7 +38,25 @@
                                     </span>
                                 @enderror
                             </div>
-                            {{-- insert defaults --}}
+
+                            <div class="form-group">
+                                <label>Phone Number</label>
+                                <input
+                                    type="tel"
+                                    class="form-control @error('phone_number') is-invalid @enderror"
+                                    name="phone_number"
+                                    value="{{ old('phone_number') }}"
+                                    placeholder="Enter Your Phone Number"
+                                >
+
+                                @error('phone_number')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+
+                            <!-- {{-- insert defaults --}}
                             <input type="hidden" class="image" name="image" value="photo_defaults.jpg">
                             <div class="form-group">
                                 <label class="col-form-label">Role Name</label>
@@ -50,7 +71,26 @@
                                         <strong>{{ $message }}</strong>
                                     </span>
                                 @enderror
+                            </div> -->
+
+                            {{-- insert defaults --}}
+                            <input type="hidden" class="image" name="image" value="photo_defaults.jpg">
+                            <input type="hidden" class="" name="role_name" value="Normal User">
+
+                            <div class="form-group">
+                                <label class="col-form-label">Department</label>
+                                <select class="select @error('department') is-invalid @enderror" name="department" id="department">
+                                    <option selected disabled>-- Select Department --</option>
+                                    <option value="picking">Picking</option>
+                                    <option value="cleaning">Cleaning</option>
+                                </select>
+                                @error('department')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
                             </div>
+
 
                             <div class="form-group">
                                 <label>Password</label>
@@ -63,7 +103,7 @@
                             </div>
                             <div class="form-group">
                                 <label><strong>Repeat Password</strong></label>
-                                <input type="password" class="form-control" name="password_confirmation" placeholder="Choose Repeat Password">
+                                <input type="password" class="form-control" name="password_confirmation" placeholder="Choose Repeat Password" required>
                             </div>
                             <div class="form-group text-center">
                                 <button class="btn btn-primary account-btn" type="submit">Register</button>
