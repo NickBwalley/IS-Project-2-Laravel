@@ -24,7 +24,7 @@
                 </div>
             </div>
 
-            <!-- Search Filter -->
+            {{-- <!-- Search Filter -->
             <div class="row filter-row">
                 <div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">  
                     <div class="form-group form-focus">
@@ -72,7 +72,7 @@
                 <div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">  
                     <a href="#" class="btn btn-success btn-block"> Search </a>  
                 </div>     
-            </div>
+            </div> --}}
             <!-- /Search Filter -->  
             <div class="row">
                 <div class="col-md-12">
@@ -144,30 +144,31 @@
                 <form action="{{ route('form/salary/save') }}" method="POST">
                     @csrf
                     <div class="row"> 
-                        <div class="col-sm-6"> 
+                        <div class="col-sm-6">
                             <div class="form-group">
-                                <label>Employee Name</label>
-                                <select class="select select2s-hidden-accessible @error('name') is-invalid @enderror" style="width: 100%;" tabindex="-1" aria-hidden="true" id="name" name="name">
+                                <label for="name">Employee Name</label>
+                                <select class="form-control select2s-hidden-accessible @error('name') is-invalid @enderror" id="name" name="name">
                                     <option value="">-- Select --</option>
-                                    @foreach ($userList as $key=>$user )
+                                    @foreach ($userList as $key => $user)
                                         <option value="{{ $user->name }}" data-employee_id="{{ $user->user_id }}">{{ $user->name }}</option>
                                     @endforeach
                                 </select>
+                                @error('name')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
                             </div>
-                            @error('name')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
                         </div>
+
                         <div class="col-sm-6"> 
                             <label>Employee ID Auto</label>
-                            <input class="form-control" type="text" name="uniqueid" id="uniqueid" readonly>
+                            <input class="form-control" type="text" name="employee_id_auto" id="employee_id_auto" readonly>
                         </div>
                     </div>
                     <div class="row"> 
                         <div class="col-sm-6"> 
-                            <h4 class="text-primary">Earnings</h4>
+                            {{-- <h4 class="text-primary">Earnings</h4> --}}
                             <div class="form-group">
                                 <label>Number of Kgs Harvested</label>
                                 <input class="form-control @error('number_of_kgs_harvested') is-invalid @enderror" type="number" name="number_of_kgs_harvested" id="number_of_kgs_harvested" value="{{ old('number_of_kgs_harvested') }}" placeholder="Enter number of kgs harvested">
@@ -300,6 +301,28 @@
     </div>
     <!-- /Page Wrapper -->
     @section('script')
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+    $(document).ready(function () {
+        // When a name is selected in the "Add Salary" modal
+        $('#name').change(function () {
+            var selectedOption = $(this).find('option:selected');
+            var employeeID = selectedOption.data('employee_id');
+            $('#uniqueid').val(employeeID); // Populate the "Employee ID Auto" field
+        });
+
+        // Add JavaScript to calculate Estimated Payout in real-time
+        $('#number_of_kgs_harvested, #shillings_per_kg').on('input', function () {
+            var kgsHarvested = parseFloat($('#number_of_kgs_harvested').val()) || 0;
+            var shillingsPerKg = parseFloat($('#shillings_per_kg').val()) || 0;
+            var estimatedPayout = kgsHarvested * shillingsPerKg;
+            $('#estimated_payout').val(estimatedPayout.toFixed(2));
+        });
+    });
+</script>
+
+
         <script>
             $(document).ready(function() {
                 $('.select2s-hidden-accessible').select2({
