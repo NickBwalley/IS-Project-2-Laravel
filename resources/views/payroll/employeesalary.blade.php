@@ -90,7 +90,7 @@
                                     <th class="text-right">Action</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            {{-- <tbody>
                                 @foreach ($users as $items)
                                 <tr>
                                     <td>
@@ -131,7 +131,7 @@
                                     </td>
                                 </tr>
                                 @endforeach
-                            </tbody>
+                            </tbody> --}}
                         </table>
                     </div>
                 </div>
@@ -141,7 +141,7 @@
         <!-- /Page Content -->
 
         <!-- Add Salary Modal -->
-        <div id="add_salary" class="modal custom-modal fade" role="dialog">
+        {{-- <div id="add_salary" class="modal custom-modal fade" role="dialog">
             <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -304,7 +304,79 @@
                     </div>
                 </div>
             </div>
+        </div> --}}
+
+        <div id="add_salary" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add Staff Salary</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="{{ route('form/salary/save') }}" method="POST">
+                    @csrf
+                    <div class="row"> 
+                        <div class="col-sm-6"> 
+                            <div class="form-group">
+                                <label>Employee Name</label>
+                                <select class="select select2s-hidden-accessible @error('name') is-invalid @enderror" style="width: 100%;" tabindex="-1" aria-hidden="true" id="name" name="name">
+                                    <option value="">-- Select --</option>
+                                    @foreach ($userList as $key=>$user )
+                                        <option value="{{ $user->name }}" data-employee_id="{{ $user->user_id }}">{{ $user->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            @error('name')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
+                        <div class="col-sm-6"> 
+                            <label>Employee ID Auto</label>
+                            <input class="form-control" type="text" name="employee_id_auto" id="employee_id_auto" readonly>
+                        </div>
+                    </div>
+                    <div class="row"> 
+                        <div class="col-sm-6"> 
+                            <h4 class="text-primary">Earnings</h4>
+                            <div class="form-group">
+                                <label>Number of Kgs Harvested</label>
+                                <input class="form-control @error('number_of_kgs_harvested') is-invalid @enderror" type="number" name="number_of_kgs_harvested" id="number_of_kgs_harvested" value="{{ old('number_of_kgs_harvested') }}" placeholder="Enter number of kgs harvested">
+                                @error('number_of_kgs_harvested')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                            <div class="form-group">
+                                <label>Shillings per Kg</label>
+                                <input class="form-control @error('shillings_per_kg') is-invalid @enderror" type="number" name="shillings_per_kg" id="shillings_per_kg" value="{{ old('shillings_per_kg', 8) }}" placeholder="Enter shillings per kg">
+                                @error('shillings_per_kg')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                            <div class="form-group">
+                                <label>Estimated Payout</label>
+                                <input class="form-control" type="text" name="estimated_payout" id="estimated_payout" readonly>
+                            </div>
+                        </div>
+                        <!-- ... Rest of the form fields (Earnings and Deductions) ... -->
+                    </div>
+                    <div class="submit-section">
+                        <button type="submit" class="btn btn-primary submit-btn">Submit</button>
+                    </div>
+                </form>
+            </div>
         </div>
+    </div>
+</div>
+
         <!-- /Add Salary Modal -->
         
         <!-- Edit Salary Modal -->
@@ -478,6 +550,25 @@
         {
             var _this = $(this).parents('tr');
             $('.e_id').val(_this.find('.id').text());
+        });
+    </script>
+
+    <script>
+        // Add JavaScript to populate Employee ID Auto field when a name is selected
+        $(document).ready(function () {
+            $('#name').change(function () {
+                var selectedOption = $(this).find('option:selected');
+                var employeeID = selectedOption.data('employee_id');
+                $('#employee_id_auto').val(employeeID);
+            });
+
+            // Add JavaScript to calculate Estimated Payout in real-time
+            $('#number_of_kgs_harvested, #shillings_per_kg').on('input', function () {
+                var kgsHarvested = parseFloat($('#number_of_kgs_harvested').val()) || 0;
+                var shillingsPerKg = parseFloat($('#shillings_per_kg').val()) || 0;
+                var estimatedPayout = kgsHarvested * shillingsPerKg;
+                $('#estimated_payout').val(estimatedPayout.toFixed(2));
+            });
         });
     </script>
     @endsection

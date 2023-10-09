@@ -10,63 +10,108 @@ use Brian2694\Toastr\Facades\Toastr;
 class PayrollController extends Controller
 {
     // view page salary
+    // public function salary()
+    // {
+    //     $users            = DB::table('users')->join('staff_salaries', 'users.user_id', '=', 'staff_salaries.user_id')->select('users.*', 'staff_salaries.*')->get(); 
+    //     $userList         = DB::table('users')->get();
+    //     $permission_lists = DB::table('permission_lists')->get();
+    //     return view('payroll.employeesalary',compact('users','userList','permission_lists'));
+    // }
     public function salary()
     {
-        $users            = DB::table('users')->join('staff_salaries', 'users.user_id', '=', 'staff_salaries.user_id')->select('users.*', 'staff_salaries.*')->get(); 
-        $userList         = DB::table('users')->get();
+        $users = DB::table('users')
+            ->join('staff_salaries', 'users.user_id', '=', 'staff_salaries.employee_id_auto')
+            ->select('users.*', 'staff_salaries.*')
+            ->get();
+
+        $userList = DB::table('users')->get();
         $permission_lists = DB::table('permission_lists')->get();
-        return view('payroll.employeesalary',compact('users','userList','permission_lists'));
+
+        return view('payroll.employeesalary', compact('users', 'userList', 'permission_lists'));
     }
 
-    // save record
-    public function saveRecord(Request $request)
-    {
+
+    // // save record
+    // public function saveRecord(Request $request)
+    // {
+    // $request->validate([
+    //     'name'         => 'required|string|max:255',
+    //     'salary'       => 'required|string|max:255',
+    //     'basic' => 'required|string|max:255',
+    //     'da'    => 'required|string|max:255',
+    //     'hra'    => 'required|string|max:255',
+    //     'conveyance' => 'required|string|max:255',
+    //     'allowance'  => 'required|string|max:255',
+    //     'medical_allowance' => 'required|string|max:255',
+    //     'tds' => 'required|string|max:255',
+    //     'esi' => 'required|string|max:255',
+    //     'pf'  => 'required|string|max:255',
+    //     'leave'    => 'required|string|max:255',
+    //     'prof_tax' => 'required|string|max:255',
+    //     'labour_welfare' => 'required|string|max:255',
+    // ]);
+
+    // DB::beginTransaction();
+    // try {
+    //     $salary = StaffSalary::updateOrCreate(['user_id' => $request->user_id]);
+    //     $salary->name              = $request->name;
+    //     $salary->user_id            = $request->user_id;
+    //     $salary->salary            = $request->salary;
+    //     $salary->basic             = $request->basic;
+    //     $salary->da                = $request->da;
+    //     $salary->hra               = $request->hra;
+    //     $salary->conveyance        = $request->conveyance;
+    //     $salary->allowance         = $request->allowance;
+    //     $salary->medical_allowance = $request->medical_allowance;
+    //     $salary->tds               = $request->tds;
+    //     $salary->esi               = $request->esi;
+    //     $salary->pf                = $request->pf;
+    //     $salary->leave             = $request->leave;
+    //     $salary->prof_tax          = $request->prof_tax;
+    //     $salary->labour_welfare    = $request->labour_welfare;
+    //     $salary->save();
+
+    //     DB::commit();
+    //     Toastr::success('Create new Salary successfully :)','Success');
+    //     return redirect()->back();
+    // } catch(\Exception $e) {
+    //     DB::rollback();
+    //     Toastr::error('Add Salary fail :)','Error');
+    //     return redirect()->back();
+    // }
+    // }
+
+        // save record
+public function saveRecord(Request $request)
+{
     $request->validate([
-        'name'         => 'required|string|max:255',
-        'salary'       => 'required|string|max:255',
-        'basic' => 'required|string|max:255',
-        'da'    => 'required|string|max:255',
-        'hra'    => 'required|string|max:255',
-        'conveyance' => 'required|string|max:255',
-        'allowance'  => 'required|string|max:255',
-        'medical_allowance' => 'required|string|max:255',
-        'tds' => 'required|string|max:255',
-        'esi' => 'required|string|max:255',
-        'pf'  => 'required|string|max:255',
-        'leave'    => 'required|string|max:255',
-        'prof_tax' => 'required|string|max:255',
-        'labour_welfare' => 'required|string|max:255',
+        'name' => 'required|string|max:255',
+        'number_of_kgs_harvested' => 'required|numeric|min:0', // Updated field name and added numeric validation
+        'shillings_per_kg' => 'required|numeric|min:0', // Added field for shillings per kg
     ]);
 
     DB::beginTransaction();
     try {
-        $salary = StaffSalary::updateOrCreate(['user_id' => $request->user_id]);
-        $salary->name              = $request->name;
-        $salary->user_id            = $request->user_id;
-        $salary->salary            = $request->salary;
-        $salary->basic             = $request->basic;
-        $salary->da                = $request->da;
-        $salary->hra               = $request->hra;
-        $salary->conveyance        = $request->conveyance;
-        $salary->allowance         = $request->allowance;
-        $salary->medical_allowance = $request->medical_allowance;
-        $salary->tds               = $request->tds;
-        $salary->esi               = $request->esi;
-        $salary->pf                = $request->pf;
-        $salary->leave             = $request->leave;
-        $salary->prof_tax          = $request->prof_tax;
-        $salary->labour_welfare    = $request->labour_welfare;
+        $salary = StaffSalary::updateOrCreate(['id' => $request->id]);
+        $salary->name = $request->name;
+        $salary->employee_id_auto = $request->employee_id_auto;
+        $salary->number_of_kgs_harvested = $request->number_of_kgs_harvested; // Updated field name
+        $salary->shillings_per_kg = $request->shillings_per_kg; // Added field for shillings per kg
+        $salary->estimated_payout = $request->number_of_kgs_harvested * $request->shillings_per_kg; // Calculated estimated payout
         $salary->save();
 
         DB::commit();
-        Toastr::success('Create new Salary successfully :)','Success');
+        Toastr::success('Create new Salary successfully :)', 'Success');
         return redirect()->back();
-    } catch(\Exception $e) {
+    } catch (\Exception $e) {
         DB::rollback();
-        Toastr::error('Add Salary fail :)','Error');
+        dd($e->getMessage()); // Debugging: Display the error message
+        Toastr::error('Add Salary fail :(', 'Error');
         return redirect()->back();
     }
-    }
+
+}
+
 
     // salary view detail
     public function salaryView($user_id)
