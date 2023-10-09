@@ -16,7 +16,9 @@
                         @if (Auth::user()->role_name == 'Admin')
                             <li><a class="{{ set_active(['home']) }}" href="{{ route('home') }}">Admin Dashboard</a></li>
                         @endif
+                        @if (Auth::user()->role_name == 'Manager')
                         <li><a class="{{ set_active(['em/dashboard']) }}" href="{{ route('em/dashboard') }}">Employee Dashboard</a></li>
+                        @endif
                     </ul>
                 </li>
 
