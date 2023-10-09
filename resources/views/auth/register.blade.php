@@ -83,6 +83,7 @@
                                     <option selected disabled>-- Select Department --</option>
                                     <option value="picking">Picking</option>
                                     <option value="cleaning">Cleaning</option>
+                                    <option value="others">Others</option>
                                 </select>
                                 @error('department')
                                     <span class="invalid-feedback" role="alert">

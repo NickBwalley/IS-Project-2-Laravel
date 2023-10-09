@@ -89,14 +89,14 @@
                                     <td>
                                         @if ($user->role_name=='Admin')
                                             <span class="badge bg-inverse-danger role_name">{{ $user->role_name }}</span>
-                                            @elseif ($user->role_name=='Super Admin')
+                                            @elseif ($user->role_name=='Manager')
                                             <span class="badge bg-inverse-warning role_name">{{ $user->role_name }}</span>
-                                            @elseif ($user->role_name=='Normal User')
-                                            <span class="badge bg-inverse-info role_name">{{ $user->role_name }}</span>
-                                            @elseif ($user->role_name=='Client')
-                                            <span class="badge bg-inverse-success role_name">{{ $user->role_name }}</span>
                                             @elseif ($user->role_name=='Employee')
                                             <span class="badge bg-inverse-dark role_name">{{ $user->role_name }}</span>
+                                            {{-- @elseif ($user->role_name=='Manager')
+                                            <span class="badge bg-inverse-info role_name">{{ $user->role_name }}</span> --}}
+                                            {{-- @elseif ($user->role_name=='Employee')
+                                            <span class="badge bg-inverse-success role_name">{{ $user->role_name }}</span> --}}
                                         @endif
                                     </td>
                                     <td>

@@ -21,12 +21,7 @@ class CreatePositionTypesTable extends Migration
 
         DB::table('position_types')->insert([
             ['position' => 'CEO'],
-            ['position' => 'CFO'],
             ['position' => 'Manager'],
-            ['position' => 'Web Designer'],
-            ['position' => 'Web Developer'],
-            ['position' => 'Android Developer'],
-            ['position' => 'IOS Developer'],
             ['position' => 'Team Leader'],
         ]);
     }
