@@ -75,7 +75,7 @@
 
                             {{-- insert defaults --}}
                             <input type="hidden" class="image" name="image" value="photo_defaults.jpg">
-                            <input type="hidden" class="" name="role_name" value="Normal User">
+                            <input type="hidden" class="" name="role_name" value="Employee">
 
                             <div class="form-group">
                                 <label class="col-form-label">Department</label>
