@@ -10,19 +10,10 @@ class StaffSalary extends Model
     use HasFactory;
     protected $fillable = [
         'name',
-        'user_id',
-        'salary',
-        'basic',
-        'da',
-        'hra',
-        'conveyance',
-        'allowance',
-        'medical_allowance',
-        'tds',
-        'esi',
-        'pf',
-        'leave',
-        'prof_tax',
-        'labour_welfare',
+        'employee_id_auto',
+        'phone_number',
+        'number_of_kgs_harvested',
+        'shillings_per_kg',
+        'estimated_payout',
     ];
 }
