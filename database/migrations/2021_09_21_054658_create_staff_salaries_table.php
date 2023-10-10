@@ -16,6 +16,7 @@
                 $table->id();
                 $table->string('name')->nullable();
                 $table->string('employee_id_auto')->nullable(); // Added employee_id_auto
+                $table->string('invoice_number')->default(00000); // INVOICE NUMBER
                 $table->string('phone_number')->nullable(); // Added phone_number
                 $table->string('number_of_kgs_harvested')->nullable(); // Changed 'salary' to 'number_of_kgs_harvested'
                 $table->decimal('shillings_per_kg', 8, 2)->default(8.00); // Added 'shillings_per_kg' field

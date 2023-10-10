@@ -19,7 +19,7 @@
                         </ul>
                     </div>
                     <div class="col-auto float-right ml-auto">
-                        <a href="#" class="btn add-btn" data-toggle="modal" data-target="#add_salary"><i class="fa fa-plus"></i> Add Salary</a>
+                        <a href="#" class="btn add-btn" data-toggle="modal" data-target="#add_salary"><i class="fa fa-plus"></i> Pay Employee</a>
                     </div>
                 </div>
             </div>
@@ -85,6 +85,7 @@
                                 <tr>
                                     <th>Employee Name</th>
                                     <th>Employee ID</th>
+                                    <th>Invoice Number</th>
                                     <th>Phone Number</th>
                                     <th>KGS Harvested</th>
                                     <th>Shilling per KG</th>
@@ -104,6 +105,7 @@
                                         </h2>
                                     </td>
                                     <td>{{ $items->employee_id_auto }}</td>
+                                    <td>{{ $items->invoice_number }}</td>
                                     <td>{{ $items->phone_number }}</td>
                                     <td>{{ $items->number_of_kgs_harvested }}</td>
                                     <td>{{ $items->shillings_per_kg }}</td>
@@ -142,7 +144,7 @@
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Add Staff Salary</h5>
+                <h5 class="modal-title"> Add Employee Salary</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -229,7 +231,7 @@
         <div class="modal-dialog modal-dialog-centered modal-md" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Edit Staff Salary</h5>
+                <h5 class="modal-title">Edit Employee Salary</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
