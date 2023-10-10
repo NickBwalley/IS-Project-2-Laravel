@@ -12,6 +12,7 @@ use App\Http\Controllers\UserManagementController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\LockScreen;
 use App\Http\Controllers\PayrollController;
+use App\Http\Controllers\EmployeePayrollController;
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\HolidayController;
 use App\Http\Controllers\LeavesController;
@@ -242,6 +243,13 @@ Route::controller(PayrollController::class)->group(function () {
     Route::post('form/salary/delete', 'deleteRecord')->middleware('auth')->name('form/salary/delete');
     Route::get('form/salary/view/{user_id}', 'salaryView')->middleware('auth');
     Route::get('form/payroll/items', 'payrollItems')->middleware('auth')->name('form/payroll/items');
+
+});
+
+Route::controller(EmployeePayrollController::class)->group(function () {
+    // --------- employee form payroll
+    Route::get('form/salary/epage', 'salary')->middleware('auth')->name('form/salary/epage');
+
 });
 
 // ----------------------------- reports  ------------------------------//
