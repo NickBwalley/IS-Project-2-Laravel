@@ -15,10 +15,10 @@
             <div class="page-header">
                 <div class="row align-items-center">
                     <div class="col">
-                        <h3 class="page-title">My Invoices <span id="year"></span></h3>
+                        <h3 class="page-title">My Statements <span id="year"></span></h3>
                         <ul class="breadcrumb">
                             <li class="breadcrumb-item"><a href="{{ route('home') }}">Dashboard</a></li>
-                            <li class="breadcrumb-item active">Invoices</li>
+                            <li class="breadcrumb-item active">All Transactions</li>
                         </ul>
                     </div>
                     {{-- <div class="col-auto float-right ml-auto">
@@ -87,11 +87,11 @@
                             <thead>
                                 <tr>
                                     {{-- <th>Employee Name</th> --}}
-                                    <th>Employee ID</th>
+                                    {{-- <th>Employee ID</th> --}}
                                     <th>Invoice Number</th>
                                     <th>Phone Number</th>
                                     <th>KGS Harvested</th>
-                                    <th>Shilling per KG</th>
+                                    <th>Shillings per KG</th>
                                     <th>Amount to Pay</th>
                                     <th>Transaction Time</th>
                                     {{-- <th class="text-right">Action</th> --}}
@@ -113,7 +113,7 @@
                                             <a href="{{ url('employee/profile/'.$items->user_id) }}">{{ $items->name }}</a>
                                         </h2>
                                     </td> --}}
-                                    <td>{{ $items->employee_id_auto }}</td>
+                                    {{-- <td>{{ $items->employee_id_auto }}</td> --}}
                                     <td>{{ $items->invoice_number }}</td>
                                     <td>{{ $items->phone_number }}</td>
                                     <td>{{ $items->number_of_kgs_harvested }}</td>

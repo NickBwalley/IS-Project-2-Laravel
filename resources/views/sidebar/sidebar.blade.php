@@ -7,20 +7,21 @@
                 <li class="menu-title">
                     <span>Main</span>
                 </li>
+                @if (Auth::user()->role_name == 'Admin')
                 <li class="{{ set_active(['home', 'em/dashboard']) }} submenu">
                     <a href="#" class="{{ set_active(['home', 'em/dashboard']) ? 'noti-dot' : '' }}">
                         <i class="la la-dashboard"></i>
                         <span> Dashboard</span> <span class="menu-arrow"></span>
                     </a>
                     <ul style="{{ request()->is('/*') ? 'display: block;' : 'display: none;' }}">
-                        @if (Auth::user()->role_name == 'Admin')
                             <li><a class="{{ set_active(['home']) }}" href="{{ route('home') }}">Admin Dashboard</a></li>
                         @endif
                         @if (Auth::user()->role_name == 'Manager')
                         <li><a class="{{ set_active(['em/dashboard']) }}" href="{{ route('em/dashboard') }}">Employee Dashboard</a></li>
-                        @endif
+                        
                     </ul>
                 </li>
+                @endif
 
                 @if (Auth::user()->role_name=='Admin')
                     <li class="menu-title"> <span>Authentication</span> </li>
@@ -112,11 +113,11 @@
                 <li class="menu-title"> <span>Analysis</span> </li>
                 <li class="{{set_active(['form/performance/indicator/page','form/performance/page','form/performance/appraisal/page'])}} submenu">
                     <a href="#" class="{{ set_active(['form/performance/indicator/page','form/performance/page','form/performance/appraisal/page']) ? 'noti-dot' : '' }}"><i class="la la-graduation-cap"></i>
-                    <span> Performance </span> <span class="menu-arrow"></span></a>
+                    <span> Performance  </span> <span class="menu-arrow"></span></a>
                     <ul style="{{ request()->is('/*') ? 'display: block;' : 'display: none;' }}">
-                        <li><a class="{{set_active(['form/performance/indicator/page'])}}" href="{{ route('form/performance/indicator/page') }}"> Performance Indicator </a></li>
+                        <li><a class="{{set_active(['form/performance/indicator/page'])}}" href="{{ route('form/performance/indicator/page') }}"> Leading Indicator </a></li>
+                        <li><a class="{{set_active(['form/performance/appraisal/page'])}}" href="{{ route('form/performance/appraisal/page') }}"> Lagging Indicator </a></li>
                         <li><a class="{{set_active(['form/performance/page'])}}" href="{{ route('form/performance/page') }}"> Performance Review </a></li>
-                        <li><a class="{{set_active(['form/performance/appraisal/page'])}}" href="{{ route('form/performance/appraisal/page') }}"> Performance Appraisal </a></li>
                     </ul>
                 </li>
                 <li class="{{set_active(['form/training/list/page','form/trainers/list/page'])}} submenu"> 
@@ -134,11 +135,11 @@
                 {{-- EMPLOYEES AUTHORIZATIONS --}}
                 @if (Auth::user()->role_name=='Employee')
                     <li class="{{set_active(['form/salary/epage','form/payroll/items'])}} submenu">
-                        <a href="#" class="{{ set_active(['form/salary/epage','form/payroll/items']) ? 'noti-dot' : '' }}"><i class="la la-money"></i>
-                        <span> Payslip </span> <span class="menu-arrow"></span></a>
+                        <a href="#" class="{{ set_active(['form/salary/epage','form/payroll/items']) ? 'noti-dot' : '' }}"><i class="la la-dashboard"></i>
+                        <span> Dashboard </span> <span class="menu-arrow"></span></a>
                         <ul style="{{ request()->is('/*') ? 'display: block;' : 'display: none;' }}">
-                            <li><a class="{{set_active(['form/salary/epage'])}}" href="{{ route('form/salary/epage') }}"> Employee Invoices </a></li>
-                            <li><a href="{{ route('form/salary/epage') }}"> Transactions </a></li>
+                            <li><a class="{{set_active(['form/salary/epage'])}}" href="{{ route('form/salary/epage') }}"> Unpaid Transactions </a></li>
+                            <li><a href="{{ route('form/salary/epage') }}"> Paid Transactions </a></li>
                             {{-- <li><a class="{{set_active(['form/payroll/items'])}}" href="{{ route('form/payroll/items') }}"> Payslip </a></li> --}}
                         </ul>
                     </li>
