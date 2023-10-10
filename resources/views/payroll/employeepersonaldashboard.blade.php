@@ -1,8 +1,11 @@
-
+<?php use App\Models\StaffSalary;
+?>
 @extends('layouts.master')
 @section('content')
+
     {{-- message --}}
     {!! Toastr::message() !!}
+    
 
     <!-- Page Wrapper -->
     <div class="page-wrapper">
@@ -95,8 +98,14 @@
                                 </tr>
                             </thead>
                             
+                            <?php 
+                                // $users = StaffSalary::where('employee_id_auto', auth()->id())->get();
+                                $users = StaffSalary::where('employee_id_auto', auth()->user()->user_id)->get();
+                            ?>
+                            
                             <tbody>
                                 @foreach ($users as $items)
+                                {{-- @if ($items->id == auth()->id()) --}}
                                 <tr>
                                     <td>
                                         <h2 class="table-avatar">
@@ -114,6 +123,7 @@
                                     
                             </td>
                                 </tr>
+                                {{-- @endif --}}
                                 @endforeach
                             </tbody>
 
