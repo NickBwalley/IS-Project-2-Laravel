@@ -300,9 +300,9 @@
                         <div class="modal-btn delete-action">
                             <form action="{{ route('form/salary/delete') }}" method="POST">
                                 @csrf
+                                <input type="hidden" name="id" class="e_id" value="">
                                 <div class="row">
                                     <div class="col-6">
-                                        <input type="hidden" name="id" class="e_id" value="">
                                         <button type="submit" class="btn btn-primary continue-btn submit-btn">Delete</button>
                                     </div>
                                     <div class="col-6">
@@ -315,6 +315,7 @@
                 </div>
             </div>
         </div>
+
         <!-- /Delete Salary Modal -->
      
     </div>
@@ -322,78 +323,12 @@
     @section('script')
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-    <script>
+    <!-- Include jQuery once -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
     $(document).ready(function () {
-        // When a name is selected in the "Add Salary" modal
-        $('#name').change(function () {
-            var selectedOption = $(this).find('option:selected');
-            var employeeID = selectedOption.data('employee_id');
-            var phoneNumber = selectedOption.data('phone_number');
-            
-            $('#uniqueid').val(employeeID); // Populate the "Employee ID Auto" field
-            $('#phone_number').val(phoneNumber); // Populate the "Employee Phone Number" field
-        });
-
-        // Add JavaScript to calculate Estimated Payout in real-time
-        $('#number_of_kgs_harvested, #shillings_per_kg').on('input', function () {
-            var kgsHarvested = parseFloat($('#number_of_kgs_harvested').val()) || 0;
-            var shillingsPerKg = parseFloat($('#shillings_per_kg').val()) || 0;
-            var estimatedPayout = kgsHarvested * shillingsPerKg;
-            $('#estimated_payout').val(estimatedPayout.toFixed(2));
-        });
-    });
-</script>
-
-
-
-        <script>
-            $(document).ready(function() {
-                $('.select2s-hidden-accessible').select2({
-                    closeOnSelect: false
-                });
-            });
-        </script>
-        <script>
-            // select auto id and email
-            $('#name').on('change',function()
-            {
-                $('#employee_id').val($(this).find(':selected').data('employee_id'));
-            });
-        </script>
-        {{-- update js --}}
-        {{-- <script>
-            $(document).on('click','.userSalary',function()
-            {
-                var _this = $(this).parents('tr');
-                $('#e_id').val(_this.find('.id').text());
-                $('#e_name').val(_this.find('.name').text());
-                $('#e_salary').val(_this.find('.salary').text());
-                $('#e_basic').val(_this.find('.basic').text());
-                $('#e_da').val(_this.find('.da').text());
-                $('#e_hra').val(_this.find('.hra').text());
-                $('#e_conveyance').val(_this.find('.conveyance').text());
-                $('#e_allowance').val(_this.find('.allowance').text());
-                $('#e_medical_allowance').val(_this.find('.medical_allowance').text());
-                $('#e_tds').val(_this.find('.tds').text());
-                $('#e_esi').val(_this.find('.esi').text());
-                $('#e_pf').val(_this.find('.pf').text());
-                $('#e_leave').val(_this.find('.leave').text());
-                $('#e_prof_tax').val(_this.find('.prof_tax').text());
-                $('#e_labour_welfare').val(_this.find('.labour_welfare').text());
-            });
-        </script> --}}
-         {{-- delete js --}}
-    <script>
-        $(document).on('click','.salaryDelete',function()
-        {
-            var _this = $(this).parents('tr');
-            $('.e_id').val(_this.find('.id').text());
-        });
-    </script>
-
-    <script>
-    // Add JavaScript to populate Employee ID Auto field and Phone Number when a name is selected
-    $(document).ready(function () {
+        // Populate Employee ID Auto and Phone Number in the "Add Salary" modal
         $('#name').change(function () {
             var selectedOption = $(this).find('option:selected');
             var employeeID = selectedOption.data('employee_id');
@@ -403,53 +338,42 @@
             $('#phone_number').val(phoneNumber);
         });
 
-        // Add JavaScript to calculate Estimated Payout in real-time
+        // Calculate Estimated Payout in real-time
         $('#number_of_kgs_harvested, #shillings_per_kg').on('input', function () {
             var kgsHarvested = parseFloat($('#number_of_kgs_harvested').val()) || 0;
             var shillingsPerKg = parseFloat($('#shillings_per_kg').val()) || 0;
             var estimatedPayout = kgsHarvested * shillingsPerKg;
             $('#estimated_payout').val(estimatedPayout.toFixed(2));
         });
+
+        // Handle the click event for the "Pay" button in the "Edit Salary" modal
+        $('.editSalary').click(function () {
+            var id = $(this).data('id');
+            var name = $(this).data('name');
+            var employee_id_auto = $(this).data('employee_id_auto');
+            var phone_number = $(this).data('phone_number');
+            var number_of_kgs_harvested = $(this).data('number_of_kgs_harvested');
+            var shillings_per_kg = $(this).data('shillings_per_kg');
+            var estimated_payout = $(this).data('estimated_payout');
+
+            $('#e_id').val(id);
+            $('#e_name').val(name);
+            $('#e_employee_id_auto').val(employee_id_auto);
+            $('#e_phone_number').val(phone_number);
+            $('#e_number_of_kgs_harvested').val(number_of_kgs_harvested);
+            $('#e_shillings_per_kg').val(shillings_per_kg);
+            $('#e_estimated_payout').val(estimated_payout);
+        });
+
+        // Handle the click event for the "Delete" button in the "Delete Salary" modal
+        $('.salaryDelete').click(function () {
+            var id = $(this).data('id');
+            $('.e_id').val(id); // Set the value of the hidden input field
+        });
     });
 </script>
 
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            // When a "Pay" button is clicked
-            $('.editSalary').click(function() {
-                // Get the data attributes
-                var id = $(this).data('id');
-                var name = $(this).data('name');
-                var employee_id_auto = $(this).data('employee_id_auto');
-                var phone_number = $(this).data('phone_number');
-                var number_of_kgs_harvested = $(this).data('number_of_kgs_harvested');
-                var shillings_per_kg = $(this).data('shillings_per_kg');
-                var estimated_payout = $(this).data('estimated_payout');
-
-                // Populate the modal fields with the data
-                $('#e_id').val(id);
-                $('#e_name').val(name);
-                $('#e_employee_id_auto').val(employee_id_auto);
-                $('#e_phone_number').val(phone_number);
-                $('#e_number_of_kgs_harvested').val(number_of_kgs_harvested);
-                $('#e_shillings_per_kg').val(shillings_per_kg);
-                $('#e_estimated_payout').val(estimated_payout);
-            });
-        });
-    </script>
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        $(document).ready(function () {
-            // Handle the click event for the delete button
-            $('.salaryDelete').click(function () {
-                var id = $(this).data('id');
-                $('.e_id').val(id);
-            });
-        });
-    </script>
 
 
 
