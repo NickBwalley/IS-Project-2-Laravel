@@ -86,7 +86,7 @@
                         <table class="table table-striped custom-table datatable">
                             <thead>
                                 <tr>
-                                    <th>Employee Name</th>
+                                    {{-- <th>Employee Name</th> --}}
                                     <th>Employee ID</th>
                                     <th>Invoice Number</th>
                                     <th>Phone Number</th>
@@ -107,12 +107,12 @@
                                 @foreach ($users as $items)
                                 {{-- @if ($items->id == auth()->id()) --}}
                                 <tr>
-                                    <td>
+                                    {{-- <td>
                                         <h2 class="table-avatar">
                                             <a href="{{ url('employee/profile/'.$items->user_id) }}" class="avatar"><img alt="" src="{{ URL::to('/assets/images/'. $items->avatar) }}"></a>
                                             <a href="{{ url('employee/profile/'.$items->user_id) }}">{{ $items->name }}</a>
                                         </h2>
-                                    </td>
+                                    </td> --}}
                                     <td>{{ $items->employee_id_auto }}</td>
                                     <td>{{ $items->invoice_number }}</td>
                                     <td>{{ $items->phone_number }}</td>
