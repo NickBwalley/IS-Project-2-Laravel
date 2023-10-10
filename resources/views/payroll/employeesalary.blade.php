@@ -74,6 +74,9 @@
                 </div>     
             </div> --}}
             <!-- /Search Filter -->  
+
+            {{-- ADD SALARY EMPLOYEE --}}
+
             <div class="row">
                 <div class="col-md-12">
                     <div class="table-responsive">
@@ -147,12 +150,13 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="name">Employee Name</label>
-                                <select class="form-control select2s-hidden-accessible @error('name') is-invalid @enderror" id="name" name="name">
+                               <select class="form-control select2s-hidden-accessible @error('name') is-invalid @enderror" id="name" name="name">
                                     <option value="">-- Select --</option>
                                     @foreach ($userList as $key => $user)
-                                        <option value="{{ $user->name }}" data-employee_id="{{ $user->user_id }}">{{ $user->name }}</option>
+                                        <option value="{{ $user->name }}" data-employee_id="{{ $user->user_id }}" data-phone_number="{{ $user->phone_number }}">{{ $user->name }}</option>
                                     @endforeach
                                 </select>
+
                                 @error('name')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -165,7 +169,18 @@
                             <label>Employee ID Auto</label>
                             <input class="form-control" type="text" name="employee_id_auto" id="employee_id_auto" readonly>
                         </div>
+
+                        <div class="col-sm-6 offset-sm-6 text-right"> 
+                            <label class="float-left">Phone Number Auto</label>
+                            <input class="form-control" type="text" name="phone_number" id="phone_number" readonly>
+                        </div>
+
+
+                        
+
+
                     </div>
+                    
                     <div class="row"> 
                         <div class="col-sm-6"> 
                             {{-- <h4 class="text-primary">Earnings</h4> --}}
@@ -233,7 +248,7 @@
                         </div>
                         <div class="col-sm-6"> 
                             <label>Telephone Number</label>
-                            <input class="form-control" type="text" name="telephone" id="" value="">
+                            <input class="form-control" type="text" name="phone_number" id="e_phone_number" value="" readonly>
                         </div>
                         <div class="col-sm-6"> 
                                 <label>Employee ID </label>
@@ -309,7 +324,10 @@
         $('#name').change(function () {
             var selectedOption = $(this).find('option:selected');
             var employeeID = selectedOption.data('employee_id');
+            var phoneNumber = selectedOption.data('phone_number');
+            
             $('#uniqueid').val(employeeID); // Populate the "Employee ID Auto" field
+            $('#phone_number').val(phoneNumber); // Populate the "Employee Phone Number" field
         });
 
         // Add JavaScript to calculate Estimated Payout in real-time
@@ -321,6 +339,7 @@
         });
     });
 </script>
+
 
 
         <script>
@@ -338,7 +357,7 @@
             });
         </script>
         {{-- update js --}}
-        <script>
+        {{-- <script>
             $(document).on('click','.userSalary',function()
             {
                 var _this = $(this).parents('tr');
@@ -358,7 +377,7 @@
                 $('#e_prof_tax').val(_this.find('.prof_tax').text());
                 $('#e_labour_welfare').val(_this.find('.labour_welfare').text());
             });
-        </script>
+        </script> --}}
          {{-- delete js --}}
     <script>
         $(document).on('click','.salaryDelete',function()
@@ -369,23 +388,27 @@
     </script>
 
     <script>
-        // Add JavaScript to populate Employee ID Auto field when a name is selected
-        $(document).ready(function () {
-            $('#name').change(function () {
-                var selectedOption = $(this).find('option:selected');
-                var employeeID = selectedOption.data('employee_id');
-                $('#employee_id_auto').val(employeeID);
-            });
-
-            // Add JavaScript to calculate Estimated Payout in real-time
-            $('#number_of_kgs_harvested, #shillings_per_kg').on('input', function () {
-                var kgsHarvested = parseFloat($('#number_of_kgs_harvested').val()) || 0;
-                var shillingsPerKg = parseFloat($('#shillings_per_kg').val()) || 0;
-                var estimatedPayout = kgsHarvested * shillingsPerKg;
-                $('#estimated_payout').val(estimatedPayout.toFixed(2));
-            });
+    // Add JavaScript to populate Employee ID Auto field and Phone Number when a name is selected
+    $(document).ready(function () {
+        $('#name').change(function () {
+            var selectedOption = $(this).find('option:selected');
+            var employeeID = selectedOption.data('employee_id');
+            var phoneNumber = selectedOption.data('phone_number');
+            
+            $('#employee_id_auto').val(employeeID);
+            $('#phone_number').val(phoneNumber);
         });
-    </script>
+
+        // Add JavaScript to calculate Estimated Payout in real-time
+        $('#number_of_kgs_harvested, #shillings_per_kg').on('input', function () {
+            var kgsHarvested = parseFloat($('#number_of_kgs_harvested').val()) || 0;
+            var shillingsPerKg = parseFloat($('#shillings_per_kg').val()) || 0;
+            var estimatedPayout = kgsHarvested * shillingsPerKg;
+            $('#estimated_payout').val(estimatedPayout.toFixed(2));
+        });
+    });
+</script>
+
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
@@ -396,6 +419,7 @@
                 var id = $(this).data('id');
                 var name = $(this).data('name');
                 var employee_id_auto = $(this).data('employee_id_auto');
+                var phone_number = $(this).data('phone_number');
                 var number_of_kgs_harvested = $(this).data('number_of_kgs_harvested');
                 var shillings_per_kg = $(this).data('shillings_per_kg');
                 var estimated_payout = $(this).data('estimated_payout');
@@ -404,6 +428,7 @@
                 $('#e_id').val(id);
                 $('#e_name').val(name);
                 $('#e_employee_id_auto').val(employee_id_auto);
+                $('#e_phone_number').val(phone_number);
                 $('#e_number_of_kgs_harvested').val(number_of_kgs_harvested);
                 $('#e_shillings_per_kg').val(shillings_per_kg);
                 $('#e_estimated_payout').val(estimated_payout);

@@ -18,17 +18,20 @@ class PayrollController extends Controller
     //     return view('payroll.employeesalary',compact('users','userList','permission_lists'));
     // }
     public function salary()
-    {
-        $users = DB::table('users')
-            ->join('staff_salaries', 'users.user_id', '=', 'staff_salaries.employee_id_auto')
-            ->select('users.*', 'staff_salaries.*')
-            ->get();
+{
+    $users = DB::table('users')
+        ->join('staff_salaries', 'users.user_id', '=', 'staff_salaries.employee_id_auto')
+        ->select('users.*', 'staff_salaries.*')
+        ->get();
 
-        $userList = DB::table('users')->get();
-        $permission_lists = DB::table('permission_lists')->get();
+    $userList = DB::table('users')->select('user_id', 'name', 'phone_number')->get();
+    // Select the 'user_id', 'name', and 'phone_number' fields from the 'users' table
 
-        return view('payroll.employeesalary', compact('users', 'userList', 'permission_lists'));
-    }
+    $permission_lists = DB::table('permission_lists')->get();
+
+    return view('payroll.employeesalary', compact('users', 'userList', 'permission_lists'));
+}
+
 
 
     // // save record
@@ -86,15 +89,18 @@ public function saveRecord(Request $request)
 {
     $request->validate([
         'name' => 'required|string|max:255',
-        'number_of_kgs_harvested' => 'required|numeric|min:0', // Updated field name and added numeric validation
-        'shillings_per_kg' => 'required|numeric|min:0', // Added field for shillings per kg
+        'phone_number' => 'required|numeric', // Corrected 'number' to 'numeric'
+        'number_of_kgs_harvested' => 'required|numeric|min:0',
+        'shillings_per_kg' => 'required|numeric|min:0',
     ]);
+
 
     DB::beginTransaction();
     try {
         $salary = StaffSalary::updateOrCreate(['id' => $request->id]);
         $salary->name = $request->name;
         $salary->employee_id_auto = $request->employee_id_auto;
+        $salary->phone_number = $request->phone_number;
         $salary->number_of_kgs_harvested = $request->number_of_kgs_harvested; // Updated field name
         $salary->shillings_per_kg = $request->shillings_per_kg; // Added field for shillings per kg
         $salary->estimated_payout = $request->number_of_kgs_harvested * $request->shillings_per_kg; // Calculated estimated payout
