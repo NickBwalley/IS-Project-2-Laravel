@@ -85,10 +85,11 @@
                                 <tr>
                                     <th>Employee Name</th>
                                     <th>Employee ID</th>
+                                    <th>Phone Number</th>
                                     <th>KGS Harvested</th>
                                     <th>Shilling per KG</th>
-                                    <th>Total Payout</th>
-                                    <th>Time</th>
+                                    <th>Amount to Pay</th>
+                                    <th>Transaction Time</th>
                                     <th class="text-right">Action</th>
                                 </tr>
                             </thead>
@@ -103,6 +104,7 @@
                                         </h2>
                                     </td>
                                     <td>{{ $items->employee_id_auto }}</td>
+                                    <td>{{ $items->phone_number }}</td>
                                     <td>{{ $items->number_of_kgs_harvested }}</td>
                                     <td>{{ $items->shillings_per_kg }}</td>
                                     <td>{{ $items->estimated_payout }}</td>
@@ -112,13 +114,15 @@
                                     <a href="#" class="action-icon dropdown-toggle editSalary" data-toggle="modal" data-target="#edit_salary"
                                         data-id="{{ $items->id }}"
                                         data-name="{{ $items->name }}"
+                                        data-phone_number="{{ $items->phone_number }}"
                                         data-employee_id_auto="{{ $items->employee_id_auto }}"
                                         data-number_of_kgs_harvested="{{ $items->number_of_kgs_harvested }}"
                                         data-shillings_per_kg="{{ $items->shillings_per_kg }}"
                                         data-estimated_payout="{{ $items->estimated_payout }}"
                                     ><i class="fa-solid fa-dollar-sign"></i> Pay</a>
-                                    <a class="dropdown-item salaryDelete" href="#" data-toggle="modal" data-target="#delete_salary"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
+                                    <a class="dropdown-item salaryDelete" href="#" data-toggle="modal" data-target="#delete_salary" data-id="{{ $items->id }}"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
                                 </div>
+
                             </td>
                                 </tr>
                                 @endforeach
@@ -274,7 +278,7 @@
                         </div>
                     </div>
                     <div class="submit-section">
-                        <button type="submit" class="btn btn-primary submit-btn">Pay</button>
+                        <button type="submit" class="btn btn-primary submit-btn">Confirm Pay</button>
                     </div>
                 </form>
             </div>
@@ -435,6 +439,19 @@
             });
         });
     </script>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Handle the click event for the delete button
+            $('.salaryDelete').click(function () {
+                var id = $(this).data('id');
+                $('.e_id').val(id);
+            });
+        });
+    </script>
+
+
 
     @endsection
 @endsection
