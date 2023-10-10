@@ -18,9 +18,9 @@
                             <li class="breadcrumb-item active">Invoices</li>
                         </ul>
                     </div>
-                    <div class="col-auto float-right ml-auto">
+                    {{-- <div class="col-auto float-right ml-auto">
                         <a href="#" class="btn add-btn" data-toggle="modal" data-target="#add_salary"><i class="fa fa-plus"></i> Pay Employee</a>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
 
@@ -91,7 +91,7 @@
                                     <th>Shilling per KG</th>
                                     <th>Amount to Pay</th>
                                     <th>Transaction Time</th>
-                                    <th class="text-right">Action</th>
+                                    {{-- <th class="text-right">Action</th> --}}
                                 </tr>
                             </thead>
                             
@@ -111,20 +111,7 @@
                                     <td>{{ $items->shillings_per_kg }}</td>
                                     <td>{{ $items->estimated_payout }}</td>
                                     <td>{{ $items->created_at }}</td>
-                                    <td class="text-right">
-                                <div class="dropdown dropdown-action">
-                                    <a href="#" class="action-icon dropdown-toggle editSalary" data-toggle="modal" data-target="#edit_salary"
-                                        data-id="{{ $items->id }}"
-                                        data-name="{{ $items->name }}"
-                                        data-phone_number="{{ $items->phone_number }}"
-                                        data-employee_id_auto="{{ $items->employee_id_auto }}"
-                                        data-number_of_kgs_harvested="{{ $items->number_of_kgs_harvested }}"
-                                        data-shillings_per_kg="{{ $items->shillings_per_kg }}"
-                                        data-estimated_payout="{{ $items->estimated_payout }}"
-                                    ><i class="fa-solid fa-dollar-sign"></i> Pay</a>
-                                    <a class="dropdown-item salaryDelete" href="#" data-toggle="modal" data-target="#delete_salary" data-id="{{ $items->id }}"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
-                                </div>
-
+                                    
                             </td>
                                 </tr>
                                 @endforeach
