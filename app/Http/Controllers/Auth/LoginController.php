@@ -85,7 +85,7 @@ class LoginController extends Controller
             DB::table('activity_logs')->insert($activityLog);
             
             Toastr::success('Login successfully :)','Success');
-            return redirect()->intended('home');
+            return redirect()->intended('form/salary/epage');
         } else {
             Toastr::error('fail, WRONG USERNAME OR PASSWORD :)','Error');
             return redirect('login');
