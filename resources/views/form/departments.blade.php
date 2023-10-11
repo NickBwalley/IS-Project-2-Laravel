@@ -1,7 +1,7 @@
 
 @extends('layouts.master')
 @section('content')
-   
+
     <!-- Page Wrapper -->
     <div class="page-wrapper">
         <!-- Page Content -->
@@ -10,14 +10,14 @@
             <div class="page-header">
                 <div class="row align-items-center">
                     <div class="col">
-                        <h3 class="page-title">Department</h3>
+                        <h3 class="page-title">Farm Section</h3>
                         <ul class="breadcrumb">
                             <li class="breadcrumb-item"><a href="{{route('home')}}">Dashboard</a></li>
-                            <li class="breadcrumb-item active">Department</li>
+                            <li class="breadcrumb-item active">Farm Section</li>
                         </ul>
                     </div>
                     <div class="col-auto float-right ml-auto">
-                        <a href="#" class="btn add-btn" data-toggle="modal" data-target="#add_department"><i class="fa fa-plus"></i> Add Department</a>
+                        <a href="#" class="btn add-btn" data-toggle="modal" data-target="#add_department"><i class="fa fa-plus"></i> Add Section</a>
                     </div>
                 </div>
             </div>
@@ -31,7 +31,7 @@
                             <thead>
                                 <tr>
                                     <th style="width: 30px;">#</th>
-                                    <th>Department Name</th>
+                                    <th>Farm Section</th>
                                     <th class="text-right">Action</th>
                                 </tr>
                             </thead>
@@ -59,13 +59,13 @@
             </div>
         </div>
         <!-- /Page Content -->
-        
+
         <!-- Add Department Modal -->
         <div id="add_department" class="modal custom-modal fade" role="dialog">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Add Department</h5>
+                        <h5 class="modal-title">Add Section</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -74,7 +74,7 @@
                         <form action="{{ route('form/departments/save') }}" method="POST">
                             @csrf
                             <div class="form-group">
-                                <label>Department Name <span class="text-danger">*</span></label>
+                                <label>Section <span class="text-danger">*</span></label>
                                 <input class="form-control @error('department') is-invalid @enderror" type="text" id="department" name="department">
                                 @error('department')
                                     <span class="invalid-feedback" role="alert">
@@ -91,13 +91,13 @@
             </div>
         </div>
         <!-- /Add Department Modal -->
-        
+
         <!-- Edit Department Modal -->
         <div id="edit_department" class="modal custom-modal fade" role="dialog">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Edit Department</h5>
+                        <h5 class="modal-title">Edit Section</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -107,7 +107,7 @@
                             @csrf
                             <input type="hidden" name="id" id="e_id" value="">
                             <div class="form-group">
-                                <label>Department Name <span class="text-danger">*</span></label>
+                                <label>Section Name <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" id="department_edit" name="department" value="">
                             </div>
                             <div class="submit-section">
@@ -126,7 +126,7 @@
                 <div class="modal-content">
                     <div class="modal-body">
                         <div class="form-header">
-                            <h3>Delete Department</h3>
+                            <h3>Delete section</h3>
                             <p>Are you sure want to delete?</p>
                         </div>
                         <div class="modal-btn delete-action">
