@@ -3,10 +3,10 @@
 @section('content')
     <!-- Page Wrapper -->
     <div class="page-wrapper">
-                
+
         <!-- Page Content -->
         <div class="content container-fluid">
-        
+
             <!-- Page Header -->
             <div class="page-header">
                 <div class="row align-items-center">
@@ -23,7 +23,7 @@
                 </div>
             </div>
             <!-- /Page Header -->
-            
+
             <!-- Overtime Statistics -->
             <div class="row">
                 <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
@@ -52,7 +52,7 @@
                 </div>
             </div>
             <!-- /Overtime Statistics -->
-            
+
             <div class="row">
                 <div class="col-md-12">
                     <div class="table-responsive">
@@ -113,7 +113,7 @@
             </div>
         </div>
         <!-- /Page Content -->
-        
+
         <!-- Add Overtime Modal -->
         <div id="add_overtime" class="modal custom-modal fade" role="dialog">
             <div class="modal-dialog modal-dialog-centered" role="document">
@@ -158,7 +158,7 @@
             </div>
         </div>
         <!-- /Add Overtime Modal -->
-        
+
         <!-- Edit Overtime Modal -->
         <div id="edit_overtime" class="modal custom-modal fade" role="dialog">
             <div class="modal-dialog modal-dialog-centered" role="document">
@@ -203,7 +203,7 @@
             </div>
         </div>
         <!-- /Edit Overtime Modal -->
-        
+
         <!-- Delete Overtime Modal -->
         <div class="modal custom-modal fade" id="delete_overtime" role="dialog">
             <div class="modal-dialog modal-dialog-centered">
@@ -228,11 +228,11 @@
             </div>
         </div>
         <!-- /Delete Overtime Modal -->
-        
+
     </div>
     <!-- /Page Wrapper -->
-  
+
     @section('script')
-    
+
     @endsection
 @endsection

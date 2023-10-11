@@ -223,6 +223,9 @@ Route::controller(LeavesController::class)->group(function () {
     Route::post('form/leaves/save', 'saveRecord')->middleware('auth')->name('form/leaves/save');
     Route::post('form/leaves/edit', 'editRecordLeave')->middleware('auth')->name('form/leaves/edit');
     Route::post('form/leaves/edit/delete','deleteLeave')->middleware('auth')->name('form/leaves/edit/delete');
+    Route::post('form/leavesemployee/save', 'saveERecord')->middleware('auth')->name('form/leavesemployee/save');
+    Route::post('form/leavesemployee/edit', 'editERecordLeave')->middleware('auth')->name('form/leavesemployee/edit');
+    Route::post('form/leavesemployee/edit/delete','deleteELeave')->middleware('auth')->name('form/leavesemployee/edit/delete');
 });
 
 // ----------------------------- form attendance  ------------------------------//

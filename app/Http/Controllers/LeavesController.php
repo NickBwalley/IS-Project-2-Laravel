@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Brian2694\Toastr\Facades\Toastr;
 use App\Models\LeavesAdmin;
+use App\Models\LeavesEmployee;
 use DB;
 use DateTime;
 
@@ -46,7 +47,7 @@ class LeavesController extends Controller
             $leaves->day           = $days;
             $leaves->leave_reason  = $request->leave_reason;
             $leaves->save();
-            
+
             DB::commit();
             Toastr::success('Create new Leaves successfully :)','Success');
             return redirect()->back();
@@ -96,7 +97,7 @@ class LeavesController extends Controller
             LeavesAdmin::destroy($request->id);
             Toastr::success('Leaves admin deleted successfully :)','Success');
             return redirect()->back();
-        
+
         } catch(\Exception $e) {
 
             DB::rollback();
@@ -126,7 +127,93 @@ class LeavesController extends Controller
     // leaves Employee
     public function leavesEmployee()
     {
-        return view('form.leavesemployee');
+        $leavese = DB::table('leaves_employees')
+                    ->join('users', 'users.user_id', '=', 'leaves_employees.user_id')
+                    ->select('leaves_employees.*', 'users.position','users.name','users.avatar')
+                    ->get();
+        return view('form.leavesemployee',compact('leavese'));
+    }
+
+    public function saveERecord(Request $request)
+    {
+        $request->validate([
+            'leave_type'   => 'required|string|max:255',
+            'from_date'    => 'required|string|max:255',
+            'to_date'      => 'required|string|max:255',
+            'leave_reason' => 'required|string|max:255',
+        ]);
+
+        DB::beginTransaction();
+        try {
+
+            $from_date = new DateTime($request->from_date);
+            $to_date = new DateTime($request->to_date);
+            $day     = $from_date->diff($to_date);
+            $days    = $day->d;
+
+            $leavese = new LeavesEmployee;
+            $leavese->user_id        = $request->user_id;
+            $leavese->leave_type    = $request->leave_type;
+            $leavese->from_date     = $request->from_date;
+            $leavese->to_date       = $request->to_date;
+            $leavese->day           = $days;
+            $leavese->leave_reason  = $request->leave_reason;
+            $leavese->save();
+
+            DB::commit();
+            Toastr::success('Create new Leaves successfully :)','Success');
+            return redirect()->back();
+        } catch(\Exception $e) {
+            DB::rollback();
+            Toastr::error('Add Leaves fail :)','Error');
+            return redirect()->back();
+        }
+    }
+
+    public function deleteELeave(Request $request)
+    {
+        try {
+
+            LeavesEmployee::destroy($request->id);
+            Toastr::success('Leaves employee deleted successfully :)','Success');
+            return redirect()->back();
+
+        } catch(\Exception $e) {
+
+            DB::rollback();
+            Toastr::error('Leaves employee delete fail :)','Error');
+            return redirect()->back();
+        }
+    }
+
+    public function editERecordLeave(Request $request)
+    {
+        DB::beginTransaction();
+        try {
+
+            $from_date = new DateTime($request->from_date);
+            $to_date = new DateTime($request->to_date);
+            $day     = $from_date->diff($to_date);
+            $days    = $day->d;
+
+            $update = [
+                'id'           => $request->id,
+                'leave_type'   => $request->leave_type,
+                'from_date'    => $request->from_date,
+                'to_date'      => $request->to_date,
+                'day'          => $days,
+                'leave_reason' => $request->leave_reason,
+            ];
+
+            LeavesEmployee::where('id',$request->id)->update($update);
+            DB::commit();
+            Toastr::success('Updated Leaves successfully :)','Success');
+            return redirect()->back();
+        } catch(\Exception $e) {
+            DB::rollback();
+            Toastr::error('Update Leaves fail :)','Error');
+            return redirect()->back();
+        }
     }
 
     // shiftscheduling
