@@ -1,13 +1,13 @@
 
 @extends('layouts.master')
 @section('content')
-  
+
     <!-- Page Wrapper -->
     <div class="page-wrapper">
-    
+
         <!-- Page Content -->
         <div class="content container-fluid">
-        
+
             <!-- Page Header -->
             <div class="page-header">
                 <div class="row align-items-center">
@@ -24,7 +24,7 @@
                 </div>
             </div>
             <!-- /Page Header -->
-            
+
             <div class="row">
                 <div class="col-md-12">
                     <div class="table-responsive">
@@ -33,7 +33,7 @@
                                 <tr>
                                     <th style="width: 30px;">#</th>
                                     <th>Designation </th>
-                                    <th>Department </th>
+                                    <th>Farm Section </th>
                                     <th class="text-right">Action</th>
                                 </tr>
                             </thead>
@@ -290,7 +290,7 @@
             </div>
         </div>
         <!-- /Add Designation Modal -->
-        
+
         <!-- Edit Designation Modal -->
         <div id="edit_designation" class="modal custom-modal fade" role="dialog">
             <div class="modal-dialog modal-dialog-centered" role="document">
@@ -325,7 +325,7 @@
             </div>
         </div>
         <!-- /Edit Designation Modal -->
-        
+
         <!-- Delete Designation Modal -->
         <div class="modal custom-modal fade" id="delete_designation" role="dialog">
             <div class="modal-dialog modal-dialog-centered">
@@ -350,11 +350,11 @@
             </div>
         </div>
         <!-- /Delete Designation Modal -->
-    
+
     </div>
     <!-- /Page Wrapper -->
 
     @section('script')
-    
+
     @endsection
 @endsection
