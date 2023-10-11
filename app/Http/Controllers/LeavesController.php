@@ -49,7 +49,7 @@ class LeavesController extends Controller
             $leaves->save();
 
             DB::commit();
-            Toastr::success('Create new Leaves successfully :)','Success');
+            Toastr::success('Created new Leave successfully :)','Success');
             return redirect()->back();
         } catch(\Exception $e) {
             DB::rollback();

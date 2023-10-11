@@ -1,8 +1,11 @@
-
+<?php use App\Models\StaffSalary;
+?>
 @extends('layouts.master')
 @section('content')
+
     {{-- message --}}
     {!! Toastr::message() !!}
+    
 
     <!-- Page Wrapper -->
     <div class="page-wrapper">
@@ -12,15 +15,15 @@
             <div class="page-header">
                 <div class="row align-items-center">
                     <div class="col">
-                        <h3 class="page-title">Employee Salary <span id="year"></span></h3>
+                        <h3 class="page-title">My Statements <span id="year"></span></h3>
                         <ul class="breadcrumb">
                             <li class="breadcrumb-item"><a href="{{ route('home') }}">Dashboard</a></li>
-                            <li class="breadcrumb-item active">Salary</li>
+                            <li class="breadcrumb-item active">All Transactions</li>
                         </ul>
                     </div>
-                    <div class="col-auto float-right ml-auto">
+                    {{-- <div class="col-auto float-right ml-auto">
                         <a href="#" class="btn add-btn" data-toggle="modal" data-target="#add_salary"><i class="fa fa-plus"></i> Pay Employee</a>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
 
@@ -83,50 +86,44 @@
                         <table class="table table-striped custom-table datatable">
                             <thead>
                                 <tr>
-                                    <th>Employee Name</th>
-                                    <th>Employee ID</th>
+                                    {{-- <th>Employee Name</th> --}}
+                                    {{-- <th>Employee ID</th> --}}
                                     <th>Invoice Number</th>
                                     <th>Phone Number</th>
                                     <th>KGS Harvested</th>
-                                    <th>Shilling per KG</th>
+                                    <th>Shillings per KG</th>
                                     <th>Amount to Pay</th>
                                     <th>Transaction Time</th>
-                                    <th class="text-right">Action</th>
+                                    {{-- <th class="text-right">Action</th> --}}
                                 </tr>
                             </thead>
                             
+                            <?php 
+                                // $users = StaffSalary::where('employee_id_auto', auth()->id())->get();
+                                $users = StaffSalary::where('employee_id_auto', auth()->user()->user_id)->get();
+                            ?>
+                            
                             <tbody>
                                 @foreach ($users as $items)
+                                {{-- @if ($items->id == auth()->id()) --}}
                                 <tr>
-                                    <td>
+                                    {{-- <td>
                                         <h2 class="table-avatar">
                                             <a href="{{ url('employee/profile/'.$items->user_id) }}" class="avatar"><img alt="" src="{{ URL::to('/assets/images/'. $items->avatar) }}"></a>
                                             <a href="{{ url('employee/profile/'.$items->user_id) }}">{{ $items->name }}</a>
                                         </h2>
-                                    </td>
-                                    <td>{{ $items->employee_id_auto }}</td>
+                                    </td> --}}
+                                    {{-- <td>{{ $items->employee_id_auto }}</td> --}}
                                     <td>{{ $items->invoice_number }}</td>
                                     <td>{{ $items->phone_number }}</td>
                                     <td>{{ $items->number_of_kgs_harvested }}</td>
                                     <td>{{ $items->shillings_per_kg }}</td>
                                     <td>{{ $items->estimated_payout }}</td>
                                     <td>{{ $items->created_at }}</td>
-                                    <td class="text-right">
-                                <div class="dropdown dropdown-action">
-                                    <a href="#" class="action-icon dropdown-toggle editSalary" data-toggle="modal" data-target="#edit_salary"
-                                        data-id="{{ $items->id }}"
-                                        data-name="{{ $items->name }}"
-                                        data-phone_number="{{ $items->phone_number }}"
-                                        data-employee_id_auto="{{ $items->employee_id_auto }}"
-                                        data-number_of_kgs_harvested="{{ $items->number_of_kgs_harvested }}"
-                                        data-shillings_per_kg="{{ $items->shillings_per_kg }}"
-                                        data-estimated_payout="{{ $items->estimated_payout }}"
-                                    ><i class="fa-solid fa-dollar-sign"></i> Pay</a>
-                                    <a class="dropdown-item salaryDelete" href="#" data-toggle="modal" data-target="#delete_salary" data-id="{{ $items->id }}"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
-                                </div>
-
+                                    
                             </td>
                                 </tr>
+                                {{-- @endif --}}
                                 @endforeach
                             </tbody>
 

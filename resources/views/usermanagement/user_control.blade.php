@@ -89,14 +89,14 @@
                                     <td>
                                         @if ($user->role_name=='Admin')
                                             <span class="badge bg-inverse-danger role_name">{{ $user->role_name }}</span>
-                                            @elseif ($user->role_name=='Super Admin')
+                                            @elseif ($user->role_name=='Manager')
                                             <span class="badge bg-inverse-warning role_name">{{ $user->role_name }}</span>
-                                            @elseif ($user->role_name=='Normal User')
-                                            <span class="badge bg-inverse-info role_name">{{ $user->role_name }}</span>
-                                            @elseif ($user->role_name=='Client')
-                                            <span class="badge bg-inverse-success role_name">{{ $user->role_name }}</span>
                                             @elseif ($user->role_name=='Employee')
                                             <span class="badge bg-inverse-dark role_name">{{ $user->role_name }}</span>
+                                            {{-- @elseif ($user->role_name=='Manager')
+                                            <span class="badge bg-inverse-info role_name">{{ $user->role_name }}</span> --}}
+                                            {{-- @elseif ($user->role_name=='Employee')
+                                            <span class="badge bg-inverse-success role_name">{{ $user->role_name }}</span> --}}
                                         @endif
                                     </td>
                                     <td>
@@ -142,7 +142,7 @@
                                             <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
                                             <div class="dropdown-menu dropdown-menu-right">
                                                 <a class="dropdown-item userUpdate" data-toggle="modal" data-id="'.$user->id.'" data-target="#edit_user"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                                <a class="dropdown-item userDelete" href="#" data-toggle="modal" ata-id="'.$user->id.'" data-target="#delete_user"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
+                                                {{-- <a class="dropdown-item userDelete" href="#" data-toggle="modal" ata-id="'.$user->id.'" data-target="#delete_user"><i class="fa fa-trash-o m-r-5"></i> Delete</a> --}}
                                             </div>
                                         </div>
                                     </td>

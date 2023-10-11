@@ -7,7 +7,7 @@ use DB;
 use App\Models\StaffSalary;
 use Brian2694\Toastr\Facades\Toastr;
 
-class PayrollController extends Controller
+class EmployeePayrollController extends Controller
 {
     // view page salary
     // public function salary()
@@ -29,7 +29,7 @@ class PayrollController extends Controller
 
     $permission_lists = DB::table('permission_lists')->get();
 
-    return view('payroll.employeesalary', compact('users', 'userList', 'permission_lists'));
+    return view('payroll.employeepersonaldashboard', compact('users', 'userList', 'permission_lists'));
 }
 
 
