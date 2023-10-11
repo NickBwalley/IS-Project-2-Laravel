@@ -15,7 +15,7 @@
                     </a>
                     <ul style="{{ request()->is('/*') ? 'display: block;' : 'display: none;' }}">
                         <li><a class="{{ set_active(['home']) }}" href="{{ route('home') }}">Admin Dashboard</a></li>
-                        <li><a class="{{ set_active(['em/dashboard']) }}" href="{{ route('em/dashboard') }}">Employee Dashboard</a></li>
+                        {{-- <li><a class="{{ set_active(['em/dashboard']) }}" href="{{ route('em/dashboard') }}">Employee Dashboard</a></li> --}}
 
                     </ul>
                 </li>
