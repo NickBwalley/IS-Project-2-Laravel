@@ -55,42 +55,50 @@ class LoginController extends Controller
     }
 
     public function authenticate(Request $request)
-    {
-        $request->validate([
-            'email'    => 'required|string',
-            'password' => 'required|string',
-        ]);
+{
+    $request->validate([
+        'email'    => 'required|string',
+        'password' => 'required|string',
+    ]);
 
-        $username = $request->email;
-        $password = $request->password;
+    $username = $request->email;
+    $password = $request->password;
 
-        $dt         = Carbon::now();
-        $todayDate  = $dt->toDayDateTimeString();
-        
-        if (Auth::attempt(['email'=> $username,'password'=> $password,'status'=>'Active'])) {
-            /** get session */
-            $user = Auth::User();
-            Session::put('name', $user->name);
-            Session::put('email', $user->email);
-            Session::put('user_id', $user->user_id);
-            Session::put('join_date', $user->join_date);
-            Session::put('phone_number', $user->phone_number);
-            Session::put('status', $user->status);
-            Session::put('role_name', $user->role_name);
-            Session::put('avatar', $user->avatar);
-            Session::put('position', $user->position);
-            Session::put('department', $user->department);
-            
-            $activityLog = ['name'=> Session::get('name'),'email'=> $username,'description' => 'Has log in','date_time'=> $todayDate,];
-            DB::table('activity_logs')->insert($activityLog);
-            
-            Toastr::success('Login successfully :)','Success');
-            return redirect()->intended('home');
-        } else {
-            Toastr::error('fail, WRONG USERNAME OR PASSWORD :)','Error');
-            return redirect('login');
+    $dt         = Carbon::now();
+    $todayDate  = $dt->toDayDateTimeString();
+
+    if (Auth::attempt(['email'=> $username,'password'=> $password,'status'=>'Active'])) {
+        /** get session */
+        $user = Auth::user(); // Changed Auth::User() to Auth::user() for consistency
+
+        // Store user information in session
+        Session::put('name', $user->name);
+        Session::put('email', $user->email);
+        Session::put('user_id', $user->user_id);
+        Session::put('join_date', $user->join_date);
+        Session::put('phone_number', $user->phone_number);
+        Session::put('status', $user->status);
+        Session::put('role_name', $user->role_name);
+        Session::put('avatar', $user->avatar);
+        Session::put('position', $user->position);
+        Session::put('department', $user->department);
+
+        $activityLog = ['name'=> Session::get('name'),'email'=> $username,'description' => 'Has logged in','date_time'=> $todayDate,];
+        DB::table('activity_logs')->insert($activityLog);
+
+        if ($user->role_name === 'Admin') {
+            // Redirect Admin to 'home' route
+            return redirect()->route('home');
+        } elseif ($user->role_name === 'Employee') {
+            // Redirect Employee to 'form/save/epage' route
+            return redirect()->route('form/salary/epage');
         }
     }
+
+    Toastr::error('Failed, WRONG USERNAME OR PASSWORD :)', 'Error');
+    return redirect('login');
+}
+
 
     public function logout(Request $request)
     {
