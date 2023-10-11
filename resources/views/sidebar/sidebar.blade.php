@@ -14,16 +14,12 @@
                         <span> Dashboard</span> <span class="menu-arrow"></span>
                     </a>
                     <ul style="{{ request()->is('/*') ? 'display: block;' : 'display: none;' }}">
-                            <li><a class="{{ set_active(['home']) }}" href="{{ route('home') }}">Admin Dashboard</a></li>
-                        @endif
-                        @if (Auth::user()->role_name == 'Manager')
+                        <li><a class="{{ set_active(['home']) }}" href="{{ route('home') }}">Admin Dashboard</a></li>
                         <li><a class="{{ set_active(['em/dashboard']) }}" href="{{ route('em/dashboard') }}">Employee Dashboard</a></li>
 
                     </ul>
                 </li>
-                @endif
-
-                @if (Auth::user()->role_name=='Admin')
+               {{-- AUTHENTICATIONS AS WELL  --}}
                     <li class="menu-title"> <span>Authentication</span> </li>
                     <li class="{{set_active(['search/user/list','userManagement','activity/log','activity/login/logout'])}} submenu">
                         <a href="#" class="{{ set_active(['search/user/list','userManagement','activity/log','activity/login/logout']) ? 'noti-dot' : '' }}">
@@ -36,6 +32,9 @@
                         </ul>
                     </li>
                 @endif
+
+                @if (in_array(Auth::user()->role_name, ['Admin', 'Manager']))
+                {{-- @if (Auth::user()->role_name == 'Manager') --}}
                 <li class="menu-title"> <span>Employees</span> </li>
                 <li class="{{set_active(['all/employee/list','all/employee/list','all/employee/card','form/holidays/new','form/leaves/new',
                     'form/leavesemployee/new','form/leavesettings/page','attendance/page',
@@ -80,6 +79,7 @@
 
 
 
+                
                 <li class="{{set_active(['form/salary/page','form/payroll/items'])}} submenu">
                     <a href="#" class="{{ set_active(['form/salary/page','form/payroll/items']) ? 'noti-dot' : '' }}"><i class="la la-money"></i>
                     <span> Payroll </span> <span class="menu-arrow"></span></a>
@@ -91,7 +91,6 @@
                 </li>
                 
 
-                @if (in_array(Auth::user()->role_name, ['Admin', 'Manager']))
                 {{-- <li class="{{set_active(['form/expense/reports/page','form/invoice/reports/page','form/leave/reports/page','form/daily/reports/page'])}} submenu">
                     <a href="#" class="{{ set_active(['form/expense/reports/page','form/invoice/reports/page','form/leave/reports/page','form/daily/reports/page']) ? 'noti-dot' : '' }}"><i class="la la-pie-chart"></i>
                     <span> Reports </span> <span class="menu-arrow"></span></a>
@@ -106,6 +105,10 @@
                         <li><a class="{{set_active(['form/daily/reports/page'])}}" href="{{ route('form/daily/reports/page') }}"> Daily Report </a></li>
                     </ul>
                 </li> --}}
+                 @endif
+
+
+                @if (Auth::user()->role_name == 'Admin')
                 <li class="menu-title"> <span>Analysis</span> </li>
                 <li class="{{set_active(['form/performance/indicator/page','form/performance/page','form/performance/appraisal/page'])}} submenu">
                     <a href="#" class="{{ set_active(['form/performance/indicator/page','form/performance/page','form/performance/appraisal/page']) ? 'noti-dot' : '' }}"><i class="la la-graduation-cap"></i>
@@ -126,6 +129,7 @@
                     </ul>
                 </li>
                 @endif
+               
 
 
                 {{-- EMPLOYEES AUTHORIZATIONS --}}
