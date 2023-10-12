@@ -20,7 +20,7 @@
                     <div class="card dash-widget">
                         <div class="card-body"> <span class="dash-widget-icon"><i class="fa fa-cubes"></i></span>
                             <div class="dash-widget-info">
-                                <h3>112</h3> <span>Projects</span>
+                                <h3>10</h3> <span>Projects</span>
                             </div>
                         </div>
                     </div>
@@ -29,7 +29,7 @@
                     <div class="card dash-widget">
                         <div class="card-body"> <span class="dash-widget-icon"><i class="fa fa-usd"></i></span>
                             <div class="dash-widget-info">
-                                <h3>44</h3> <span>Clients</span>
+                                <h3>5</h3> <span>Transactions</span>
                             </div>
                         </div>
                     </div>
@@ -47,7 +47,7 @@
                     <div class="card dash-widget">
                         <div class="card-body"> <span class="dash-widget-icon"><i class="fa fa-user"></i></span>
                             <div class="dash-widget-info">
-                                <h3>218</h3> <span>Employees</span>
+                                <h3>37</h3> <span>Employees</span>
                             </div>
                         </div>
                     </div>

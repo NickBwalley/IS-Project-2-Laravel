@@ -93,9 +93,13 @@ class LoginController extends Controller
             // Redirect Employee to 'form/save/epage' route
             return redirect()->route('form/salary/epage');
         }
+        elseif ($user->role_name === 'Manager') {
+            // Redirect Manager to 'home' route
+            return redirect()->route('form/salary/page');
+        }
     }
 
-    Toastr::error('Failed, WRONG USERNAME OR PASSWORD :)', 'Error');
+    Toastr::error('Whoops :( WRONG USERNAME OR PASSWORD...', 'Error');
     return redirect('login');
 }
 
