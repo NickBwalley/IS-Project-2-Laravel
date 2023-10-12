@@ -35,7 +35,7 @@
                                         <div class="col-md-5">
                                             <div class="profile-info-left">
                                                 <h3 class="user-name m-t-0 mb-0">{{ Session::get('name') }}</h3>
-                                                <h6 class="text-muted">{{ Session::get('department') }}</h6>
+                                                <h6 class="text-muted">Department: {{ Session::get('department') }}</h6>
                                                 <small class="text-muted">{{ Session::get('position') }}</small>
                                                 <div class="staff-id">User ID : {{ Session::get('user_id') }}</div>
                                                 <div class="small doj text-muted">Date of Join : {{ Session::get('join_date') }}</div>
@@ -131,7 +131,7 @@
                 </div>
             </div>
 					
-            <div class="card tab-box">
+            {{-- <div class="card tab-box">
                 <div class="row user-tabs">
                     <div class="col-lg-12 col-md-12 col-sm-12 line-tabs">
                         <ul class="nav nav-tabs nav-tabs-bottom">
@@ -1712,7 +1712,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> --}}
         <!-- /Experience Modal -->
 
         <!-- /Page Content -->

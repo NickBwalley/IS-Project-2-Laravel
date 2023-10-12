@@ -250,7 +250,7 @@
                             @enderror
                         </div>
                         <div class="col-sm-6"> 
-                            <label>Telephone Number</label>
+                            <label>Employees Telephone Number</label>
                             <input class="form-control" type="text" name="phone_number" id="e_phone_number" value="" readonly>
                         </div>
                         <div class="col-sm-6"> 
