@@ -58,12 +58,12 @@ public function saveRecord(Request $request)
         $salary->save();
 
         DB::commit();
-        Toastr::success('Created new Salary successfully :)', 'Success');
+        Toastr::success('Created new transaction successfully :)', 'Success');
         return redirect()->back();
     } catch (\Exception $e) {
         DB::rollback();
         dd($e->getMessage()); // Debugging: Display the error message
-        Toastr::error('Add Salary failed :(', 'Error');
+        Toastr::error('Transaction failed :(', 'Error');
         return redirect()->back();
     }
 

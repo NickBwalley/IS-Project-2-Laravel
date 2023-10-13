@@ -239,7 +239,7 @@
             <div class="modal-body">
                 <form action="{{ route('form/salary/update') }}" method="POST">
                     @csrf
-                    <input class="form-control" type="hidden" name="id" id="e_id" value="" >
+                    {{-- <input class="form-control" type="text" name="id" id="e_id" value="" > --}}
                     <div class="row"> 
                         <div class="col-sm-6"> 
                             <div class="form-group">
@@ -254,7 +254,7 @@
                         </div>
                         <div class="col-sm-6"> 
                             <label>Employees M-Pesa Number</label>
-                            <input class="form-control" type="text" name="phone_number" id="e_phone_number" value="" >
+                            <input class="form-control" type="text" name="employee_mpesa_number" id="e_phone_number" value="" >
                         </div>
                         <div class="col-sm-6"> 
                                 <label>Employee ID </label>
@@ -262,7 +262,7 @@
                         </div>
                         <div class="col-sm-6"> 
                                 <label>Sender's M-Pesa Number </label>
-                                <input class="form-control" type="text" name="sender_phone_number" id="sender_phone_number" value="" >
+                                <input class="form-control" type="text" name="senders_phone_number" id="sender_phone_number" value="" >
                         </div>
                     </div>
                     <div class="row"> 
@@ -279,7 +279,7 @@
                             </div>
                             <div class="form-group">
                                 <label>Total Amount to Pay</label>
-                                <input class="form-control" type="text"  name="estimated_payout" id="e_estimated_payout" value="" >
+                                <input class="form-control" type="text"  name="amount_paid" id="e_estimated_payout" value="" >
                             </div>
                         </div>
                     </div>
