@@ -121,7 +121,7 @@
                                         data-number_of_kgs_harvested="{{ $items->number_of_kgs_harvested }}"
                                         data-shillings_per_kg="{{ $items->shillings_per_kg }}"
                                         data-estimated_payout="{{ $items->estimated_payout }}"
-                                    ><i class="fa-solid fa-dollar-sign"></i> Pay</a>
+                                    ><span class="btn btn-primary">Pay</span></a>
                                     <a class="dropdown-item salaryDelete" href="#" data-toggle="modal" data-target="#delete_salary" data-id="{{ $items->id }}"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
                                 </div>
 
