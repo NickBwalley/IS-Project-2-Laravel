@@ -262,7 +262,7 @@
                         </div>
                         <div class="col-sm-6"> 
                                 <label>Sender's M-Pesa Number </label>
-                                <input class="form-control" type="text" name="senders_phone_number" id="sender_phone_number" value="" >
+                                <input class="form-control" type="text" name="senders_mpesa_number" id="sender_phone_number" value="" >
                         </div>
                     </div>
                     <div class="row"> 
