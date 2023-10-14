@@ -1,11 +1,9 @@
-<?php use App\Models\StaffSalary;
+<?php use App\Models\StaffSalaryPaid;
 ?>
 @extends('layouts.master')
 @section('content')
-
     {{-- message --}}
     {!! Toastr::message() !!}
-    
 
     <!-- Page Wrapper -->
     <div class="page-wrapper">
@@ -15,10 +13,10 @@
             <div class="page-header">
                 <div class="row align-items-center">
                     <div class="col">
-                        <h3 class="page-title">My Statements <span id="year"></span></h3>
+                        <h3 class="page-title">Transaction Paid <span id="year"></span></h3>
                         <ul class="breadcrumb">
                             <li class="breadcrumb-item"><a href="{{ route('home') }}">Dashboard</a></li>
-                            <li class="breadcrumb-item active">All Transactions</li>
+                            <li class="breadcrumb-item active">Paid</li>
                         </ul>
                     </div>
                     {{-- <div class="col-auto float-right ml-auto">
@@ -88,25 +86,22 @@
                                 <tr>
                                     {{-- <th>Employee Name</th> --}}
                                     {{-- <th>Employee ID</th> --}}
-                                    <th>Invoice Number</th>
-                                    <th>Phone Number</th>
-                                    <th>KGS Harvested</th>
-                                    <th>Shillings per KG</th>
-                                    <th>Amount to Pay</th>
+                                    <th>Receipt Number</th>
+                                    <th>Received by</th>
+                                    <th>Sent by</th>
+                                    <th>Amount Paid</th>
                                     <th>Transaction Time</th>
                                     <th>Status</th>
-                                    {{-- <th class="text-right">Action</th> --}}
                                 </tr>
                             </thead>
-                            
+
                             <?php 
-                                // $users = StaffSalary::where('employee_id_auto', auth()->id())->get();
-                                $users = StaffSalary::where('employee_id_auto', auth()->user()->user_id)->get();
+                                // $users = StaffSalaryPaid::where('employee_id_auto', auth()->id())->get();
+                                $users = StaffSalaryPaid::where('employee_id_auto', auth()->user()->user_id)->get();
                             ?>
                             
                             <tbody>
                                 @foreach ($users as $items)
-                                @if ($items->status === 'pending')
                                 <tr>
                                     {{-- <td>
                                         <h2 class="table-avatar">
@@ -115,17 +110,17 @@
                                         </h2>
                                     </td> --}}
                                     {{-- <td>{{ $items->employee_id_auto }}</td> --}}
-                                    <td>{{ $items->invoice_number }}</td>
-                                    <td>{{ $items->phone_number }}</td>
-                                    <td>{{ $items->number_of_kgs_harvested }}</td>
-                                    <td>{{ $items->shillings_per_kg }}</td>
-                                    <td>{{ $items->estimated_payout }}</td>
+                                    <td>{{ $items->receipt_number }}</td>
+                                    {{-- <td>{{ $items->phone_number }}</td> --}}
+                                    <td>{{ $items->employee_mpesa_number }}</td>
+                                    <td>{{ $items->senders_mpesa_number }}</td>
+                                    <td><strong>{{ $items->amount_paid }} </strong></td>
                                     <td>{{ $items->created_at }}</td>
-                                    <td><span class="btn btn-secondary">{{ $items->status }}</span></td>
+                                    <td> <strong><span class="btn btn-success">{{ $items->status }} </span></strong></td>
                                     
+
                             </td>
                                 </tr>
-                                @endif
                                 @endforeach
                             </tbody>
 
@@ -230,7 +225,7 @@
         <div class="modal-dialog modal-dialog-centered modal-md" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Edit Employee Salary</h5>
+                <h5 class="modal-title">Employee Payment</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -238,12 +233,12 @@
             <div class="modal-body">
                 <form action="{{ route('form/salary/update') }}" method="POST">
                     @csrf
-                    <input class="form-control" type="hidden" name="id" id="e_id" value="" readonly>
+                    {{-- <input class="form-control" type="text" name="id" id="e_id" value="" > --}}
                     <div class="row"> 
                         <div class="col-sm-6"> 
                             <div class="form-group">
                                 <label>Employee Name</label>
-                                <input class="form-control" type="text" name="name" id="e_name" value="" readonly>
+                                <input class="form-control" type="text" name="name" id="e_name" value="" >
                             </div>
                             @error('name')
                                 <span class="invalid-feedback" role="alert">
@@ -252,12 +247,16 @@
                             @enderror
                         </div>
                         <div class="col-sm-6"> 
-                            <label>Employees Telephone Number</label>
-                            <input class="form-control" type="text" name="phone_number" id="e_phone_number" value="" readonly>
+                            <label>Employees M-Pesa Number</label>
+                            <input class="form-control" type="text" name="employee_mpesa_number" id="e_phone_number" value="" >
                         </div>
                         <div class="col-sm-6"> 
                                 <label>Employee ID </label>
-                                <input class="form-control" type="text" name="employee_id_auto" id="e_employee_id_auto" value="" readonly>
+                                <input class="form-control" type="text" name="employee_id_auto" id="e_employee_id_auto" value="" >
+                        </div>
+                        <div class="col-sm-6"> 
+                                <label>Sender's M-Pesa Number </label>
+                                <input class="form-control" type="text" name="senders_mpesa_number" id="sender_phone_number" value="" >
                         </div>
                     </div>
                     <div class="row"> 
@@ -265,16 +264,16 @@
                             
                             <div class="form-group">
                                 <label>Number of Kgs Harvested</label>
-                                <input class="form-control" type="text" name="number_of_kgs_harvested" id="e_number_of_kgs_harvested" value="" readonly>
+                                <input class="form-control" type="text" name="number_of_kgs_harvested" id="e_number_of_kgs_harvested" value="" >
                             </div>
                             
                             <div class="form-group">
                                 <label>Shillings per Kg</label>
-                                <input class="form-control" type="text"  name="shillings_per_kg" id="e_shillings_per_kg" value="" readonly>
+                                <input class="form-control" type="text"  name="shillings_per_kg" id="e_shillings_per_kg" value="" >
                             </div>
                             <div class="form-group">
                                 <label>Total Amount to Pay</label>
-                                <input class="form-control" type="text"  name="estimated_payout" id="e_estimated_payout" value="" readonly>
+                                <input class="form-control" type="text"  name="amount_paid" id="e_estimated_payout" value="" >
                             </div>
                         </div>
                     </div>

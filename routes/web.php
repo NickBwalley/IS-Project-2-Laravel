@@ -253,6 +253,7 @@ Route::controller(PayrollController::class)->group(function () {
 Route::controller(EmployeePayrollController::class)->group(function () {
     // --------- employee form payroll
     Route::get('form/salary/epage', 'salary')->middleware('auth')->name('form/salary/epage');
+    Route::get('form/salary/eviewpaid', 'eViewPaid')->middleware('auth')->name('form/salary/eviewpaid');
     Route::get('form/salary/epagecomplete', 'salary')->middleware('auth')->name('form/salary/epagecomplete');
 
 });
