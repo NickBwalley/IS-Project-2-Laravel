@@ -34,6 +34,22 @@ class PayrollController extends Controller
 }
 
 
+    public function salaryPaid()
+{
+    $users = DB::table('users')
+        ->join('staff_salaries_paid', 'users.user_id', '=', 'staff_salaries_paid.employee_id_auto')
+        ->select('users.*', 'staff_salaries_paid.*')
+        ->get();
+
+    $userList = DB::table('users')->select('user_id', 'name', 'phone_number')->get();
+    // Select the 'user_id', 'name', and 'phone_number' fields from the 'users' table
+
+    $permission_lists = DB::table('permission_lists')->get();
+
+    return view('payroll.employeesalarypaid', compact('users', 'userList', 'permission_lists'));
+}
+
+
 
         // save record
 public function saveRecord(Request $request)

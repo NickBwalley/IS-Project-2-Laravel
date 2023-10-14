@@ -241,6 +241,7 @@ Route::controller(LeavesController::class)->group(function () {
 // ----------------------------- form payroll  ------------------------------//
 Route::controller(PayrollController::class)->group(function () {
     Route::get('form/salary/page', 'salary')->middleware('auth')->name('form/salary/page');
+    Route::get('form/salary/epaid', 'salaryPaid')->middleware('auth')->name('form/salary/epaid');
     Route::post('form/salary/save','saveRecord')->middleware('auth')->name('form/salary/save');
     Route::post('form/salary/update', 'updateRecord')->middleware('auth')->name('form/salary/update');
     Route::post('form/salary/delete', 'deleteRecord')->middleware('auth')->name('form/salary/delete');
