@@ -111,7 +111,7 @@
                                     {{-- <td>{{ $items->phone_number }}</td> --}}
                                     <td>{{ $items->number_of_kgs_harvested }}</td>
                                     <td>{{ $items->shillings_per_kg }}</td>
-                                    <td><strong><span class="btn btn-warning">{{ $items->estimated_payout }}</span></strong></td>
+                                    <td><strong><span class="btn btn-warning">KSH {{ $items->estimated_payout }}</span></strong></td>
                                     <td>{{ $items->created_at }}</td>
                                     <td><span class="btn btn-secondary">{{ $items->status }}</span></td>
                                     <td class="text-right">

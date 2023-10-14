@@ -114,7 +114,7 @@
                                     {{-- <td>{{ $items->phone_number }}</td> --}}
                                     <td>{{ $items->employee_mpesa_number }}</td>
                                     <td>{{ $items->senders_mpesa_number }}</td>
-                                    <td><strong><span class="text-success" style="font-size: 20px">{{ $items->amount_paid }}</span></strong></td>
+                                    <td><strong><span class="text-success" style="font-size: 20px">KSH {{ $items->amount_paid }}</span></strong></td>
                                     <td>{{ $items->created_at }}</td>
                                     <td> <strong><span class="btn btn-success">{{ $items->status }} </span></strong></td>
                                     

@@ -92,7 +92,7 @@
                                     <th>Phone Number</th>
                                     <th>KGS Harvested</th>
                                     <th>Shillings per KG</th>
-                                    <th>Amount to Pay</th>
+                                    <th>Amount to be Paid</th>
                                     <th>Transaction Time</th>
                                     <th>Status</th>
                                     {{-- <th class="text-right">Action</th> --}}
@@ -119,7 +119,7 @@
                                     <td>{{ $items->phone_number }}</td>
                                     <td>{{ $items->number_of_kgs_harvested }}</td>
                                     <td>{{ $items->shillings_per_kg }}</td>
-                                    <td>{{ $items->estimated_payout }}</td>
+                                    <td><span class="btn btn-warning">KSH {{ $items->estimated_payout }}</span></td>
                                     <td>{{ $items->created_at }}</td>
                                     <td><span class="btn btn-secondary">{{ $items->status }}</span></td>
                                     
