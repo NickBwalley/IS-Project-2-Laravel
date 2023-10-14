@@ -98,6 +98,7 @@
                             
                             <tbody>
                                 @foreach ($users as $items)
+                                @if ($items->status === 'pending')
                                 <tr>
                                     <td>
                                         <h2 class="table-avatar">
@@ -114,23 +115,25 @@
                                     <td>{{ $items->created_at }}</td>
                                     <td><span class="text-secondary">{{ $items->status }}</span></td>
                                     <td class="text-right">
-                                <div class="dropdown dropdown-action">
-                                    <a href="#" class="action-icon dropdown-toggle editSalary" data-toggle="modal" data-target="#edit_salary"
-                                        data-id="{{ $items->id }}"
-                                        data-name="{{ $items->name }}"
-                                        data-phone_number="{{ $items->phone_number }}"
-                                        data-employee_id_auto="{{ $items->employee_id_auto }}"
-                                        data-number_of_kgs_harvested="{{ $items->number_of_kgs_harvested }}"
-                                        data-shillings_per_kg="{{ $items->shillings_per_kg }}"
-                                        data-estimated_payout="{{ $items->estimated_payout }}"
-                                    ><span class="btn btn-success">Pay</span></a>
-                                    <a class="#" href="#" data-toggle="modal" data-target="#delete_salary" data-id="{{ $items->id }}"><span class="btn btn-danger">Delete</span></a>
-                                </div>
-
-                            </td>
+                                        <div class="dropdown dropdown-action">
+                                            <a href="#" class="action-icon dropdown-toggle editSalary" data-toggle="modal" data-target="#edit_salary"
+                                                data-id="{{ $items->id }}"
+                                                data-name="{{ $items->name }}"
+                                                data-phone_number="{{ $items->phone_number }}"
+                                                data-employee_id_auto="{{ $items->employee_id_auto }}"
+                                                data-invoice_number="{{ $items->invoice_number }}"
+                                                data-number_of_kgs_harvested="{{ $items->number_of_kgs_harvested }}"
+                                                data-shillings_per_kg="{{ $items->shillings_per_kg }}"
+                                                data-estimated_payout="{{ $items->estimated_payout }}"
+                                            ><span class="btn btn-success">Pay</span></a>
+                                            <a class="#" href="#" data-toggle="modal" data-target="#delete_salary" data-id="{{ $items->id }}"><span class="btn btn-danger">Delete</span></a>
+                                        </div>
+                                    </td>
                                 </tr>
+                                @endif
                                 @endforeach
                             </tbody>
+
 
                         </table>
                     </div>
@@ -246,7 +249,7 @@
                         <div class="col-sm-6"> 
                             <div class="form-group">
                                 <label>Employee Name</label>
-                                <input class="form-control" type="text" name="name" id="e_name" value="" >
+                                <input class="form-control" type="text" name="name" id="e_name" value="" readonly>
                             </div>
                             @error('name')
                                 <span class="invalid-feedback" role="alert">
@@ -260,7 +263,7 @@
                         </div>
                         <div class="col-sm-6"> 
                                 <label>Employee ID </label>
-                                <input class="form-control" type="text" name="employee_id_auto" id="e_employee_id_auto" value="" >
+                                <input class="form-control" type="text" name="employee_id_auto" id="e_employee_id_auto" value="" readonly>
                         </div>
                         <div class="col-sm-6"> 
                                 <label>Sender's M-Pesa Number </label>
@@ -271,17 +274,23 @@
                         <div class="col-sm-6"> 
                             
                             <div class="form-group">
-                                <label>Number of Kgs Harvested</label>
-                                <input class="form-control" type="text" name="number_of_kgs_harvested" id="e_number_of_kgs_harvested" value="" >
+                                <label>Invoice Number</label>
+                                <input class="form-control" type="text" name="invoice_number" id="e_invoice_number" value="" readonly >
                             </div>
                             
                             <div class="form-group">
+                                <label>Number of Kgs Harvested</label>
+                                <input class="form-control" type="text" name="number_of_kgs_harvested" id="e_number_of_kgs_harvested" value="" readonly >
+                            </div>
+
+                            
+                            <div class="form-group">
                                 <label>Shillings per Kg</label>
-                                <input class="form-control" type="text"  name="shillings_per_kg" id="e_shillings_per_kg" value="" >
+                                <input class="form-control" type="text"  name="shillings_per_kg" id="e_shillings_per_kg" value="" readonly>
                             </div>
                             <div class="form-group">
                                 <label>Total Amount to Pay</label>
-                                <input class="form-control" type="text"  name="amount_paid" id="e_estimated_payout" value="" >
+                                <input class="form-control" type="text"  name="amount_paid" id="e_estimated_payout" value="" readonly>
                             </div>
                         </div>
                     </div>
@@ -359,6 +368,7 @@
             var id = $(this).data('id');
             var name = $(this).data('name');
             var employee_id_auto = $(this).data('employee_id_auto');
+            var invoice_number = $(this).data('invoice_number');
             var phone_number = $(this).data('phone_number');
             var number_of_kgs_harvested = $(this).data('number_of_kgs_harvested');
             var shillings_per_kg = $(this).data('shillings_per_kg');
@@ -367,6 +377,7 @@
             $('#e_id').val(id);
             $('#e_name').val(name);
             $('#e_employee_id_auto').val(employee_id_auto);
+            $('#e_invoice_number').val(invoice_number);
             $('#e_phone_number').val(phone_number);
             $('#e_number_of_kgs_harvested').val(number_of_kgs_harvested);
             $('#e_shillings_per_kg').val(shillings_per_kg);

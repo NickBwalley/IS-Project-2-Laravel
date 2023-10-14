@@ -15,6 +15,7 @@ class CreateStaffSalariesPaidTable extends Migration
             $table->id();
             $table->string('name')->nullable();
             $table->string('employee_id_auto')->nullable(); // Added employee_id_auto
+            $table->string('invoice_number')->default(00000); // INVOICE NUMBER
             $table->string('receipt_number')->default(00000); // RECEIPT NUMBER
             $table->string('employee_mpesa_number')->nullable(); // Added phone_number
             $table->string('senders_mpesa_number')->nullable(); // Added phone_number

@@ -106,37 +106,48 @@ public function saveRecord(Request $request)
     public function updateRecord(Request $request)
     {
         $request->validate([
-        'name' => 'required|string|max:255',
-        'employee_mpesa_number' => 'required|numeric', // Corrected 'number' to 'numeric'
-        'senders_mpesa_number' => 'required|numeric', // Corrected 'number' to 'numeric'
-        'number_of_kgs_harvested' => 'required|numeric|min:0',
-        'shillings_per_kg' => 'required|numeric|min:0',
-        'amount_paid' => 'required|numeric|min:0',
-    ]);
+            'name' => 'required|string|max:255',
+            'employee_mpesa_number' => 'required|numeric',
+            'senders_mpesa_number' => 'required|numeric',
+            'number_of_kgs_harvested' => 'required|numeric|min:0',
+            'shillings_per_kg' => 'required|numeric|min:0',
+            'amount_paid' => 'required|numeric|min:0',
+        ]);
 
+        DB::beginTransaction();
+        try {
+            $salary = StaffSalaryPaid::updateOrCreate(['id' => $request->id]);
+            $salary->name = $request->name;
+            $salary->employee_id_auto = $request->employee_id_auto;
+            $salary->invoice_number = $request->invoice_number;
+            $salary->employee_mpesa_number = $request->employee_mpesa_number;
+            $salary->senders_mpesa_number = $request->senders_mpesa_number;
+            $salary->number_of_kgs_harvested = $request->number_of_kgs_harvested; 
+            $salary->shillings_per_kg = $request->shillings_per_kg;
+            $salary->amount_paid = $request->number_of_kgs_harvested * $request->shillings_per_kg;
 
-    DB::beginTransaction();
-    try {
-        $salary = StaffSalaryPaid::updateOrCreate(['id' => $request->id]);
-        $salary->name = $request->name;
-        $salary->employee_id_auto = $request->employee_id_auto;
-        $salary->employee_mpesa_number = $request->employee_mpesa_number;
-        $salary->senders_mpesa_number = $request->senders_mpesa_number;
-        $salary->number_of_kgs_harvested = $request->number_of_kgs_harvested; 
-        $salary->shillings_per_kg = $request->shillings_per_kg; // Added field for shillings per kg
-        $salary->amount_paid = $request->number_of_kgs_harvested * $request->shillings_per_kg; // Calculated estimated payout
-        $salary->save();
+            // Save the staff_salaries_paid record
+            $salary->save();
 
-        DB::commit();
-        Toastr::success('Transaction Paid successfully :)', 'Success');
-        return redirect()->back();
-    } catch (\Exception $e) {
-        DB::rollback();
-        dd($e->getMessage()); // Debugging: Display the error message
-        Toastr::error('Transaction failed :(', 'Error');
-        return redirect()->back();
+            // Update the 'staff_salaries' record and set the status to 'paid' based on 'invoice_number'
+            $staffSalaries = StaffSalary::where('invoice_number', $request->invoice_number)->first();
+            if ($staffSalaries) {
+                $staffSalaries->status = 'paid';
+                $staffSalaries->save();
+            }
+
+            DB::commit();
+            Toastr::success('Transaction Paid successfully :)', 'Success');
+            return redirect()->back();
+        } catch (\Exception $e) {
+            DB::rollback();
+            dd($e->getMessage()); // Debugging: Display the error message
+            Toastr::error('Transaction failed :(', 'Error');
+            return redirect()->back();
+        }
     }
-    }
+
+
 
     // delete record
     public function deleteRecord(Request $request)
