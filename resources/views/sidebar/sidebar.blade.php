@@ -85,7 +85,7 @@
                     <span> Payroll </span> <span class="menu-arrow"></span></a>
                     <ul style="{{ request()->is('/*') ? 'display: block;' : 'display: none;' }}">
                         <li><a class="{{set_active(['form/salary/page'])}}" href="{{ route('form/salary/page') }}"> Pay Employee </a></li>
-                        <li><a href="{{ route('form/salary/page') }}"> Transactions </a></li>
+                        <li><a class="{{set_active(['form/salary/epaid'])}}" href="{{ route('form/salary/epaid') }}"> Transactions Paid </a></li>
                         <li><a class="{{set_active(['form/payroll/items'])}}" href="{{ route('form/payroll/items') }}"> Payslip </a></li>
                     </ul>
                 </li>
@@ -139,7 +139,8 @@
                         <span> Dashboard </span> <span class="menu-arrow"></span></a>
                         <ul style="{{ request()->is('/*') ? 'display: block;' : 'display: none;' }}">
                             <li><a class="{{set_active(['form/salary/epage'])}}" href="{{ route('form/salary/epage') }}"> Pending Transactions </a></li>
-                            <li><a href="{{ route('form/salary/epagecomplete') }}"> Completed Transactions </a></li>
+                            <li><a class="{{set_active(['form/salary/eviewpaid'])}}" href="{{ route('form/salary/eviewpaid') }}"> Paid Transactions </a></li>
+                            
                             {{-- <li><a class="{{set_active(['form/payroll/items'])}}" href="{{ route('form/payroll/items') }}"> Payslip </a></li> --}}
                         </ul>
                     </li>

@@ -7,7 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class StaffSalaryPaid extends Model
 {
-    use HasFactory;
+    protected $table = 'staff_salaries_paid'; // Set the correct table name
+
     protected $fillable = [
         'name',
         'employee_id_auto',

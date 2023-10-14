@@ -94,6 +94,7 @@
                                     <th>Shillings per KG</th>
                                     <th>Amount to Pay</th>
                                     <th>Transaction Time</th>
+                                    <th>Status</th>
                                     {{-- <th class="text-right">Action</th> --}}
                                 </tr>
                             </thead>
@@ -105,7 +106,7 @@
                             
                             <tbody>
                                 @foreach ($users as $items)
-                                {{-- @if ($items->id == auth()->id()) --}}
+                                @if ($items->status === 'pending')
                                 <tr>
                                     {{-- <td>
                                         <h2 class="table-avatar">
@@ -120,10 +121,11 @@
                                     <td>{{ $items->shillings_per_kg }}</td>
                                     <td>{{ $items->estimated_payout }}</td>
                                     <td>{{ $items->created_at }}</td>
+                                    <td><span class="btn btn-secondary">{{ $items->status }}</span></td>
                                     
                             </td>
                                 </tr>
-                                {{-- @endif --}}
+                                @endif
                                 @endforeach
                             </tbody>
 
