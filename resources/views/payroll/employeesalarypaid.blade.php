@@ -90,7 +90,7 @@
                                     <th>Sent by</th>
                                     <th>Amount Paid</th>
                                     <th>Transaction Time</th>
-                                    <th class="text-right">Status</th>
+                                    <th>Status</th>
                                 </tr>
                             </thead>
                             
