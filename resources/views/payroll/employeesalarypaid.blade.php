@@ -90,7 +90,7 @@
                                     <th>Sent by</th>
                                     <th>Amount Paid</th>
                                     <th>Transaction Time</th>
-                                    <th class="text-right">Action</th>
+                                    <th class="text-right">Status</th>
                                 </tr>
                             </thead>
                             
@@ -108,9 +108,10 @@
                                     {{-- <td>{{ $items->phone_number }}</td> --}}
                                     <td>{{ $items->employee_mpesa_number }}</td>
                                     <td>{{ $items->senders_mpesa_number }}</td>
-                                    <td>{{ $items->amount_paid }}</td>
+                                    <td><strong>{{ $items->amount_paid }} </strong></td>
                                     <td>{{ $items->created_at }}</td>
-                                    <td class="text-right">
+                                    <td> <strong><span class="btn btn-success">{{ $items->status }} </span></strong></td>
+                                    
 
                             </td>
                                 </tr>
