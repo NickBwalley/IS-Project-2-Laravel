@@ -91,7 +91,8 @@
                                     <th>Shilling per KG</th>
                                     <th>Amount to Pay</th>
                                     <th>Transaction Time</th>
-                                    <th class="text-right">Action</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             
@@ -111,6 +112,7 @@
                                     <td>{{ $items->shillings_per_kg }}</td>
                                     <td>{{ $items->estimated_payout }}</td>
                                     <td>{{ $items->created_at }}</td>
+                                    <td><span class="text-secondary">{{ $items->status }}</span></td>
                                     <td class="text-right">
                                 <div class="dropdown dropdown-action">
                                     <a href="#" class="action-icon dropdown-toggle editSalary" data-toggle="modal" data-target="#edit_salary"

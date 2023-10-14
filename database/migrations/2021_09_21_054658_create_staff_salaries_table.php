@@ -20,9 +20,10 @@ class CreateStaffSalariesTable extends Migration
             $table->string('number_of_kgs_harvested')->nullable(); // Changed 'salary' to 'number_of_kgs_harvested'
             $table->decimal('shillings_per_kg', 8, 2)->default(8.00); // Added 'shillings_per_kg' field
             $table->decimal('estimated_payout', 10, 2)->nullable(); // Added 'estimated_payout' field
+            $table->string('status')->default('pending');
             $table->timestamps();
         });
-        
+
     }
 
     /**
