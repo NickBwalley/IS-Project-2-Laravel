@@ -333,3 +333,4 @@ Route::controller(PersonalInformationController::class)->group(function () {
     Route::post('user/information/save', 'saveRecord')->middleware('auth')->name('user/information/save');
 });
 
+

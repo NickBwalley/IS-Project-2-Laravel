@@ -1,7 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\StaffSalary;
+use App\Models\StaffSalaryPaid;
 use Illuminate\Http\Request;
 use DB;
 use Carbon\Carbon;
@@ -27,7 +28,11 @@ class HomeController extends Controller
     // main dashboard
     public function index()
     {
-        return view('dashboard.dashboard');
+        $pendingTransactions = StaffSalary::where('status', 'pending')->count();
+        $paidTransactions = StaffSalary::where('status', 'paid')->count();
+        $allTransactionsCount = StaffSalaryPaid::count();
+        $allUsersCount = User::count();
+        return view('dashboard.dashboard', compact('pendingTransactions', 'paidTransactions', 'allTransactionsCount', 'allUsersCount'));
     }
     // employee dashboard
     public function emDashboard()
