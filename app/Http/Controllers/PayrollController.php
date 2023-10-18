@@ -25,7 +25,7 @@ class PayrollController extends Controller
         ->select('users.*', 'staff_salaries.*')
         ->get();
 
-    $userList = DB::table('users')->select('user_id', 'name', 'phone_number')->get();
+    $userList = DB::table('users')->select('user_id', 'name', 'phone_number', 'status')->get();
     // Select the 'user_id', 'name', and 'phone_number' fields from the 'users' table
 
     $permission_lists = DB::table('permission_lists')->get();
