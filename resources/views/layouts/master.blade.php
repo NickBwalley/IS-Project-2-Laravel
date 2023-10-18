@@ -109,7 +109,7 @@
 				<!-- /Flag -->
 
 				<!-- Notifications -->
-				<li class="nav-item dropdown">
+				{{-- <li class="nav-item dropdown">
 					<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
 						<i class="fa fa-bell-o"></i>
 						<span class="badge badge-pill">3</span> 
@@ -190,11 +190,11 @@
 						</div>
 						<div class="topnav-dropdown-footer"> <a href="activities.html">View all Notifications</a> </div>
 					</div>
-				</li>
+				</li> --}}
 				<!-- /Notifications -->
 				
 				<!-- Message Notifications -->
-				<li class="nav-item dropdown">
+				{{-- <li class="nav-item dropdown">
 					<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
 						<i class="fa fa-comment-o"></i> <span class="badge badge-pill">8</span>
 					</a>
@@ -293,7 +293,7 @@
 							</ul>
 						</div>
 						<div class="topnav-dropdown-footer"> <a href="chat.html">View all Messages</a> </div>
-					</div>
+					</div> --}}
 				</li>
 				<!-- /Message Notifications -->
 				<li class="nav-item dropdown has-arrow main-drop">

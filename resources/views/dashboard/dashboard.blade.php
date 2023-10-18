@@ -47,11 +47,12 @@
                     <div class="card dash-widget">
                         <div class="card-body"> <span class="dash-widget-icon"><i class="fa fa-user"></i></span>
                             <div class="dash-widget-info">
-                                <h3>{{$allUsersCount}}</h3> <span>Employees</span>
+                                <h3>{{$allUsersCount}}</h3> <span>Registered Users</span>
                             </div>
                         </div>
                     </div>
                 </div>
+                
             </div>
             {{-- <div class="row">
                 <div class="col-md-12">
