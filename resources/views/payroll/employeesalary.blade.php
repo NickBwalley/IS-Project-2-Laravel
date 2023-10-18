@@ -159,22 +159,25 @@
                     @csrf
                     <div class="row"> 
                         <div class="col-sm-6">
-                            <div class="form-group">
-                                <label for="name">Employee Name</label>
-                               <select class="form-control select2s-hidden-accessible @error('name') is-invalid @enderror" id="name" name="name">
-                                    <option value="">-- Select --</option>
-                                    @foreach ($userList as $key => $user)
-                                        <option value="{{ $user->name }}" data-employee_id="{{ $user->user_id }}" data-phone_number="{{ $user->phone_number }}">{{ $user->name }}</option>
-                                    @endforeach
-                                </select>
+    <div class="form-group">
+        <label for="name">Employee Names</label>
+        <select class="form-control select2s-hidden-accessible @error('name') is-invalid @enderror" id="name" name="name">
+            <option value="">-- Select --</option>
+            @foreach ($userList as $key => $user)
+                @if (isset($user->status) && $user->status === 'Active')
+                    <option value="{{ $user->name }}" data-employee_id="{{ $user->user_id }}" data-phone_number="{{ $user->phone_number }}">{{ $user->name }}</option>
+                @endif
+            @endforeach
+        </select>
 
-                                @error('name')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
+        @error('name')
+            <span class="invalid-feedback" role="alert">
+                <strong>{{ $message }}</strong>
+            </span>
+        @enderror
+    </div>
+</div>
+
 
                         <div class="col-sm-6"> 
                             <label>Employee ID Auto</label>

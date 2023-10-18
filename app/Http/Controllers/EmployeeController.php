@@ -7,6 +7,7 @@ use DB;
 use Brian2694\Toastr\Facades\Toastr;
 use App\Models\Employee;
 use App\Models\department;
+use App\Models\DepartmentsAssigned;
 use App\Models\User;
 use App\Models\module_permission;
 
@@ -433,8 +434,11 @@ class EmployeeController extends Controller
     /** page designations */
     public function designationsIndex()
     {
-        return view('form.designations');
+        $userList = DB::table('users')->select('user_id', 'name', 'phone_number', 'status', 'role_name')->get();
+        $departmentList = DB::table('departments')->select('id', 'department')->get();
+        return view('form.designations', compact('userList', 'departmentList'));
     }
+
 
     /** page time sheet */
     public function timeSheetIndex()
@@ -447,5 +451,28 @@ class EmployeeController extends Controller
     {
         return view('form.overtime');
     }
+
+    /** CREATE A DEPARTMENT AND ASSIGN AN EMPLOYEE **/
+    public function saveAssignedDepartment(Request $request)
+    {
+        DB::beginTransaction();
+        try {
+            $assigned = DepartmentsAssigned::updateOrCreate(['id' => $request->id]);
+            $assigned->department = $request->department;
+            $assigned->employee_name = $request->employee_name;
+            $assigned->employee_id_auto = $request->employee_id_auto;
+            $assigned->save();
+
+            DB::commit();
+            Toastr::success('Customer Assigned Department Successfully :)', 'Success');
+            return redirect()->back();
+        } catch (\Exception $e) {
+            DB::rollback();
+            dd($e->getMessage()); // Debugging: Display the error message
+            Toastr::error('Customer Assigned Department failed :(', 'Error');
+            return redirect()->back();
+        }
+    }
+
 
 }
