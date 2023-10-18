@@ -433,8 +433,11 @@ class EmployeeController extends Controller
     /** page designations */
     public function designationsIndex()
     {
-        return view('form.designations');
+        $userList = DB::table('users')->select('user_id', 'name', 'phone_number', 'status', 'role_name')->get();
+        $departmentList = DB::table('departments')->select('id', 'department')->get();
+        return view('form.designations', compact('userList', 'departmentList'));
     }
+
 
     /** page time sheet */
     public function timeSheetIndex()
