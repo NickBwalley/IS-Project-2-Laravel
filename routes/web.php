@@ -188,6 +188,8 @@ Route::controller(EmployeeController::class)->group(function () {
     Route::post('form/departments/save', 'saveRecordDepartment')->middleware('auth')->name('form/departments/save');
     Route::post('form/department/update', 'updateRecordDepartment')->middleware('auth')->name('form/department/update');
     Route::post('form/department/delete', 'deleteRecordDepartment')->middleware('auth')->name('form/department/delete');
+    // Department Section assigned. 
+    Route::post('form/assigned/save', 'saveAssignedDepartment')->middleware('auth')->name('form/assigned/save');
 
     Route::get('form/designations/page', 'designationsIndex')->middleware('auth')->name('form/designations/page');
     Route::post('form/designations/save', 'saveRecordDesignations')->middleware('auth')->name('form/designations/save');

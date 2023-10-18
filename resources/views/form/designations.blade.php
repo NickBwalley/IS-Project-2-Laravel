@@ -72,10 +72,11 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form>
+                        <form action="{{ route('form/assigned/save') }}" method="POST">
+                        @csrf
                             <div class="form-group">
                                 <label for="name">Employee Names</label>
-                                <select class="form-control select2s-hidden-accessible @error('name') is-invalid @enderror" id="name" name="name">
+                                <select class="form-control select2s-hidden-accessible @error('name') is-invalid @enderror" id="employee_name" name="employee_name">
                                     <option value="">-- Select --</option>
                                     @foreach ($userList as $key => $user)
                                         @if (isset($user->status) && $user->status === 'Active' && isset($user->role_name) && $user->role_name === 'Employee')
