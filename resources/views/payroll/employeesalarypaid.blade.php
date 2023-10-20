@@ -27,7 +27,7 @@
             <form action="{{ route('search/paid/list') }}" method="POST">
                 @csrf
                 <div class="row filter-row">
-                    {{-- <div class="col-sm-6 col-md-3">
+                    <div class="col-sm-6 col-md-3">
                         <label class="focus-label">From Date</label>
                         <div class="form-group form-focus">
                             <input type="date" class="form-control floating datepicker" id="from_date" name="from_date" placeholder="From Date">
@@ -38,7 +38,7 @@
                         <div class="form-group form-focus">
                             <input type="date" class="form-control floating datepicker" id="to_date" name="to_date" placeholder="To Date">
                         </div>
-                    </div> --}}
+                    </div>
                     <div class="col-sm-6 col-md-3">
                         <label class="focus-label">Receipt Number</label>
                         <div class="form-group form-focus">
@@ -391,6 +391,21 @@
                     var id = $(this).data('id');
                     $('.e_id').val(id); // Set the value of the hidden input field
                 });
+            });
+
+            // CHANGE THE FORMAT FOR THE DATE PICKER FROM DD/MM/YYYY -> YYYY/MM/DD
+            document.querySelector('form').addEventListener('submit', function() {
+                // Get the date input elements
+                var fromDateInput = document.getElementById('from_date');
+                var toDateInput = document.getElementById('to_date');
+
+                // Convert date values to 'yyyy-mm-dd' format
+                var fromDateValue = fromDateInput.value.split('-').reverse().join('-');
+                var toDateValue = toDateInput.value.split('-').reverse().join('-');
+
+                // Update the input values
+                fromDateInput.value = fromDateValue;
+                toDateInput.value = toDateValue;
             });
             
         </script>

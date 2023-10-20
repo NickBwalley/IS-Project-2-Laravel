@@ -108,34 +108,6 @@ class UserManagementController extends Controller
     
     }
 
-    // search payments
-    public function searchPayments(Request $request)
-    {
-        if (Auth::user()->role_name=='Admin')
-        {
-            $users     = DB::table('staff_salaries_paid')->get();
-            $result     = DB::table('staff_salaries_paid')->get();
-            // $user_id  = DB::table('users')->get();
-            // $position   = DB::table('position_types')->get();
-            // $department = DB::table('departments')->get();
-            // $status_user = DB::table('user_types')->get();
-
-            // search by receipt_number
-            if($request->receipt_number)
-            {
-                $result = StaffSalaryPaid::where('receipt_number','LIKE','%'.$request->receipt_number.'%')->get();
-            }
-
-           
-            return view('payroll.employeesalarypaid',compact('users','result'));
-        }
-        else
-        {
-            return redirect()->route('form/salary/epaid');
-        }
-    
-    }
-
     // use activity log
     public function activityLog()
     {
@@ -344,7 +316,7 @@ class UserManagementController extends Controller
 
         }catch(\Exception $e){
             DB::rollback();
-            Toastr::error('User update fail :)','Error');
+            Toastr::error('User update failed :)','Error');
             return redirect()->back();
         }
     }
