@@ -24,6 +24,35 @@
                 </div>
             </div>
 
+            <form action="{{ route('search/paid/list') }}" method="POST">
+                @csrf
+                <div class="row filter-row">
+                    {{-- <div class="col-sm-6 col-md-3">
+                        <label class="focus-label">From Date</label>
+                        <div class="form-group form-focus">
+                            <input type="date" class="form-control floating datepicker" id="from_date" name="from_date" placeholder="From Date">
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-3">
+                        <label class="focus-label">To Date</label>
+                        <div class="form-group form-focus">
+                            <input type="date" class="form-control floating datepicker" id="to_date" name="to_date" placeholder="To Date">
+                        </div>
+                    </div> --}}
+                    <div class="col-sm-6 col-md-3">
+                        <label class="focus-label">Receipt Number</label>
+                        <div class="form-group form-focus">
+                            <input type="text" class="form-control floating" id="receipt_number" name="receipt_number" placeholder="Receipt Number">
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-3">
+                        <label class="focus-label">Search</label>
+                        <button type="submit" class="btn btn-success btn-block">Search</button>
+                    </div>
+                </div>
+            </form>
+
+
             {{-- <!-- Search Filter -->
             <div class="row filter-row">
                 <div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">  
@@ -98,10 +127,11 @@
                                 @foreach ($users as $items)
                                 <tr>
                                     <td>
-                                        <h2 class="table-avatar">
+                                        {{-- <h2 class="table-avatar">
                                             <a href="{{ url('employee/profile/'.$items->user_id) }}" class="avatar"><img alt="" src="{{ URL::to('/assets/images/'. $items->avatar) }}"></a>
                                             <a href="{{ url('employee/profile/'.$items->user_id) }}">{{ $items->name }}</a>
-                                        </h2>
+                                        </h2> --}}
+                                        {{ $items->name}}
                                     </td>
                                     {{-- <td>{{ $items->employee_id_auto }}</td> --}}
                                     <td>{{ $items->receipt_number }}</td>
@@ -317,55 +347,53 @@
     @section('script')
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-    <!-- Include jQuery once -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script>
+            $(document).ready(function () {
+                // Populate Employee ID Auto and Phone Number in the "Add Salary" modal
+                $('#name').change(function () {
+                    var selectedOption = $(this).find('option:selected');
+                    var employeeID = selectedOption.data('employee_id');
+                    var phoneNumber = selectedOption.data('phone_number');
+                    
+                    $('#employee_id_auto').val(employeeID);
+                    $('#phone_number').val(phoneNumber);
+                });
 
-<script>
-    $(document).ready(function () {
-        // Populate Employee ID Auto and Phone Number in the "Add Salary" modal
-        $('#name').change(function () {
-            var selectedOption = $(this).find('option:selected');
-            var employeeID = selectedOption.data('employee_id');
-            var phoneNumber = selectedOption.data('phone_number');
+                // Calculate Estimated Payout in real-time
+                $('#number_of_kgs_harvested, #shillings_per_kg').on('input', function () {
+                    var kgsHarvested = parseFloat($('#number_of_kgs_harvested').val()) || 0;
+                    var shillingsPerKg = parseFloat($('#shillings_per_kg').val()) || 0;
+                    var estimatedPayout = kgsHarvested * shillingsPerKg;
+                    $('#estimated_payout').val(estimatedPayout.toFixed(2));
+                });
+
+                // Handle the click event for the "Pay" button in the "Edit Salary" modal
+                $('.editSalary').click(function () {
+                    var id = $(this).data('id');
+                    var name = $(this).data('name');
+                    var employee_id_auto = $(this).data('employee_id_auto');
+                    var phone_number = $(this).data('phone_number');
+                    var number_of_kgs_harvested = $(this).data('number_of_kgs_harvested');
+                    var shillings_per_kg = $(this).data('shillings_per_kg');
+                    var estimated_payout = $(this).data('estimated_payout');
+
+                    $('#e_id').val(id);
+                    $('#e_name').val(name);
+                    $('#e_employee_id_auto').val(employee_id_auto);
+                    $('#e_phone_number').val(phone_number);
+                    $('#e_number_of_kgs_harvested').val(number_of_kgs_harvested);
+                    $('#e_shillings_per_kg').val(shillings_per_kg);
+                    $('#e_estimated_payout').val(estimated_payout);
+                });
+
+                // Handle the click event for the "Delete" button in the "Delete Salary" modal
+                $('.salaryDelete').click(function () {
+                    var id = $(this).data('id');
+                    $('.e_id').val(id); // Set the value of the hidden input field
+                });
+            });
             
-            $('#employee_id_auto').val(employeeID);
-            $('#phone_number').val(phoneNumber);
-        });
-
-        // Calculate Estimated Payout in real-time
-        $('#number_of_kgs_harvested, #shillings_per_kg').on('input', function () {
-            var kgsHarvested = parseFloat($('#number_of_kgs_harvested').val()) || 0;
-            var shillingsPerKg = parseFloat($('#shillings_per_kg').val()) || 0;
-            var estimatedPayout = kgsHarvested * shillingsPerKg;
-            $('#estimated_payout').val(estimatedPayout.toFixed(2));
-        });
-
-        // Handle the click event for the "Pay" button in the "Edit Salary" modal
-        $('.editSalary').click(function () {
-            var id = $(this).data('id');
-            var name = $(this).data('name');
-            var employee_id_auto = $(this).data('employee_id_auto');
-            var phone_number = $(this).data('phone_number');
-            var number_of_kgs_harvested = $(this).data('number_of_kgs_harvested');
-            var shillings_per_kg = $(this).data('shillings_per_kg');
-            var estimated_payout = $(this).data('estimated_payout');
-
-            $('#e_id').val(id);
-            $('#e_name').val(name);
-            $('#e_employee_id_auto').val(employee_id_auto);
-            $('#e_phone_number').val(phone_number);
-            $('#e_number_of_kgs_harvested').val(number_of_kgs_harvested);
-            $('#e_shillings_per_kg').val(shillings_per_kg);
-            $('#e_estimated_payout').val(estimated_payout);
-        });
-
-        // Handle the click event for the "Delete" button in the "Delete Salary" modal
-        $('.salaryDelete').click(function () {
-            var id = $(this).data('id');
-            $('.e_id').val(id); // Set the value of the hidden input field
-        });
-    });
-</script>
+        </script>
 
 
 

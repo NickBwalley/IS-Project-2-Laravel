@@ -7,6 +7,7 @@ use DB;
 use App\Models\StaffSalary;
 use App\Models\StaffSalaryPaid;
 use Brian2694\Toastr\Facades\Toastr;
+use Auth;
 
 class PayrollController extends Controller
 {
@@ -172,5 +173,34 @@ public function saveRecord(Request $request)
     public function payrollItems()
     {
         return view('payroll.payrollitems');
+    }
+
+    // search payments
+    public function searchPayments(Request $request)
+    {
+        if (Auth::user()->role_name=='Admin')
+        {
+            $users     = DB::table('staff_salaries_paid')->get();
+            $users     = DB::table('staff_salaries_paid')->get();
+            $userList = DB::table('users')->get();
+            // $user_id  = DB::table('users')->get();
+            // $position   = DB::table('position_types')->get();
+            // $department = DB::table('departments')->get();
+            // $status_user = DB::table('user_types')->get();
+
+            // search by receipt_number
+            if($request->receipt_number)
+            {
+                $users = StaffSalaryPaid::where('receipt_number','LIKE','%'.$request->receipt_number.'%')->get();
+            }
+
+           
+            return view('payroll.employeesalarypaid',compact('users','users', 'userList'));
+        }
+        else
+        {
+            return redirect()->route('form/salary/epaid');
+        }
+    
     }
 }

@@ -10,6 +10,7 @@ use App\Models\Employee;
 use App\Models\Form;
 use App\Models\ProfileInformation;
 use App\Models\PersonalInformation;
+use App\Models\StaffSalaryPaid;
 use App\Rules\MatchOldPassword;
 use Carbon\Carbon;
 use Session;
@@ -103,6 +104,34 @@ class UserManagementController extends Controller
         else
         {
             return redirect()->route('home');
+        }
+    
+    }
+
+    // search payments
+    public function searchPayments(Request $request)
+    {
+        if (Auth::user()->role_name=='Admin')
+        {
+            $users     = DB::table('staff_salaries_paid')->get();
+            $result     = DB::table('staff_salaries_paid')->get();
+            // $user_id  = DB::table('users')->get();
+            // $position   = DB::table('position_types')->get();
+            // $department = DB::table('departments')->get();
+            // $status_user = DB::table('user_types')->get();
+
+            // search by receipt_number
+            if($request->receipt_number)
+            {
+                $result = StaffSalaryPaid::where('receipt_number','LIKE','%'.$request->receipt_number.'%')->get();
+            }
+
+           
+            return view('payroll.employeesalarypaid',compact('users','result'));
+        }
+        else
+        {
+            return redirect()->route('form/salary/epaid');
         }
     
     }
