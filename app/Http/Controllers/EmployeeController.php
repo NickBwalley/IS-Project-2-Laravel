@@ -434,9 +434,9 @@ class EmployeeController extends Controller
     /** page designations */
     public function designationsIndex()
     {
-        $users = DB::table('users')
-        ->join('staff_salaries_paid', 'users.user_id', '=', 'staff_salaries_paid.employee_id_auto')
-        ->select('users.*', 'staff_salaries_paid.*')
+        $users = DB::table('departments_assigned')
+        // ->join('staff_salaries_paid', 'users.user_id', '=', 'staff_salaries_paid.employee_id_auto')
+        // ->select('users.*', 'staff_salaries_paid.*')
         ->get();
 
         $userList = DB::table('users')->select('user_id', 'name', 'phone_number', 'status', 'role_name')->get();
