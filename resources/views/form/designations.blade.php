@@ -2,6 +2,9 @@
 @extends('layouts.master')
 @section('content')
 
+    {{-- message --}}
+    {!! Toastr::message() !!}
+
     <!-- Page Wrapper -->
     <div class="page-wrapper">
 
@@ -31,17 +34,20 @@
                         <table class="table table-striped custom-table mb-0 datatable">
                             <thead>
                                 <tr>
-                                    <th style="width: 30px;">#</th>
-                                    <th>Designation </th>
-                                    <th>Farm Section </th>
+                                    {{-- <th style="width: 30px;">#</th> --}}
+                                    <th>Employee Name </th>
+                                    <th>Employee ID </th>
+                                    <th>Department </th>
                                     <th class="text-right">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
+                                @foreach ($users as $items)
                                 <tr>
-                                    <td>1</td>
-                                    <td>Web Designer</td>
-                                    <td>Web Development</td>
+                                    {{-- <td>1</td> --}}
+                                    <td>{{ $items->name }}</td>
+                                    <td>{{ $items->employee_id_auto }}</td>
+                                    <td>{{ $items->department }}</td>
                                     <td class="text-right">
                                     <div class="dropdown dropdown-action">
                                             <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
@@ -52,6 +58,7 @@
                                         </div>
                                     </td>
                                 </tr>
+                                @endforeach
                                 
                             </tbody>
                         </table>
@@ -98,7 +105,7 @@
                                 <select class="form-control select2s-hidden-accessible @error('department') is-invalid @enderror" id="department" name="department">
                                     <option value="">Select Department</option>
                                     @foreach ($departmentList as $department)
-                                        <option value="{{ $department->id }}">{{ $department->department }}</option>
+                                        <option value="{{ $department->department }}">{{ $department->department }}</option>
                                     @endforeach
                                 </select>
                                 @error('department')
@@ -107,6 +114,8 @@
                                     </span>
                                 @enderror
                             </div>
+
+                            <input class="form-control" type="text" name="employee_id_auto" id="employee_id_auto" value="00000" readonly>
 
                             <div class="submit-section">
                                 <button class="btn btn-primary submit-btn">Submit</button>

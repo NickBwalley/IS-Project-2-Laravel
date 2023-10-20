@@ -7,8 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class DepartmentsAssigned extends Model
 {
-    use HasFactory;
-
+    protected $table = 'departments_assigned'; // Set the correct table name
+ 
     protected $fillable = [
         'department',
         'employee_name',
