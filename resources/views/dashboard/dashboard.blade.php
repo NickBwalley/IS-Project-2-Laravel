@@ -38,7 +38,7 @@
                     <div class="card dash-widget">
                         <div class="card-body"> <span class="dash-widget-icon"><i class="fa fa-diamond"></i></span>
                             <div class="dash-widget-info">
-                                <h3>{{$allTransactionsCount}}</h3> <span>All Transactions</span>
+                                <h3>{{$allTransactionsCount}}</h3> <span>Total Transactions</span>
                             </div>
                         </div>
                     </div>
