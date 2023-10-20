@@ -10,6 +10,7 @@ use App\Models\Employee;
 use App\Models\Form;
 use App\Models\ProfileInformation;
 use App\Models\PersonalInformation;
+use App\Models\StaffSalaryPaid;
 use App\Rules\MatchOldPassword;
 use Carbon\Carbon;
 use Session;
@@ -315,7 +316,7 @@ class UserManagementController extends Controller
 
         }catch(\Exception $e){
             DB::rollback();
-            Toastr::error('User update fail :)','Error');
+            Toastr::error('User update failed :)','Error');
             return redirect()->back();
         }
     }

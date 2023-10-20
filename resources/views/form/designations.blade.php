@@ -2,6 +2,9 @@
 @extends('layouts.master')
 @section('content')
 
+    {{-- message --}}
+    {!! Toastr::message() !!}
+
     <!-- Page Wrapper -->
     <div class="page-wrapper">
 
@@ -31,17 +34,20 @@
                         <table class="table table-striped custom-table mb-0 datatable">
                             <thead>
                                 <tr>
-                                    <th style="width: 30px;">#</th>
-                                    <th>Designation </th>
-                                    <th>Farm Section </th>
+                                    {{-- <th style="width: 30px;">#</th> --}}
+                                    <th>Employee Name </th>
+                                    <th>Employee ID </th>
+                                    <th>Department </th>
                                     <th class="text-right">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
+                                @foreach ($users as $items)
                                 <tr>
-                                    <td>1</td>
-                                    <td>Web Designer</td>
-                                    <td>Web Development</td>
+                                    {{-- <td>1</td> --}}
+                                    <td>{{ $items->employee_name }}</td>
+                                    <td>{{ $items->employee_id_auto }}</td>
+                                    <td>{{ $items->department }}</td>
                                     <td class="text-right">
                                     <div class="dropdown dropdown-action">
                                             <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
@@ -52,6 +58,7 @@
                                         </div>
                                     </td>
                                 </tr>
+                                @endforeach
                                 
                             </tbody>
                         </table>
@@ -73,32 +80,30 @@
                     </div>
                     <div class="modal-body">
                         <form action="{{ route('form/assigned/save') }}" method="POST">
-                        @csrf
+                            @csrf
                             <div class="form-group">
-                                <label for="name">Employee Names</label>
-                                <select class="form-control select2s-hidden-accessible @error('name') is-invalid @enderror" id="employee_name" name="employee_name">
+                                <label for="employee_name">Employee Names</label>
+                                <select class="form-control select2s-hidden-accessible @error('employee_name') is-invalid @enderror" id="employee_name" name="employee_name">
                                     <option value="">-- Select --</option>
-                                    @foreach ($userList as $key => $user)
-                                        @if (isset($user->status) && $user->status === 'Active' && isset($user->role_name) && $user->role_name === 'Employee')
+                                    @foreach ($userList as $user)
+                                        @if ($user->status === 'Active' && $user->role_name === 'Employee')
                                             <option value="{{ $user->name }}" data-employee_id="{{ $user->user_id }}" data-phone_number="{{ $user->phone_number }}">{{ $user->name }}</option>
                                         @endif
                                     @endforeach
                                 </select>
-
-
-                                @error('name')
+                                @error('employee_name')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
                                 @enderror
                             </div>
-                            
+
                             <div class="form-group">
                                 <label>Department <span class="text-danger">*</span></label>
                                 <select class="form-control select2s-hidden-accessible @error('department') is-invalid @enderror" id="department" name="department">
                                     <option value="">Select Department</option>
                                     @foreach ($departmentList as $department)
-                                        <option value="{{ $department->id }}">{{ $department->department }}</option>
+                                        <option value="{{ $department->department }}">{{ $department->department }}</option>
                                     @endforeach
                                 </select>
                                 @error('department')
@@ -107,6 +112,8 @@
                                     </span>
                                 @enderror
                             </div>
+
+                            <input class="form-control" type="text" name="employee_id_auto" id="employee_id_auto" value="" readonly>
 
                             <div class="submit-section">
                                 <button class="btn btn-primary submit-btn">Submit</button>
@@ -182,6 +189,18 @@
     <!-- /Page Wrapper -->
 
     @section('script')
+
+    <script>
+    $(document).ready(function () {
+        // Event listener for changes in the employee_name dropdown
+        $('#employee_name').change(function () {
+            var selectedOption = $(this).find('option:selected');
+            var employeeID = selectedOption.data('employee_id');
+            // Populate the employee_id_auto input field
+            $('#employee_id_auto').val(employeeID);
+        });
+    });
+</script>
 
     @endsection
 @endsection

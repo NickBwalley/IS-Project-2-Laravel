@@ -119,6 +119,7 @@ Route::controller(UserManagementController::class)->group(function () {
     Route::get('userManagement', 'index')->middleware('auth')->name('userManagement');
     Route::post('user/add/save', 'addNewUserSave')->name('user/add/save');
     Route::post('search/user/list', 'searchUser')->name('search/user/list');
+
     Route::post('update', 'update')->name('update');
     Route::post('user/delete', 'delete')->middleware('auth')->name('user/delete');
     Route::get('activity/log', 'activityLog')->middleware('auth')->name('activity/log');
@@ -249,6 +250,9 @@ Route::controller(PayrollController::class)->group(function () {
     Route::post('form/salary/delete', 'deleteRecord')->middleware('auth')->name('form/salary/delete');
     Route::get('form/salary/view/{user_id}', 'salaryView')->middleware('auth');
     Route::get('form/payroll/items', 'payrollItems')->middleware('auth')->name('form/payroll/items');
+
+    // now search the transaction paid
+    Route::post('search/paid/list', 'searchPayments')->name('search/paid/list');
 
 });
 

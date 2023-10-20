@@ -4,12 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use DB;
-use Brian2694\Toastr\Facades\Toastr;
 use App\Models\Employee;
 use App\Models\department;
 use App\Models\DepartmentsAssigned;
 use App\Models\User;
 use App\Models\module_permission;
+use Brian2694\Toastr\Facades\Toastr;
 
 class EmployeeController extends Controller
 {
@@ -434,9 +434,14 @@ class EmployeeController extends Controller
     /** page designations */
     public function designationsIndex()
     {
+        $users = DB::table('departments_assigned')
+        // ->join('staff_salaries_paid', 'users.user_id', '=', 'staff_salaries_paid.employee_id_auto')
+        // ->select('users.*', 'staff_salaries_paid.*')
+        ->get();
+
         $userList = DB::table('users')->select('user_id', 'name', 'phone_number', 'status', 'role_name')->get();
         $departmentList = DB::table('departments')->select('id', 'department')->get();
-        return view('form.designations', compact('userList', 'departmentList'));
+        return view('form.designations', compact('userList', 'departmentList', 'users'));
     }
 
 
@@ -455,6 +460,13 @@ class EmployeeController extends Controller
     /** CREATE A DEPARTMENT AND ASSIGN AN EMPLOYEE **/
     public function saveAssignedDepartment(Request $request)
     {
+        $request->validate([
+            'department' => 'required|string|max:255',
+            'employee_name' => 'required|string|max:255',
+            'employee_id_auto' => 'required',
+        ]);
+
+
         DB::beginTransaction();
         try {
             $assigned = DepartmentsAssigned::updateOrCreate(['id' => $request->id]);
@@ -464,12 +476,12 @@ class EmployeeController extends Controller
             $assigned->save();
 
             DB::commit();
-            Toastr::success('Customer Assigned Department Successfully :)', 'Success');
+            Toastr::success('Employee Assigned Department successfully :)','Success');
             return redirect()->back();
         } catch (\Exception $e) {
             DB::rollback();
             dd($e->getMessage()); // Debugging: Display the error message
-            Toastr::error('Customer Assigned Department failed :(', 'Error');
+            Toastr::error('Employee Assigned Department Failed :(','Error');
             return redirect()->back();
         }
     }
