@@ -64,6 +64,7 @@
                             <option>Casual Leave</option>
                             <option>Medical Leave</option>
                             <option>Loss of Pay</option>
+                            <option>Others (State reasons. )</option>
                         </select>
                         <label class="focus-label">Leave Type</label>
                     </div>
