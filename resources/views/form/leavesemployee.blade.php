@@ -137,7 +137,15 @@
                                             <td>{{date('d F, Y',strtotime($items->from_date)) }}</td>
                                             <td hidden class="to_date">{{$items->to_date}}</td>
                                             <td>{{date('d F, Y',strtotime($items->to_date)) }}</td>
-                                            <td class="day">{{$items->day}} Day</td>
+                                            <td class="day">
+                                                @if ($items->day == 0)
+                                                    Half-day
+                                                @elseif ($items->day == 1)
+                                                    1 day
+                                                @else
+                                                    {{ $items->day }} days
+                                                @endif
+                                            </td>
                                             <td class="leave_reason">{{$items->leave_reason}}</td>
                                             <td class="text-center">
                                                 <div class="dropdown action-label">

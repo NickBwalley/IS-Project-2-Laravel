@@ -194,11 +194,16 @@ public function saveRecord(Request $request)
                 $users = StaffSalaryPaid::where('receipt_number','LIKE','%'.$request->receipt_number.'%')->get();
             }
 
-            if($request->from_date)
-            {
-                $users = StaffSalaryPaid::where('from_date', 'LIKE', substr($request->created_at, 0, 10) . '%')->get();                
-
+            if ($request->from_date) {
+                $users = StaffSalaryPaid::where(function ($query) use ($request) {
+                    $date = $request->from_date;
+                    $date = str_replace('/', '-', $date);
+                    $query->where('created_at', 'LIKE', '%' . substr($date, 0, 10) . '%')
+                        ->orWhere('created_at', 'LIKE', '%' . substr($date, 6, 10) . '%');
+                })->get();
             }
+
+
 
            
             return view('payroll.employeesalarypaid',compact('users','users', 'userList'));
