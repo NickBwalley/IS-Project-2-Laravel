@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use DateTimeInterface;
+
 
 class StaffSalaryPaid extends Model
 {
@@ -18,4 +20,9 @@ class StaffSalaryPaid extends Model
         'shillings_per_kg',
         'amount_paid',
     ];
+
+    protected function serializeDate(DateTimeInterface $date): string
+{
+    return $date->format('d/m/y H:i:s');
+}
 }
