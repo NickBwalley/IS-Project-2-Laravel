@@ -1,8 +1,5 @@
-<?php 
-use App\Models\LeavesEmployee;
-use Illuminate\Support\Facades\Auth;
+<?php use App\Models\LeavesEmployee;
 ?>
-
 @extends('layouts.master')
 @section('content')
     <!-- Page Wrapper -->
@@ -24,88 +21,7 @@ use Illuminate\Support\Facades\Auth;
                     </div>
                 </div>
             </div>
-            <!-- Leave Statistics -->
-            @if (in_array(Auth::user()->role_name, ['Admin', 'Manager']))
-            {{-- <div class="row">
-                <div class="col-md-3">
-                    <div class="stats-info">
-                        <h6>Today Presents</h6>
-                        <h4>12 / 60</h4>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="stats-info">
-                        <h6>Planned Leaves</h6>
-                        <h4>8 <span>Today</span></h4>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="stats-info">
-                        <h6>Unplanned Leaves</h6>
-                        <h4>0 <span>Today</span></h4>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="stats-info">
-                        <h6>Pending Requests</h6>
-                        <h4>12</h4>
-                    </div>
-                </div>
-            </div> --}}
-            <!-- /Leave Statistics -->
 
-            <!-- Search Filter -->
-            <div class="row filter-row">
-                <div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
-                    <div class="form-group form-focus">
-                        <input type="text" class="form-control floating">
-                        <label class="focus-label">Employee Name</label>
-                    </div>
-                </div>
-                <div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
-                    <div class="form-group form-focus select-focus">
-                        <select class="select floating">
-                            <option> -- Select -- </option>
-                            <option>Casual Leave</option>
-                            <option>Medical Leave</option>
-                            <option>Loss of Pay</option>
-                        </select>
-                        <label class="focus-label">Leave Type</label>
-                    </div>
-                </div>
-                <div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
-                    <div class="form-group form-focus select-focus">
-                        <select class="select floating">
-                            <option> -- Select -- </option>
-                            <option> Pending </option>
-                            <option> Approved </option>
-                            <option> Rejected </option>
-                        </select>
-                        <label class="focus-label">Leave Status</label>
-                    </div>
-                </div>
-                <div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
-                    <div class="form-group form-focus">
-                        <div class="cal-icon">
-                            <input class="form-control floating datetimepicker" type="text">
-                        </div>
-                        <label class="focus-label">From</label>
-                    </div>
-                </div>
-                <div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
-                    <div class="form-group form-focus">
-                        <div class="cal-icon">
-                            <input class="form-control floating datetimepicker" type="text">
-                        </div>
-                        <label class="focus-label">To</label>
-                    </div>
-                </div>
-                <div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
-                    <a href="#" class="btn btn-success btn-block"> Search </a>
-                </div>
-            </div>
-            @endif
-            <!-- /Search Filter -->
 
 			<!-- /Page Header -->
             {{-- message --}}
@@ -122,10 +38,8 @@ use Illuminate\Support\Facades\Auth;
                                     <th>To</th>
                                     <th>No of Days</th>
                                     <th>Reason</th>
-                                    <th class="text-center">Status</th>
-                                    @if (in_array(Auth::user()->role_name, ['Admin', 'Manager']))
-                                    <th class="text-right">Actions</th>
-                                    @endif
+                                    {{-- <th class="text-center">Status</th> --}}
+                                    
                                 </tr>
                             </thead>
                             
@@ -156,30 +70,8 @@ use Illuminate\Support\Facades\Auth;
                                                 @endif
                                             </td>
                                             <td class="leave_reason">{{$items->leave_reason}}</td>
-                                            <td class="text-center">
-                                                <div class="dropdown action-label">
-                                                    <a class="btn btn-white btn-sm btn-rounded dropdown-toggle" href="#" data-toggle="dropdown" aria-expanded="false">
-                                                        <i class="fa fa-dot-circle-o text-purple"></i> New
-                                                    </a>
-                                                    <div class="dropdown-menu dropdown-menu-right">
-                                                        <a class="dropdown-item" href="#"><i class="fa fa-dot-circle-o text-purple"></i> New</a>
-                                                        <a class="dropdown-item" href="#"><i class="fa fa-dot-circle-o text-info"></i> Pending</a>
-                                                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#approve_leave"><i class="fa fa-dot-circle-o text-success"></i> Approved</a>
-                                                        <a class="dropdown-item" href="#"><i class="fa fa-dot-circle-o text-danger"></i> Declined</a>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            @if (in_array(Auth::user()->role_name, ['Admin', 'Manager']))
-                                            <td class="text-right">
-                                                <div class="dropdown dropdown-action">
-                                                    <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-                                                    <div class="dropdown-menu dropdown-menu-right">
-                                                        <a class="dropdown-item leaveUpdate" data-toggle="modal" data-id="'.$items->id.'" data-target="#edit_leave"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                                        <a class="dropdown-item leaveDelete" href="#" data-toggle="modal" data-target="#delete_approve"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            @endif
+                                            {{-- <td hidden class="id">{{ $items->status }}</td> --}}
+                                            
                                         </tr>
                                     @endforeach
                                 @endif
@@ -211,7 +103,6 @@ use Illuminate\Support\Facades\Auth;
                                     <option value="Casual Leave 12 Days">Casual Leave 12 Days</option>
                                     <option value="Medical Leave">Medical Leave</option>
                                     <option value="Loss of Pay">Loss of Pay</option>
-                                    <option value="Loss of Pay">Others</option>
                                 </select>
                             </div>
                             <input type="hidden" class="form-control" id="user_id" name="user_id" value="{{ Auth::user()->user_id }}">

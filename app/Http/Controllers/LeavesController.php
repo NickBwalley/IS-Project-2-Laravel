@@ -6,8 +6,10 @@ use Illuminate\Http\Request;
 use Brian2694\Toastr\Facades\Toastr;
 use App\Models\LeavesAdmin;
 use App\Models\LeavesEmployee;
+use App\Models\User;
 use DB;
 use DateTime;
+use Illuminate\Support\Facades\Auth;
 
 class LeavesController extends Controller
 {
@@ -132,6 +134,20 @@ class LeavesController extends Controller
                     ->select('leaves_employees.*', 'users.position','users.name','users.avatar')
                     ->get();
         return view('form.leavesemployee',compact('leavese'));
+    }
+
+    // leaves Employee
+    public function employeeLeaves()
+    {
+        // $user = Auth::user(); // Get the currently logged-in user
+
+        // $leaves = User::where('user_id', $user->id)->get(); // Replace 'Leave' with your model name
+
+        $leavese = DB::table('leaves_employees')
+                    ->join('users', 'users.user_id', '=', 'leaves_employees.user_id')
+                    ->select('leaves_employees.*', 'users.position','users.name','users.avatar')
+                    ->get();
+        return view('form.employeeleaves',compact('leavese'));
     }
 
     public function saveERecord(Request $request)

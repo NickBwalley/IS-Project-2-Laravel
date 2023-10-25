@@ -21,6 +21,7 @@
                 </div>
             </div>
             <!-- Leave Statistics -->
+            @if (in_array(Auth::user()->role_name, ['Admin', 'Manager']))
             <div class="row">
                 <div class="col-md-3">
                     <div class="stats-info">
@@ -100,6 +101,8 @@
                     <a href="#" class="btn btn-success btn-block"> Search </a>  
                 </div>     
             </div>
+
+            @endif
             <!-- /Search Filter -->
 
 			<!-- /Page Header -->
