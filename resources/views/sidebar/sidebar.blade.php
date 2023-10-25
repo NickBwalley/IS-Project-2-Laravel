@@ -86,7 +86,7 @@
                     <ul style="{{ request()->is('/*') ? 'display: block;' : 'display: none;' }}">
                         <li><a class="{{set_active(['form/salary/page'])}}" href="{{ route('form/salary/page') }}"> Pay Employee </a></li>
                         <li><a class="{{set_active(['form/salary/epaid'])}}" href="{{ route('form/salary/epaid') }}"> Transactions Paid </a></li>
-                        <li><a class="{{set_active(['form/payroll/items'])}}" href="{{ route('form/payroll/items') }}"> Payslip </a></li>
+                        {{-- <li><a class="{{set_active(['form/payroll/items'])}}" href="{{ route('form/payroll/items') }}"> Payslip </a></li> --}}
                     </ul>
                 </li>
                 
@@ -119,7 +119,7 @@
                         {{-- <li><a class="{{set_active(['form/performance/page'])}}" href="{{ route('form/performance/page') }}"> Performance Review </a></li> --}}
                     </ul>
                 </li>
-                <li class="{{set_active(['form/training/list/page','form/trainers/list/page'])}} submenu">
+                {{-- <li class="{{set_active(['form/training/list/page','form/trainers/list/page'])}} submenu">
                     <a href="#" class="{{ set_active(['form/training/list/page','form/trainers/list/page']) ? 'noti-dot' : '' }}"><i class="la la-edit"></i>
                     <span> Training </span> <span class="menu-arrow"></span></a>
                     <ul style="{{ request()->is('/*') ? 'display: block;' : 'display: none;' }}">
@@ -127,7 +127,7 @@
                         <li><a class="{{set_active(['form/trainers/list/page'])}}" href="{{ route('form/trainers/list/page') }}"> Trainers</a></li>
                         <li><a class="{{set_active(['form/training/type/list/page'])}}" href="{{ route('form/training/type/list/page') }}"> Training Type </a></li>
                     </ul>
-                </li>
+                </li> --}}
                 @endif
                
 
@@ -140,7 +140,7 @@
                         <ul style="{{ request()->is('/*') ? 'display: block;' : 'display: none;' }}">
                             <li><a class="{{set_active(['form/salary/epage'])}}" href="{{ route('form/salary/epage') }}"> Pending Transactions </a></li>
                             <li><a class="{{set_active(['form/salary/eviewpaid'])}}" href="{{ route('form/salary/eviewpaid') }}"> Paid Transactions </a></li>
-                            <li><a class="{{set_active(['form/leavesemployee/new'])}}" href="{{route('form/leavesemployee/new')}}">Apply Leave</a></li>
+                            <li><a class="{{set_active(['form/employeeleaves/new'])}}" href="{{route('form/employeeleaves/new')}}">Apply Leave</a></li>
                             
                             {{-- <li><a class="{{set_active(['form/payroll/items'])}}" href="{{ route('form/payroll/items') }}"> Payslip </a></li> --}}
                         </ul>

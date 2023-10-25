@@ -224,6 +224,9 @@ Route::controller(HolidayController::class)->group(function () {
 Route::controller(LeavesController::class)->group(function () {
     Route::get('form/leaves/new', 'leaves')->middleware('auth')->name('form/leaves/new');
     Route::get('form/leavesemployee/new', 'leavesEmployee')->middleware('auth')->name('form/leavesemployee/new');
+    // employee apply and view leave
+    Route::get('form/employeeleaves/new', 'employeeLeaves')->middleware('auth')->name('form/employeeleaves/new');
+
     Route::post('form/leaves/save', 'saveRecord')->middleware('auth')->name('form/leaves/save');
     Route::post('form/leaves/edit', 'editRecordLeave')->middleware('auth')->name('form/leaves/edit');
     Route::post('form/leaves/edit/delete','deleteLeave')->middleware('auth')->name('form/leaves/edit/delete');
