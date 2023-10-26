@@ -15,14 +15,14 @@
             <div class="page-header">
                 <div class="row align-items-center">
                     <div class="col">
-                        <h3 class="page-title">Designations</h3>
+                        <h3 class="page-title">Section Assigned</h3>
                         <ul class="breadcrumb">
                             <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-                            <li class="breadcrumb-item active">Designations</li>
+                            <li class="breadcrumb-item active">Assigned</li>
                         </ul>
                     </div>
                     <div class="col-auto float-right ml-auto">
-                        <a href="#" class="btn add-btn" data-toggle="modal" data-target="#add_designation"><i class="fa fa-plus"></i> Add Designation</a>
+                        <a href="#" class="btn add-btn" data-toggle="modal" data-target="#add_designation"><i class="fa fa-plus"></i> Assign Section</a>
                     </div>
                 </div>
             </div>
@@ -73,7 +73,7 @@
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Add Designation</h5>
+                        <h5 class="modal-title">Assign Section</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -82,7 +82,7 @@
                         <form action="{{ route('form/assigned/save') }}" method="POST">
                             @csrf
                             <div class="form-group">
-                                <label for="employee_name">Employee Names</label>
+                                <label for="employee_name">Select Employees Name</label>
                                 <select class="form-control select2s-hidden-accessible @error('employee_name') is-invalid @enderror" id="employee_name" name="employee_name">
                                     <option value="">-- Select --</option>
                                     @foreach ($userList as $user)
@@ -99,9 +99,9 @@
                             </div>
 
                             <div class="form-group">
-                                <label>Department <span class="text-danger">*</span></label>
+                                <label>Assign Section <span class="text-danger">*</span></label>
                                 <select class="form-control select2s-hidden-accessible @error('department') is-invalid @enderror" id="department" name="department">
-                                    <option value="">Select Department</option>
+                                    <option value="">Assign Section</option>
                                     @foreach ($departmentList as $department)
                                         <option value="{{ $department->department }}">{{ $department->department }}</option>
                                     @endforeach

@@ -68,7 +68,7 @@
                                 <div class="form-group">
                                     <label>Country</label>
                                     <select class="form-control select">
-                                        <option>KHMER</option>
+                                        <option>KENYA</option>
                                         <option>USA</option>
                                         <option>United Kingdom</option>
                                     </select>
