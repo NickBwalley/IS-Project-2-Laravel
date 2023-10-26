@@ -34,10 +34,10 @@
                                 <tr>
                                     <th>Employee</th>
                                     <th>Leave Type</th>
-                                    <th>From</th>
-                                    <th>To</th>
+                                    <th>From Date</th>
+                                    <th>To Date</th>
                                     <th>No of Days</th>
-                                    <th>Reason</th>
+                                    <th>Reasons</th>
                                     {{-- <th class="text-center">Status</th> --}}
                                     
                                 </tr>
@@ -100,9 +100,10 @@
                                 <label>Leave Type <span class="text-danger">*</span></label>
                                 <select class="select" id="leaveType" name="leave_type">
                                     <option selected disabled>Select Leave Type</option>
-                                    <option value="Casual Leave 12 Days">Casual Leave 12 Days</option>
-                                    <option value="Medical Leave">Medical Leave</option>
+                                    <option value="Casual Leave">Casual Leave</option>
+                                    <option value="Sick Leave">Sick Leave</option>
                                     <option value="Loss of Pay">Loss of Pay</option>
+                                    <option value="Other Reasons">Other Reasons</option>
                                 </select>
                             </div>
                             <input type="hidden" class="form-control" id="user_id" name="user_id" value="{{ Auth::user()->user_id }}">
