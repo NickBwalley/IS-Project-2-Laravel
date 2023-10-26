@@ -73,7 +73,7 @@
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Add Designation</h5>
+                        <h5 class="modal-title">Assign Section</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -82,7 +82,7 @@
                         <form action="{{ route('form/assigned/save') }}" method="POST">
                             @csrf
                             <div class="form-group">
-                                <label for="employee_name">Employee Names</label>
+                                <label for="employee_name">Select Employees Name</label>
                                 <select class="form-control select2s-hidden-accessible @error('employee_name') is-invalid @enderror" id="employee_name" name="employee_name">
                                     <option value="">-- Select --</option>
                                     @foreach ($userList as $user)
