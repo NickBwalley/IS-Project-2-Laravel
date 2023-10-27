@@ -86,6 +86,7 @@
                     <ul style="{{ request()->is('/*') ? 'display: block;' : 'display: none;' }}">
                         <li><a class="{{set_active(['form/salary/page'])}}" href="{{ route('form/salary/page') }}"> Pay Employee </a></li>
                         <li><a class="{{set_active(['form/salary/epaid'])}}" href="{{ route('form/salary/epaid') }}"> Transactions Paid </a></li>
+                        <li><a class="{{set_active(['form/salary/epaid'])}}" href="{{ route('form/salary/epaid') }}"> Mpesa-stk-push </a></li>
                         {{-- <li><a class="{{set_active(['form/payroll/items'])}}" href="{{ route('form/payroll/items') }}"> Payslip </a></li> --}}
                     </ul>
                 </li>
