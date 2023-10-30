@@ -1,5 +1,8 @@
-<?php use App\Models\LeavesEmployee;
+<?php 
+use App\Models\LeavesEmployee;
+use Illuminate\Support\Facades\Auth;
 ?>
+
 @extends('layouts.master')
 @section('content')
     <!-- Page Wrapper -->
@@ -21,7 +24,88 @@
                     </div>
                 </div>
             </div>
+            <!-- Leave Statistics -->
+            @if (in_array(Auth::user()->role_name, ['Admin', 'Manager']))
+            {{-- <div class="row">
+                <div class="col-md-3">
+                    <div class="stats-info">
+                        <h6>Today Presents</h6>
+                        <h4>12 / 60</h4>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stats-info">
+                        <h6>Planned Leaves</h6>
+                        <h4>8 <span>Today</span></h4>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stats-info">
+                        <h6>Unplanned Leaves</h6>
+                        <h4>0 <span>Today</span></h4>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stats-info">
+                        <h6>Pending Requests</h6>
+                        <h4>12</h4>
+                    </div>
+                </div>
+            </div> --}}
+            <!-- /Leave Statistics -->
 
+            <!-- Search Filter -->
+            <div class="row filter-row">
+                <div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
+                    <div class="form-group form-focus">
+                        <input type="text" class="form-control floating">
+                        <label class="focus-label">Employee Name</label>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
+                    <div class="form-group form-focus select-focus">
+                        <select class="select floating">
+                            <option> -- Select -- </option>
+                            <option>Casual Leave</option>
+                            <option>Medical Leave</option>
+                            <option>Loss of Pay</option>
+                        </select>
+                        <label class="focus-label">Leave Type</label>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
+                    <div class="form-group form-focus select-focus">
+                        <select class="select floating">
+                            <option> -- Select -- </option>
+                            <option> Pending </option>
+                            <option> Approved </option>
+                            <option> Rejected </option>
+                        </select>
+                        <label class="focus-label">Leave Status</label>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
+                    <div class="form-group form-focus">
+                        <div class="cal-icon">
+                            <input class="form-control floating datetimepicker" type="text">
+                        </div>
+                        <label class="focus-label">From</label>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
+                    <div class="form-group form-focus">
+                        <div class="cal-icon">
+                            <input class="form-control floating datetimepicker" type="text">
+                        </div>
+                        <label class="focus-label">To</label>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
+                    <a href="#" class="btn btn-success btn-block"> Search </a>
+                </div>
+            </div>
+            @endif
+            <!-- /Search Filter -->
 
 			<!-- /Page Header -->
             {{-- message --}}
@@ -29,6 +113,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="table-responsive">
+                        {{-- <p>User ID: {{ Auth::user()->user_id }}</p> --}}
                         <table class="table table-striped custom-table mb-0 datatable">
                             <thead>
                                 <tr>
@@ -37,42 +122,66 @@
                                     <th>From Date</th>
                                     <th>To Date</th>
                                     <th>No of Days</th>
-                                    <th>Reasons</th>
-                                    {{-- <th class="text-center">Status</th> --}}
-                                    
+                                    <th>Reason</th>
+                                    <th class="text-center">Status</th>
+                                    @if (in_array(Auth::user()->role_name, ['Admin', 'Manager']))
+                                    <th class="text-right">Actions</th>
+                                    @endif
                                 </tr>
                             </thead>
                             
 
                             <tbody>
-                                @if(!empty($leavese))
-                                    @foreach ($leavese as $items )
-                                        <tr>
-                                            <td>
-                                                <h2 class="table-avatar">
-                                                    <a href="{{ url('employee/profile/'.$items->user_id) }}" class="avatar"><img alt="" src="{{ URL::to('/assets/images/'. $items->avatar) }}" alt="{{ $items->name }}"></a>
-                                                    <a href="#">{{ $items->name }}<span>{{ $items->position }}</span></a>
-                                                </h2>
-                                            </td>
-                                            <td hidden class="id">{{ $items->id }}</td>
-                                            <td class="leave_type">{{$items->leave_type}}</td>
-                                            <td hidden class="from_date">{{ $items->from_date }}</td>
-                                            <td>{{date('d F, Y',strtotime($items->from_date)) }}</td>
-                                            <td hidden class="to_date">{{$items->to_date}}</td>
-                                            <td>{{date('d F, Y',strtotime($items->to_date)) }}</td>
-                                            <td class="day">
-                                                @if ($items->day == 0)
-                                                    Half-day
-                                                @elseif ($items->day == 1)
-                                                    1 day
-                                                @else
-                                                    {{ $items->day }} days
+                                @if (!empty($leavese))
+                                    @foreach ($leavese as $items)
+                                        @if (Auth::user()->user_id === $items->user_id)
+                                            <tr>
+                                                <td>
+                                                    <h2 class="table-avatar">
+                                                        <a href="{{ url('employee/profile/'.$items->user_id) }}" class="avatar"><img alt="" src="{{ URL::to('/assets/images/'. $items->avatar) }}" alt="{{ $items->name }}"></a>
+                                                        <a href="#">{{ $items->name }}<span>{{ $items->position }}</span></a>
+                                                    </h2>
+                                                </td>
+                                                <td hidden class="id">{{ $items->id }}</td>
+                                                <td class="leave_type">{{ $items->leave_type }}</td>
+                                                <td hidden class="from_date">{{ $items->from_date }}</td>
+                                                <td>{{ date('d F, Y', strtotime($items->from_date)) }}</td>
+                                                <td hidden class="to_date">{{ $items->to_date }}</td>
+                                                <td>{{ date('d F, Y', strtotime($items->to_date)) }}</td>
+                                                <td class="day">
+                                                    @if ($items->day == 0)
+                                                        Half-day
+                                                    @elseif ($items->day == 1)
+                                                        1 day
+                                                    @else
+                                                        {{ $items->day }} days
+                                                    @endif
+                                                </td>
+                                                <td class="leave_reason">{{ $items->leave_reason }}</td>
+                                                <td class="text-center">
+                                                    <div class="dropdown action-label">
+                                                        @if ($items->status == 'pending')
+                                                            <a class="btn btn-secondary">Pending</a>
+                                                        @elseif ($items->status == 'approved')
+                                                            <a class="btn btn-info">Approved</a>
+                                                        @else
+                                                            <a class="btn btn-danger">Declined</a>
+                                                        @endif
+                                                    </div>
+                                                </td>
+                                                @if (in_array(Auth::user()->role_name, ['Admin', 'Manager']))
+                                                <td class="text-right">
+                                                    <div class="dropdown dropdown-action">
+                                                        <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                                                        <div class="dropdown-menu dropdown-menu-right">
+                                                            <a class="dropdown-item leaveUpdate" data-toggle="modal" data-id="{{ $items->id }}" data-target="#edit_leave"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                                            <a class="dropdown-item leaveDelete" href="#" data-toggle="modal" data-target="#delete_approve"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
+                                                        </div>
+                                                    </div>
+                                                </td>
                                                 @endif
-                                            </td>
-                                            <td class="leave_reason">{{$items->leave_reason}}</td>
-                                            {{-- <td hidden class="id">{{ $items->status }}</td> --}}
-                                            
-                                        </tr>
+                                            </tr>
+                                        @endif
                                     @endforeach
                                 @endif
                             </tbody>
@@ -100,10 +209,10 @@
                                 <label>Leave Type <span class="text-danger">*</span></label>
                                 <select class="select" id="leaveType" name="leave_type">
                                     <option selected disabled>Select Leave Type</option>
-                                    <option value="Casual Leave">Casual Leave</option>
-                                    <option value="Sick Leave">Sick Leave</option>
+                                    <option value="Casual Leave Days">Casual Leave</option>
+                                    <option value="Medical Leave">Medical Leave</option>
                                     <option value="Loss of Pay">Loss of Pay</option>
-                                    <option value="Other Reasons">Other Reasons</option>
+                                    <option value="Loss of Pay">Others</option>
                                 </select>
                             </div>
                             <input type="hidden" class="form-control" id="user_id" name="user_id" value="{{ Auth::user()->user_id }}">
@@ -113,6 +222,8 @@
                                     <input type="text" class="form-control datetimepicker" id="from_date" name="from_date">
                                 </div>
                             </div>
+
+                            
                             <div class="form-group">
                                 <label>To <span class="text-danger">*</span></label>
                                 <div class="cal-icon">
@@ -123,6 +234,10 @@
                                 <label>Leave Reason <span class="text-danger">*</span></label>
                                 <textarea rows="4" class="form-control" id="leave_reason" name="leave_reason"></textarea>
                             </div>
+                            
+                            <input type="hidden" class="form-control" id="status" name="status" value="pending">
+
+
                             <div class="submit-section">
                                 <button type="submit" class="btn btn-primary submit-btn">Submit</button>
                             </div>
@@ -138,7 +253,7 @@
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Edit Leave</h5>
+                        <h5 class="modal-title">Update Leave Status</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -148,36 +263,18 @@
                             @csrf
                             <input type="hidden" id="e_id" name="id" value="">
                             <div class="form-group">
-                                <label>Leave Type <span class="text-danger">*</span></label>
-                                <select class="select" id="e_leave_type" name="leave_type">
-                                    <option selected disabled>Select Leave Type</option>
-                                    <option value="Casual Leave 12 Days">Casual Leave 12 Days</option>
-                                    <option value="Medical Leave">Medical Leave</option>
-                                    <option value="Loss of Pay">Loss of Pay</option>
+                                <label> Leave Status <span class="text-danger">*</span></label>
+                                <select class="select" id="" name="status">
+                                    <option selected disabled>---Select Status--</option>
+                                    <option value="approved">Approve</option>
+                                    <option value="declined">Decline</option>
+                                    <option value="pending">Stand-by</option>
+                                    
                                 </select>
                             </div>
-                            <div class="form-group">
-                                <label>From <span class="text-danger">*</span></label>
-                                <div class="cal-icon">
-                                    <input type="text" class="form-control datetimepicker" id="e_from_date" name="from_date" value="">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label>To <span class="text-danger">*</span></label>
-                                <div class="cal-icon">
-                                    <input type="text" class="form-control datetimepicker" id="e_to_date" name="to_date" value="">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label>Number of days <span class="text-danger">*</span></label>
-                                <input class="form-control" readonly type="text" id="e_number_of_days" name="number_of_days" value="">
-                            </div>
-                            <div class="form-group">
-                                <label>Leave Reason <span class="text-danger">*</span></label>
-                                <textarea rows="4" class="form-control" id="e_leave_reason" name="leave_reason" value=""></textarea>
-                            </div>
+                            
                             <div class="submit-section">
-                                <button type="submit" class="btn btn-primary submit-btn">Save</button>
+                                <button type="submit" class="btn btn-primary submit-btn">Update</button>
                             </div>
                         </form>
                     </div>
@@ -251,16 +348,46 @@
         {
             var _this = $(this).parents('tr');
             $('#e_id').val(_this.find('.id').text());
+            
             $('#e_number_of_days').val(_this.find('.day').text());
             $('#e_from_date').val(_this.find('.from_date').text());
             $('#e_to_date').val(_this.find('.to_date').text());
             $('#e_leave_reason').val(_this.find('.leave_reason').text());
+            $('#e_status').val(_this.find('.status').text());
 
             var leave_type = (_this.find(".leave_type").text());
             var _option = '<option selected value="' + leave_type+ '">' + _this.find('.leave_type').text() + '</option>'
             $( _option).appendTo("#e_leave_type");
         });
     </script>
+
+    {{-- populate this with the edit field  --}}
+
+    <script>
+        $(document).ready(function () {
+            // Add a click event listener to the "Edit" button
+            $(".leaveUpdate").on("click", function () {
+                // Capture data from the row
+                var row = $(this).closest("tr");
+                // var leaveType = row.find(".leave_type").text();
+                // var fromDate = row.find(".from_date").text();
+                // var toDate = row.find(".to_date").text();
+                // var numberOfDays = row.find(".day").text();
+                // var leaveReason = row.find(".leave_reason").text();
+                var leaveId = row.find(".id").text();
+
+                // Populate the edit modal with captured data
+                // $("#e_leave_type").val(leaveType);
+                // $("#e_from_date").val(fromDate);
+                // $("#e_to_date").val(toDate);
+                // $("#e_number_of_days").val(numberOfDays);
+                // $("#e_leave_reason").val(leaveReason);
+                $("#e_id").val(leaveId);
+            });
+        });
+    </script>
+
+
     {{-- delete model --}}
     <script>
         $(document).on('click','.leaveEDelete',function()
