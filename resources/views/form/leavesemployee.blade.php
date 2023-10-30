@@ -118,8 +118,8 @@ use Illuminate\Support\Facades\Auth;
                                 <tr>
                                     <th>Employee</th>
                                     <th>Leave Type</th>
-                                    <th>From</th>
-                                    <th>To</th>
+                                    <th>From Date</th>
+                                    <th>To Date</th>
                                     <th>No of Days</th>
                                     <th>Reason</th>
                                     <th class="text-center">Status</th>
@@ -158,15 +158,15 @@ use Illuminate\Support\Facades\Auth;
                                             <td class="leave_reason">{{$items->leave_reason}}</td>
                                             <td class="text-center">
                                                 <div class="dropdown action-label">
-                                                    <a class="btn btn-white btn-sm btn-rounded dropdown-toggle" href="#" data-toggle="dropdown" aria-expanded="false">
-                                                        <i class="fa fa-dot-circle-o text-purple"></i> New
-                                                    </a>
-                                                    <div class="dropdown-menu dropdown-menu-right">
-                                                        <a class="dropdown-item" href="#"><i class="fa fa-dot-circle-o text-purple"></i> New</a>
-                                                        <a class="dropdown-item" href="#"><i class="fa fa-dot-circle-o text-info"></i> Pending</a>
-                                                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#approve_leave"><i class="fa fa-dot-circle-o text-success"></i> Approved</a>
-                                                        <a class="dropdown-item" href="#"><i class="fa fa-dot-circle-o text-danger"></i> Declined</a>
-                                                    </div>
+                                                    
+                                                        @if($items->status == 'pending')
+                                                        <a class="btn btn-secondary">Pending</a>
+                                                        @elseif($items->status == 'approved')
+                                                        <a class="btn btn-info">Approved</a>
+                                                        @else
+                                                        <a class="btn btn-danger">Declined</a>
+                                                        @endif
+                                                    
                                                 </div>
                                             </td>
                                             @if (in_array(Auth::user()->role_name, ['Admin', 'Manager']))
@@ -208,7 +208,7 @@ use Illuminate\Support\Facades\Auth;
                                 <label>Leave Type <span class="text-danger">*</span></label>
                                 <select class="select" id="leaveType" name="leave_type">
                                     <option selected disabled>Select Leave Type</option>
-                                    <option value="Casual Leave 12 Days">Casual Leave 12 Days</option>
+                                    <option value="Casual Leave Days">Casual Leave</option>
                                     <option value="Medical Leave">Medical Leave</option>
                                     <option value="Loss of Pay">Loss of Pay</option>
                                     <option value="Loss of Pay">Others</option>
@@ -221,6 +221,8 @@ use Illuminate\Support\Facades\Auth;
                                     <input type="text" class="form-control datetimepicker" id="from_date" name="from_date">
                                 </div>
                             </div>
+
+                            
                             <div class="form-group">
                                 <label>To <span class="text-danger">*</span></label>
                                 <div class="cal-icon">
@@ -231,6 +233,10 @@ use Illuminate\Support\Facades\Auth;
                                 <label>Leave Reason <span class="text-danger">*</span></label>
                                 <textarea rows="4" class="form-control" id="leave_reason" name="leave_reason"></textarea>
                             </div>
+                            
+                            <input type="hidden" class="form-control" id="status" name="status" value="pending">
+
+
                             <div class="submit-section">
                                 <button type="submit" class="btn btn-primary submit-btn">Submit</button>
                             </div>
@@ -246,7 +252,7 @@ use Illuminate\Support\Facades\Auth;
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Edit Leave</h5>
+                        <h5 class="modal-title">Update Leave Status</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -256,36 +262,18 @@ use Illuminate\Support\Facades\Auth;
                             @csrf
                             <input type="hidden" id="e_id" name="id" value="">
                             <div class="form-group">
-                                <label>Leave Type <span class="text-danger">*</span></label>
-                                <select class="select" id="e_leave_type" name="leave_type">
-                                    <option selected disabled>Select Leave Type</option>
-                                    <option value="Casual Leave 12 Days">Casual Leave 12 Days</option>
-                                    <option value="Medical Leave">Medical Leave</option>
-                                    <option value="Loss of Pay">Loss of Pay</option>
+                                <label> Leave Status <span class="text-danger">*</span></label>
+                                <select class="select" id="" name="status">
+                                    <option selected disabled>---Select Status--</option>
+                                    <option value="approved">Approve</option>
+                                    <option value="declined">Decline</option>
+                                    <option value="pending">Stand-by</option>
+                                    
                                 </select>
                             </div>
-                            <div class="form-group">
-                                <label>From <span class="text-danger">*</span></label>
-                                <div class="cal-icon">
-                                    <input type="text" class="form-control datetimepicker" id="e_from_date" name="from_date" value="">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label>To <span class="text-danger">*</span></label>
-                                <div class="cal-icon">
-                                    <input type="text" class="form-control datetimepicker" id="e_to_date" name="to_date" value="">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label>Number of days <span class="text-danger">*</span></label>
-                                <input class="form-control" readonly type="text" id="e_number_of_days" name="number_of_days" value="">
-                            </div>
-                            <div class="form-group">
-                                <label>Leave Reason <span class="text-danger">*</span></label>
-                                <textarea rows="4" class="form-control" id="e_leave_reason" name="leave_reason" value=""></textarea>
-                            </div>
+                            
                             <div class="submit-section">
-                                <button type="submit" class="btn btn-primary submit-btn">Save</button>
+                                <button type="submit" class="btn btn-primary submit-btn">Update</button>
                             </div>
                         </form>
                     </div>
@@ -359,16 +347,46 @@ use Illuminate\Support\Facades\Auth;
         {
             var _this = $(this).parents('tr');
             $('#e_id').val(_this.find('.id').text());
+            
             $('#e_number_of_days').val(_this.find('.day').text());
             $('#e_from_date').val(_this.find('.from_date').text());
             $('#e_to_date').val(_this.find('.to_date').text());
             $('#e_leave_reason').val(_this.find('.leave_reason').text());
+            $('#e_status').val(_this.find('.status').text());
 
             var leave_type = (_this.find(".leave_type").text());
             var _option = '<option selected value="' + leave_type+ '">' + _this.find('.leave_type').text() + '</option>'
             $( _option).appendTo("#e_leave_type");
         });
     </script>
+
+    {{-- populate this with the edit field  --}}
+
+    <script>
+        $(document).ready(function () {
+            // Add a click event listener to the "Edit" button
+            $(".leaveUpdate").on("click", function () {
+                // Capture data from the row
+                var row = $(this).closest("tr");
+                // var leaveType = row.find(".leave_type").text();
+                // var fromDate = row.find(".from_date").text();
+                // var toDate = row.find(".to_date").text();
+                // var numberOfDays = row.find(".day").text();
+                // var leaveReason = row.find(".leave_reason").text();
+                var leaveId = row.find(".id").text();
+
+                // Populate the edit modal with captured data
+                // $("#e_leave_type").val(leaveType);
+                // $("#e_from_date").val(fromDate);
+                // $("#e_to_date").val(toDate);
+                // $("#e_number_of_days").val(numberOfDays);
+                // $("#e_leave_reason").val(leaveReason);
+                $("#e_id").val(leaveId);
+            });
+        });
+    </script>
+
+
     {{-- delete model --}}
     <script>
         $(document).on('click','.leaveEDelete',function()
