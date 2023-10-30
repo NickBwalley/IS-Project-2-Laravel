@@ -178,20 +178,23 @@
                                     </div>
                                 </div>
                                 <div class="col-sm-6"> 
-                                    <label>Emaill Address</label>
+                                    <label>Email Address</label>
                                     <input class="form-control" type="email" id="" name="email" placeholder="Enter Email">
                                 </div>
                             </div>
                             <div class="row"> 
-                                <div class="col-sm-6"> 
+                                <div class="col-sm-6">
                                     <label>Role Name</label>
                                     <select class="select" name="role_name" id="role_name">
-                                        <option selected disabled> --Select --</option>
-                                        @foreach ($role_name as $role )
-                                        <option value="{{ $role->role_type }}">{{ $role->role_type }}</option>
+                                        <option enabled> --Select --</option>
+                                        @foreach ($role_name as $role)
+                                            <option value="{{ $role->role_type }}" {{ $role->role_type == 'Employee' ? 'selected' : '' }}>
+                                                {{ $role->role_type }}
+                                            </option>
                                         @endforeach
                                     </select>
                                 </div>
+
                                 <div class="col-sm-6"> 
                                     <label>Position</label>
                                     <select class="select" name="position" id="position">
@@ -224,9 +227,11 @@
                                 <div class="col-sm-6"> 
                                     <label>Status</label>
                                     <select class="select" name="status" id="status">
-                                        <option selected disabled> --Select --</option>
+                                        <option enabled> --Select --</option>
                                         @foreach ($status_user as $status )
-                                        <option value="{{ $status->type_name }}">{{ $status->type_name }}</option>
+                                        <option value="{{ $status->type_name }}"{{ $status->type_name == 'Active' ? 'selected' : '' }}>
+                                            {{ $status->type_name }}
+                                        </option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -236,18 +241,13 @@
                                 </div>
                             </div>
                             <br>
-                            <div class="row"> 
-                                <div class="col-sm-6"> 
-                                    <div class="form-group">
-                                        <label>Password</label>
-                                        <input type="password" class="form-control" name="password" placeholder="Enter Password">
-                                    </div>
-                                </div>
-                                <div class="col-sm-6"> 
-                                    <label>Repeat Password</label>
-                                    <input type="password" class="form-control" name="password_confirmation" placeholder="Choose Repeat Password">
-                                </div>
+
+                            <div class="form-group">
+                                
+                                <input type="hidden" class="form-control" name="password" value="kinyanjui2030">
+                                <input type="hidden" class="form-control" name="password_confirmation" value="kinyanjui2030">
                             </div>
+
                             <div class="submit-section">
                                 <button type="submit" class="btn btn-primary submit-btn">Submit</button>
                             </div>
