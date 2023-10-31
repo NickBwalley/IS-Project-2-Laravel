@@ -12,10 +12,10 @@
             <div class="page-header">
                 <div class="row align-items-center">
                     <div class="col">
-                        <h3 class="page-title">Pay Advance <span id="year"></span></h3>
+                        <h3 class="page-title">Pay In Advance <span id="year"></span></h3>
                         <ul class="breadcrumb">
                             <li class="breadcrumb-item"><a href="{{ route('home') }}">Dashboard</a></li>
-                            <li class="breadcrumb-item active">Advance Salary</li>
+                            <li class="breadcrumb-item active">Advance Payment</li>
                         </ul>
                     </div>
                     <div class="col-auto float-right ml-auto">
@@ -77,60 +77,42 @@
 
             {{-- ADD SALARY EMPLOYEE --}}
 
-            <div class="row">
+        <div class="row">
                 <div class="col-md-12">
                     <div class="table-responsive">
                         <table class="table table-striped custom-table datatable">
                             <thead>
                                 <tr>
                                     <th>Employee Name</th>
-                                    {{-- <th>Employee ID</th> --}}
-                                    <th>Invoice Number</th>
-                                    {{-- <th>Phone Number</th> --}}
-                                    <th>KGS Harvested</th>
-                                    <th>Shilling per KG</th>
-                                    <th>Amount to Pay</th>
-                                    <th>Transaction Time</th>
+                                    <th>EmployeeID</th>
+                                    <th>Phone Number</th>
+                                    <th>Advance Amount Taken</th>
+                                    <th>Advance Taken on Date</th>
                                     <th>Status</th>
-                                    <th>Action</th>
+                                    {{-- <th>Action</th> --}}
                                 </tr>
                             </thead>
                             
                             <tbody>
                                 @foreach ($users as $items)
-                                @if ($items->status === 'pending')
+                                {{-- @if ($items->status === 'unpaid') --}}
                                 <tr>
                                     <td>
-                                        <h2 class="table-avatar">
-                                            <a href="{{ url('employee/profile/'.$items->user_id) }}" class="avatar"><img alt="" src="{{ URL::to('/assets/images/'. $items->avatar) }}"></a>
-                                            <a href="{{ url('employee/profile/'.$items->user_id) }}">{{ $items->name }}</a>
-                                        </h2>
+                                        {{ $items->name}}
                                     </td>
-                                    {{-- <td>{{ $items->employee_id_auto }}</td> --}}
-                                    <td>{{ $items->invoice_number }}</td>
+                                    <td>{{ $items->employee_id_auto }}</td>
+                                    <td>{{ $items->phone_number }}</td>
                                     {{-- <td>{{ $items->phone_number }}</td> --}}
-                                    <td>{{ $items->number_of_kgs_harvested }}</td>
-                                    <td>{{ $items->shillings_per_kg }}</td>
-                                    <td><strong><span class="btn btn-warning">KSH {{ $items->estimated_payout }}</span></strong></td>
+                                    <td><strong><span class="btn btn-warning">KSH {{ $items->advance_amount }}</span></strong></td>
                                     <td>{{ $items->created_at }}</td>
                                     <td><span class="btn btn-secondary">{{ $items->status }}</span></td>
-                                    <td class="text-right">
+                                    {{-- <td class="text-right">
                                         <div class="dropdown dropdown-action">
-                                            <a href="#" class="action-icon dropdown-toggle editSalary" data-toggle="modal" data-target="#edit_salary"
-                                                data-id="{{ $items->id }}"
-                                                data-name="{{ $items->name }}"
-                                                data-phone_number="{{ $items->phone_number }}"
-                                                data-employee_id_auto="{{ $items->employee_id_auto }}"
-                                                data-invoice_number="{{ $items->invoice_number }}"
-                                                data-number_of_kgs_harvested="{{ $items->number_of_kgs_harvested }}"
-                                                data-shillings_per_kg="{{ $items->shillings_per_kg }}"
-                                                data-estimated_payout="{{ $items->estimated_payout }}"
-                                            ><span class="btn btn-success">Pay</span></a>
                                             <a class="#" href="#" data-toggle="modal" data-target="#delete_salary" data-id="{{ $items->id }}"><span class="btn btn-danger">Delete</span></a>
                                         </div>
-                                    </td>
+                                    </td> --}}
                                 </tr>
-                                @endif
+                                {{-- @endif --}}
                                 @endforeach
                             </tbody>
 
@@ -140,91 +122,74 @@
                 </div>
             </div>
 
-        </div>
-        <!-- /Page Content -->
+        
+            
 
         <!-- Add Salary Modal -->
 
         <div id="add_salary" class="modal custom-modal fade" role="dialog">
-    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title"> Add Employee Salary</h5>
+                <h5 class="modal-title"> Pay Employee In Advance</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <form action="{{ route('form/salary/save') }}" method="POST">
+                <form action="{{ route('form/salary/advPay') }}" method="POST">
                     @csrf
                     <div class="row"> 
                         <div class="col-sm-6">
-    <div class="form-group">
-        <label for="name">Employee Names</label>
-        <select class="form-control select2s-hidden-accessible @error('name') is-invalid @enderror" id="name" name="name">
-            <option value="">-- Select --</option>
-            @foreach ($userList as $key => $user)
-                @if (isset($user->status) && $user->status === 'Active')
-                    <option value="{{ $user->name }}" data-employee_id="{{ $user->user_id }}" data-phone_number="{{ $user->phone_number }}">{{ $user->name }}</option>
-                @endif
-            @endforeach
-        </select>
+                            <div class="form-group">
+                                <label for="name">Employee Names</label>
+                                <select class="form-control select2s-hidden-accessible @error('name') is-invalid @enderror" id="name" name="name">
+                                    <option value="">-- Select Employees Name --</option>
+                                    @foreach ($userList as $key => $user)
+                                        @if (isset($user->status) && $user->status === 'Active')
+                                            <option value="{{ $user->name }}" data-employee_id="{{ $user->user_id }}" data-phone_number="{{ $user->phone_number }}">{{ $user->name }}</option>
+                                        @endif
+                                    @endforeach
+                                </select>
 
-        @error('name')
-            <span class="invalid-feedback" role="alert">
-                <strong>{{ $message }}</strong>
-            </span>
-        @enderror
-    </div>
-</div>
-
-
-                        <div class="col-sm-6"> 
-                            <label>Employee ID Auto</label>
-                            <input class="form-control" type="text" name="employee_id_auto" id="employee_id_auto" readonly>
-                        </div>
-
-                        <div class="col-sm-6 offset-sm-6 text-right"> 
-                            <label class="float-left">Phone Number Auto</label>
-                            <input class="form-control" type="text" name="phone_number" id="phone_number" readonly>
+                                @error('name')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
                         </div>
 
 
-                        
+                            <div class="col-sm-6"> 
+                                <label>Employee ID Auto</label>
+                                <input class="form-control" type="text" name="employee_id_auto" id="employee_id_auto" readonly>
+                            </div>
+
+                            <div class="col-sm-6 offset-sm-6 text-right"> 
+                                <label class="float-left">Phone Number Auto</label>
+                                <input class="form-control" type="text" name="phone_number" id="phone_number" readonly>
+                            </div>
 
 
                     </div>
                     
                     <div class="row"> 
                         <div class="col-sm-6"> 
-                            {{-- <h4 class="text-primary">Earnings</h4> --}}
                             <div class="form-group">
-                                <label>Number of Kgs Harvested</label>
-                                <input class="form-control @error('number_of_kgs_harvested') is-invalid @enderror" type="number" name="number_of_kgs_harvested" id="number_of_kgs_harvested" value="{{ old('number_of_kgs_harvested') }}" placeholder="Enter number of kgs harvested">
-                                @error('number_of_kgs_harvested')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
+                                <label>Advance Amount Paid</label>
+                                <input class="form-control" type="numeric" name="advance_amount" id="advance_amount">
                             </div>
+                            
                             <div class="form-group">
-                                <label>Shillings per Kg</label>
-                                <input class="form-control @error('shillings_per_kg') is-invalid @enderror" type="number" name="shillings_per_kg" id="shillings_per_kg" value="{{ old('shillings_per_kg', 8) }}" placeholder="Enter shillings per kg">
-                                @error('shillings_per_kg')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                            <div class="form-group">
-                                <label>Estimated Payout</label>
-                                <input class="form-control" type="text" name="estimated_payout" id="estimated_payout" readonly>
+                                <label>Status</label>
+                                <input class="form-control" type="text" name="status" id="status" value="unpaid" readonly>
                             </div>
                         </div>
                        
                     </div>
                     <div class="submit-section">
-                        <button type="submit" class="btn btn-primary submit-btn">Submit</button>
+                        <button type="submit" class="btn btn-primary submit-btn">Pay Advance</button>
                     </div>
                 </form>
             </div>
@@ -234,82 +199,9 @@
 
         <!-- /Add Salary Modal -->
         
-        <!-- Edit Salary Modal -->
-    <div id="edit_salary" class="modal custom-modal fade" role="dialog">
-        <div class="modal-dialog modal-dialog-centered modal-md" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Employee Payment</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form action="{{ route('form/salary/update') }}" method="POST">
-                    @csrf
-                    {{-- <input class="form-control" type="text" name="id" id="e_id" value="" > --}}
-                    <div class="row"> 
-                        <div class="col-sm-6"> 
-                            <div class="form-group">
-                                <label>Employee Name</label>
-                                <input class="form-control" type="text" name="name" id="e_name" value="" readonly>
-                            </div>
-                            @error('name')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
-                        </div>
-                        <div class="col-sm-6"> 
-                            <label>Employees M-Pesa Number</label>
-                            <input class="form-control" type="text" name="employee_mpesa_number" id="e_phone_number" value="" >
-                        </div>
-                        <div class="col-sm-6"> 
-                                <label>Employee ID </label>
-                                <input class="form-control" type="text" name="employee_id_auto" id="e_employee_id_auto" value="" readonly>
-                        </div>
-                        <div class="col-sm-6"> 
-                                <label>Sender's M-Pesa Number </label>
-                                <input class="form-control" type="text" name="senders_mpesa_number" id="sender_phone_number" value="" >
-                        </div>
-                    </div>
-                    <div class="row"> 
-                        <div class="col-sm-6"> 
-                            
-                            <div class="form-group">
-                                <label>Invoice Number</label>
-                                <input class="form-control" type="text" name="invoice_number" id="e_invoice_number" value="" readonly >
-                            </div>
-                            
-                            <div class="form-group">
-                                <label>Number of Kgs Harvested</label>
-                                <input class="form-control" type="text" name="number_of_kgs_harvested" id="e_number_of_kgs_harvested" value="" readonly >
-                            </div>
-
-                            
-                            <div class="form-group">
-                                <label>Shillings per Kg</label>
-                                <input class="form-control" type="text"  name="shillings_per_kg" id="e_shillings_per_kg" value="" readonly>
-                            </div>
-                            <div class="form-group">
-                                <label>Total Amount to Pay</label>
-                                <input class="form-control" type="text"  name="amount_paid" id="e_estimated_payout" value="" readonly>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="submit-section">
-                        <button type="submit" class="btn btn-primary submit-btn">Confirm Pay</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-        <!-- /Edit Salary Modal -->
         
         <!-- Delete Salary Modal -->
-        <div class="modal custom-modal fade" id="delete_salary" role="dialog">
+        {{-- <div class="modal custom-modal fade" id="delete_salary" role="dialog">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-body">
@@ -334,7 +226,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> --}}
 
         <!-- /Delete Salary Modal -->
      
@@ -358,40 +250,30 @@
             $('#phone_number').val(phoneNumber);
         });
 
-        // Calculate Estimated Payout in real-time
-        $('#number_of_kgs_harvested, #shillings_per_kg').on('input', function () {
-            var kgsHarvested = parseFloat($('#number_of_kgs_harvested').val()) || 0;
-            var shillingsPerKg = parseFloat($('#shillings_per_kg').val()) || 0;
-            var estimatedPayout = kgsHarvested * shillingsPerKg;
-            $('#estimated_payout').val(estimatedPayout.toFixed(2));
-        });
-
         // Handle the click event for the "Pay" button in the "Edit Salary" modal
-        $('.editSalary').click(function () {
-            var id = $(this).data('id');
-            var name = $(this).data('name');
-            var employee_id_auto = $(this).data('employee_id_auto');
-            var invoice_number = $(this).data('invoice_number');
-            var phone_number = $(this).data('phone_number');
-            var number_of_kgs_harvested = $(this).data('number_of_kgs_harvested');
-            var shillings_per_kg = $(this).data('shillings_per_kg');
-            var estimated_payout = $(this).data('estimated_payout');
-
-            $('#e_id').val(id);
-            $('#e_name').val(name);
-            $('#e_employee_id_auto').val(employee_id_auto);
-            $('#e_invoice_number').val(invoice_number);
-            $('#e_phone_number').val(phone_number);
-            $('#e_number_of_kgs_harvested').val(number_of_kgs_harvested);
-            $('#e_shillings_per_kg').val(shillings_per_kg);
-            $('#e_estimated_payout').val(estimated_payout);
-        });
+        // $('.editSalary').click(function () {
+        //     var id = $(this).data('id');
+        //     var name = $(this).data('name');
+        //     var employee_id_auto = $(this).data('employee_id_auto');
+        //     var phone_number = $(this).data('phone_number');
+        //     var advance_on_date = $(this).data('advance_on_date');
+        //     var status = $(this).data('status');
+            
+        //     $('#e_id').val(id);
+        //     $('#e_name').val(name);
+        //     $('#e_employee_id_auto').val(employee_id_auto);
+        //     $('#e_phone_number').val(phone_number);
+        //     $('#e_phone_number').val(phone_number);
+        //     $('#e_advance_amount').val(advance_amount);
+        //     $('#e_shillings_per_kg').val(shillings_per_kg);
+        //     $('#e_estimated_payout').val(estimated_payout);
+        // });
 
         // Handle the click event for the "Delete" button in the "Delete Salary" modal
-        $('.salaryDelete').click(function () {
-            var id = $(this).data('id');
-            $('.e_id').val(id); // Set the value of the hidden input field
-        });
+        // $('.salaryDelete').click(function () {
+        //     var id = $(this).data('id');
+        //     $('.e_id').val(id); // Set the value of the hidden input field
+        // });
     });
 </script>
 

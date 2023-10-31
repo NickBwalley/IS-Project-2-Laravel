@@ -7,13 +7,18 @@ use Illuminate\Database\Eloquent\Model;
 
 class StaffSalaryAdvance extends Model
 {
+    // use HasFactory;
+
     protected $table = 'staff_salaries_advance'; // Set the correct table name
 
     protected $fillable = [
         'name',
         'employee_id_auto',
-        'on_date',
+        'phone_number',
         'advance_amount',
         'status',
     ];
+
+    
 }
+

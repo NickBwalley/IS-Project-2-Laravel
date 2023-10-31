@@ -89,7 +89,7 @@
                                     {{-- <th>Phone Number</th> --}}
                                     <th>KGS Harvested</th>
                                     <th>Shilling per KG</th>
-                                    <th>Amount to Pay</th>
+                                    <th>Potential Payout</th>
                                     <th>Transaction Time</th>
                                     <th>Status</th>
                                     <th>Action</th>

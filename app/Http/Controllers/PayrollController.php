@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use DB;
 use App\Models\StaffSalary;
 use App\Models\StaffSalaryPaid;
+use App\Models\StaffSalaryAdvance;
 use Brian2694\Toastr\Facades\Toastr;
 use Auth;
 
@@ -89,55 +90,63 @@ class PayrollController extends Controller
 
 
         public function advPage()
-    {
-        $users = DB::table('users')
-            ->join('staff_salaries', 'users.user_id', '=', 'staff_salaries.employee_id_auto')
-            ->select('users.*', 'staff_salaries.*')
-            ->get();
+{
+    $users = DB::table('staff_salaries_advance')->get();
 
-        $userList = DB::table('users')->select('user_id', 'name', 'phone_number', 'status')->get();
-        // Select the 'user_id', 'name', and 'phone_number' fields from the 'users' table
+    $userList = DB::table('users')->select('user_id', 'name', 'phone_number', 'status')->get();
 
-        $permission_lists = DB::table('permission_lists')->get();
+    $permission_lists = DB::table('permission_lists')->get();
 
-        return view('payroll.employeesalaryadvance', compact('users', 'userList', 'permission_lists'));
-    }
+    return view('payroll.employeesalaryadvance', compact('users', 'userList', 'permission_lists'));
+}
 
 
             // save advance paid
-    public function advPay(Request $request)
-    {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'employee_id_auto' => 'required|string|max:255',
-            'on_date' => 'required|string|max:100', 
-            'advance_amount' => 'required|numeric|min:0',
-            'status' => 'required|string|max:100',
-        ]);
+    public function advancePay(Request $request)
+{
+    // Validate the request
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'employee_id_auto' => 'required|string|max:255',
+        'phone_number' => 'required|numeric|digits:10', // Limit the phone number to 10 digits
+        'advance_amount' => 'required|numeric|min:0',
+        'status' => 'required|string|max:100',
+    ]);
 
+    // Start a database transaction
+    DB::beginTransaction();
 
-        DB::beginTransaction();
-        try {
-            $salary = StaffSalaryAdvance::updateOrCreate(['id' => $request->id]);
-            $salary->name = $request->name;
-            $salary->employee_id_auto = $request->employee_id_auto;
-            $salary->on_date = $request->on_date; // the date that the employee took the advance (wed, sat)
-            $salary->advance_amount = $request->advance_amount; 
-            $salary->status = $request->status; 
-    
-            $salary->save();
+    // Try to create a new salary advance record
+    try {
+        $data = [
+            'name' => $request->name,
+            'employee_id_auto' => $request->employee_id_auto,
+            'phone_number' => $request->phone_number,
+            'advance_amount' => $request->advance_amount,
+            'status' => $request->status,
+        ];
 
-            DB::commit();
-            Toastr::success('Advance Amount Granted Successfully :)', 'Success');
-            return redirect()->back();
-        } catch (\Exception $e) {
-            DB::rollback();
-            dd($e->getMessage()); // Debugging: Display the error message
-            Toastr::error('Advance Amount Not-Granted :(', 'Error');
-            return redirect()->back();
-        }
+        $salary = StaffSalaryAdvance::create($data);
 
+        // Commit the database transaction if successful
+        DB::commit();
+
+        // Display a success message
+        Toastr::success('Advance Amount Granted Successfully :)', 'Success');
+
+        // Redirect back
+        return redirect()->back();
+    } catch (\Exception $e) {
+        // Rollback the database transaction if an error occurs
+        DB::rollback();
+
+        // Display an error message
+        Toastr::error('Advance Amount Not Granted :(', 'Error');
+
+        // Return back
+        return redirect()->back();
     }
+}
 
 
 

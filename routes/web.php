@@ -249,7 +249,7 @@ Route::controller(PayrollController::class)->group(function () {
     Route::get('form/salary/page', 'salary')->middleware('auth')->name('form/salary/page');
 
     Route::get('form/salary/advPage', 'advPage')->middleware('auth')->name('form/salary/advPage');
-    Route::get('form/salary/advPay', 'advPay')->middleware('auth')->name('form/salary/advPay');
+    Route::post('form/salary/advPay', 'advancePay')->middleware('auth')->name('form/salary/advPay');
 
     Route::get('form/salary/epaid', 'salaryPaid')->middleware('auth')->name('form/salary/epaid');
     Route::post('form/salary/save','saveRecord')->middleware('auth')->name('form/salary/save');
