@@ -53,38 +53,92 @@ class PayrollController extends Controller
 
 
         // save record
-public function saveRecord(Request $request)
-{
-    $request->validate([
-        'name' => 'required|string|max:255',
-        'phone_number' => 'required|numeric', // Corrected 'number' to 'numeric'
-        'number_of_kgs_harvested' => 'required|numeric|min:0',
-        'shillings_per_kg' => 'required|numeric|min:0',
-    ]);
+    public function saveRecord(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'phone_number' => 'required|numeric', // Corrected 'number' to 'numeric'
+            'number_of_kgs_harvested' => 'required|numeric|min:0',
+            'shillings_per_kg' => 'required|numeric|min:0',
+        ]);
 
 
-    DB::beginTransaction();
-    try {
-        $salary = StaffSalary::updateOrCreate(['id' => $request->id]);
-        $salary->name = $request->name;
-        $salary->employee_id_auto = $request->employee_id_auto;
-        $salary->phone_number = $request->phone_number;
-        $salary->number_of_kgs_harvested = $request->number_of_kgs_harvested; // Updated field name
-        $salary->shillings_per_kg = $request->shillings_per_kg; // Added field for shillings per kg
-        $salary->estimated_payout = $request->number_of_kgs_harvested * $request->shillings_per_kg; // Calculated estimated payout
-        $salary->save();
+        DB::beginTransaction();
+        try {
+            $salary = StaffSalary::updateOrCreate(['id' => $request->id]);
+            $salary->name = $request->name;
+            $salary->employee_id_auto = $request->employee_id_auto;
+            $salary->phone_number = $request->phone_number;
+            $salary->number_of_kgs_harvested = $request->number_of_kgs_harvested; // Updated field name
+            $salary->shillings_per_kg = $request->shillings_per_kg; // Added field for shillings per kg
+            $salary->estimated_payout = $request->number_of_kgs_harvested * $request->shillings_per_kg; // Calculated estimated payout
+            $salary->save();
 
-        DB::commit();
-        Toastr::success('Created new transaction successfully :)', 'Success');
-        return redirect()->back();
-    } catch (\Exception $e) {
-        DB::rollback();
-        dd($e->getMessage()); // Debugging: Display the error message
-        Toastr::error('Transaction failed :(', 'Error');
-        return redirect()->back();
+            DB::commit();
+            Toastr::success('Created new transaction successfully :)', 'Success');
+            return redirect()->back();
+        } catch (\Exception $e) {
+            DB::rollback();
+            dd($e->getMessage()); // Debugging: Display the error message
+            Toastr::error('Transaction failed :(', 'Error');
+            return redirect()->back();
+        }
+
     }
 
-}
+
+
+        public function advPage()
+    {
+        $users = DB::table('users')
+            ->join('staff_salaries', 'users.user_id', '=', 'staff_salaries.employee_id_auto')
+            ->select('users.*', 'staff_salaries.*')
+            ->get();
+
+        $userList = DB::table('users')->select('user_id', 'name', 'phone_number', 'status')->get();
+        // Select the 'user_id', 'name', and 'phone_number' fields from the 'users' table
+
+        $permission_lists = DB::table('permission_lists')->get();
+
+        return view('payroll.employeesalaryadvance', compact('users', 'userList', 'permission_lists'));
+    }
+
+
+            // save advance paid
+    public function advPay(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'employee_id_auto' => 'required|string|max:255',
+            'on_date' => 'required|string|max:100', 
+            'advance_amount' => 'required|numeric|min:0',
+            'status' => 'required|string|max:100',
+        ]);
+
+
+        DB::beginTransaction();
+        try {
+            $salary = StaffSalaryAdvance::updateOrCreate(['id' => $request->id]);
+            $salary->name = $request->name;
+            $salary->employee_id_auto = $request->employee_id_auto;
+            $salary->on_date = $request->on_date; // the date that the employee took the advance (wed, sat)
+            $salary->advance_amount = $request->advance_amount; 
+            $salary->status = $request->status; 
+    
+            $salary->save();
+
+            DB::commit();
+            Toastr::success('Advance Amount Granted Successfully :)', 'Success');
+            return redirect()->back();
+        } catch (\Exception $e) {
+            DB::rollback();
+            dd($e->getMessage()); // Debugging: Display the error message
+            Toastr::error('Advance Amount Not-Granted :(', 'Error');
+            return redirect()->back();
+        }
+
+    }
+
 
 
     // salary view detail
