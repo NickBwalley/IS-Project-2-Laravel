@@ -1,5 +1,6 @@
 @extends('layouts.master')
 @section('content')
+
     <!-- Page Wrapper -->
     <div class="page-wrapper">
         <!-- Page Content -->
@@ -168,21 +169,67 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form action="{{ route('user/add/save') }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('register') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="row"> 
                                 <div class="col-sm-6"> 
                                     <div class="form-group">
                                         <label>Full Name</label>
-                                        <input class="form-control @error('name') is-invalid @enderror" type="text" id="" name="name" value="{{ old('name') }}" placeholder="Enter Name">
+                                        <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" placeholder="Enter Your Name">
+                                        @error('name')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
                                     </div>
                                 </div>
                                 <div class="col-sm-6"> 
-                                    <label>Email Address</label>
-                                    <input class="form-control" type="email" id="" name="email" placeholder="Enter Email">
+                                        <label>Email</label>
+                                        <input type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" placeholder="Enter Your Email">
+                                    @error('email')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
                                 </div>
                             </div>
                             <div class="row"> 
+                                <div class="col-sm-6"> 
+                                    <div class="form-group">
+                                                <label>Phone Number</label>
+                                        <input
+                                            type="tel"
+                                            class="form-control @error('phone_number') is-invalid @enderror"
+                                            name="phone_number"
+                                            value="{{ old('phone_number') }}"
+                                            placeholder="Enter Your Phone Number"
+                                        >
+
+                                        @error('phone_number')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6"> 
+                                    <label>Department</label>
+                                    <select class="select @error('department') is-invalid @enderror" name="department" id="department">
+                                        <option selected disabled>-- Select Department --</option>
+                                        <option value="picking">Picking</option>
+                                        <option value="cleaning">Cleaning</option>
+                                        <option value="cleaning">Management</option>
+                                        <option value="others">Others</option>
+                                    </select>
+                                    @error('department')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            
+
                                 <div class="col-sm-6">
                                     <label>Role Name</label>
                                     <select class="select" name="role_name" id="role_name">
@@ -196,35 +243,6 @@
                                 </div>
 
                                 <div class="col-sm-6"> 
-                                    <label>Position</label>
-                                    <select class="select" name="position" id="position">
-                                        <option selected disabled> --Select --</option>
-                                        @foreach ($position as $positions )
-                                        <option value="{{ $positions->position }}">{{ $positions->position }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                            <br>
-                            <div class="row"> 
-                                <div class="col-sm-6"> 
-                                    <div class="form-group">
-                                        <label>Phone</label>
-                                        <input class="form-control" type="tel" id="" name="phone" placeholder="Enter Phone">
-                                    </div>
-                                </div>
-                                <div class="col-sm-6"> 
-                                    <label>Department</label>
-                                    <select class="select" name="department" id="department">
-                                        <option selected disabled> --Select --</option>
-                                        @foreach ($department as $departments )
-                                        <option value="{{ $departments->department }}">{{ $departments->department }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="row"> 
-                                <div class="col-sm-6"> 
                                     <label>Status</label>
                                     <select class="select" name="status" id="status">
                                         <option enabled> --Select --</option>
@@ -235,15 +253,15 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="col-sm-6"> 
-                                    <label>Photo</label>
-                                    <input class="form-control" type="file" id="image" name="image">
-                                </div>
+
+                                
                             </div>
+                            
                             <br>
 
                             <div class="form-group">
-                                
+
+                                <input type="hidden" class="image" name="image" value="photo_defaults.jpg">                                
                                 <input type="hidden" class="form-control" name="password" value="kinyanjui2030">
                                 <input type="hidden" class="form-control" name="password_confirmation" value="kinyanjui2030">
                             </div>

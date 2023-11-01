@@ -45,7 +45,7 @@ class RegisterController extends Controller
             'status'    => 'Active',
             'password'  => Hash::make($request->password),
         ]);
-        Toastr::success('Account Created Successfully :)','Success');
-        return redirect('login');
+        Toastr::success('User Account Created Successfully :)','Success');
+        return redirect()->back();
     }
 }
