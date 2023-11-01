@@ -32,7 +32,28 @@ class PayrollController extends Controller
 
     $permission_lists = DB::table('permission_lists')->get();
 
-    return view('payroll.employeesalary', compact('users', 'userList', 'permission_lists'));
+    // Get the employee ID from the `staff_salaries_advance` table
+    $employeeId = DB::table('staff_salaries_advance')->first()->employee_id_auto;
+
+    // Check if there are any records for the employee ID in the `staff_salaries_advance` table
+    $advanceExists = DB::table('staff_salaries_advance')
+        ->where('employee_id_auto', $employeeId)
+        ->exists();
+
+    // If there are any records, get the total advance amount for the employee
+    if ($advanceExists) {
+        $totalAdvanceAmount = DB::table('staff_salaries_advance')
+            ->where('employee_id_auto', $employeeId)
+            ->sum('advance_amount');
+
+        // Set the value of the `Pending Advance Balance` input field
+        $pendingAdvanceBalance = $totalAdvanceAmount;
+    } else {
+        // If there are no records, set the `Pending Advance Balance` input field to 0
+        $pendingAdvanceBalance = 0;
+    }
+
+    return view('payroll.employeesalary', compact('users', 'userList', 'permission_lists', 'pendingAdvanceBalance'));
 }
 
 
