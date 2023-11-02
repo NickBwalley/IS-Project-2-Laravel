@@ -89,8 +89,9 @@
                                     {{-- <th>Phone Number</th> --}}
                                     <th>KGS Harvested</th>
                                     <th>Shilling per KG</th>
-                                    <th>Amount to Pay</th>
-                                    <th>Transaction Time</th>
+                                    <th>Potential Payout</th>
+                                    <th>Advance Debt Balance</th>
+                                    <th>Transaction Date</th>
                                     <th>Status</th>
                                     <th>Action</th>
                                 </tr>
@@ -111,22 +112,32 @@
                                     {{-- <td>{{ $items->phone_number }}</td> --}}
                                     <td>{{ $items->number_of_kgs_harvested }}</td>
                                     <td>{{ $items->shillings_per_kg }}</td>
-                                    <td><strong><span class="btn btn-warning">KSH {{ $items->estimated_payout }}</span></strong></td>
+                                    <td><strong><span class="btn btn-info">KSH {{ $items->estimated_payout }}</span></strong></td>
+                                    <td><strong><span class="btn btn-warning">KSH {{ $pendingAdvanceBalance }}</span></strong></td>
                                     <td>{{ $items->created_at }}</td>
                                     <td><span class="btn btn-secondary">{{ $items->status }}</span></td>
                                     <td class="text-right">
                                         <div class="dropdown dropdown-action">
-                                            <a href="#" class="action-icon dropdown-toggle editSalary" data-toggle="modal" data-target="#edit_salary"
-                                                data-id="{{ $items->id }}"
-                                                data-name="{{ $items->name }}"
-                                                data-phone_number="{{ $items->phone_number }}"
-                                                data-employee_id_auto="{{ $items->employee_id_auto }}"
-                                                data-invoice_number="{{ $items->invoice_number }}"
-                                                data-number_of_kgs_harvested="{{ $items->number_of_kgs_harvested }}"
-                                                data-shillings_per_kg="{{ $items->shillings_per_kg }}"
-                                                data-estimated_payout="{{ $items->estimated_payout }}"
-                                            ><span class="btn btn-success">Pay</span></a>
-                                            <a class="#" href="#" data-toggle="modal" data-target="#delete_salary" data-id="{{ $items->id }}"><span class="btn btn-danger">Delete</span></a>
+                                            @if ($pendingAdvanceBalance > $items->estimated_payout)
+                                                    <span class="btn btn-danger">Arrears of: KSH {{ $pendingAdvanceBalance - $items->estimated_payout }}</span>
+                                            @else
+                                                    <div class="dropdown dropdown-action">
+                                                        @if ($pendingAdvanceBalance <= $items->estimated_payout)
+                                                            <a href="#" class="action-icon dropdown-toggle editSalary" data-toggle="modal" data-target="#edit_salary"
+                                                                data-id="{{ $items->id }}"
+                                                                data-name="{{ $items->name }}"
+                                                                data-phone_number="{{ $items->phone_number }}"
+                                                                data-employee_id_auto="{{ $items->employee_id_auto }}"
+                                                                data-invoice_number="{{ $items->invoice_number }}"
+                                                                data-number_of_kgs_harvested="{{ $items->number_of_kgs_harvested }}"
+                                                                data-shillings_per_kg="{{ $items->shillings_per_kg }}"
+                                                                data-estimated_payout="{{ $items->estimated_payout }}"
+                                                            ><span class="btn btn-success">Pay</span></a>
+                                                            <a class="#" href="#" data-toggle="modal" data-target="#delete_salary" data-id="{{ $items->id }}"><span class="btn btn-danger">Delete</span></a>
+                                                        @endif
+                                                    </div>
+                                            @endif
+
                                         </div>
                                     </td>
                                 </tr>

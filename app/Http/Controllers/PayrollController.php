@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use DB;
 use App\Models\StaffSalary;
 use App\Models\StaffSalaryPaid;
+use App\Models\StaffSalaryAdvance;
 use Brian2694\Toastr\Facades\Toastr;
 use Auth;
 
@@ -31,7 +32,28 @@ class PayrollController extends Controller
 
     $permission_lists = DB::table('permission_lists')->get();
 
-    return view('payroll.employeesalary', compact('users', 'userList', 'permission_lists'));
+    // Get the employee ID from the `staff_salaries_advance` table
+    $employeeId = DB::table('staff_salaries_advance')->first()->employee_id_auto;
+
+    // Check if there are any records for the employee ID in the `staff_salaries_advance` table
+    $advanceExists = DB::table('staff_salaries_advance')
+        ->where('employee_id_auto', $employeeId)
+        ->exists();
+
+    // If there are any records, get the total advance amount for the employee
+    if ($advanceExists) {
+        $totalAdvanceAmount = DB::table('staff_salaries_advance')
+            ->where('employee_id_auto', $employeeId)
+            ->sum('advance_amount');
+
+        // Set the value of the `Pending Advance Balance` input field
+        $pendingAdvanceBalance = $totalAdvanceAmount;
+    } else {
+        // If there are no records, set the `Pending Advance Balance` input field to 0
+        $pendingAdvanceBalance = 0;
+    }
+
+    return view('payroll.employeesalary', compact('users', 'userList', 'permission_lists', 'pendingAdvanceBalance'));
 }
 
 
@@ -53,38 +75,100 @@ class PayrollController extends Controller
 
 
         // save record
-public function saveRecord(Request $request)
-{
-    $request->validate([
-        'name' => 'required|string|max:255',
-        'phone_number' => 'required|numeric', // Corrected 'number' to 'numeric'
-        'number_of_kgs_harvested' => 'required|numeric|min:0',
-        'shillings_per_kg' => 'required|numeric|min:0',
-    ]);
+    public function saveRecord(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'phone_number' => 'required|numeric', // Corrected 'number' to 'numeric'
+            'number_of_kgs_harvested' => 'required|numeric|min:0',
+            'shillings_per_kg' => 'required|numeric|min:0',
+        ]);
 
 
-    DB::beginTransaction();
-    try {
-        $salary = StaffSalary::updateOrCreate(['id' => $request->id]);
-        $salary->name = $request->name;
-        $salary->employee_id_auto = $request->employee_id_auto;
-        $salary->phone_number = $request->phone_number;
-        $salary->number_of_kgs_harvested = $request->number_of_kgs_harvested; // Updated field name
-        $salary->shillings_per_kg = $request->shillings_per_kg; // Added field for shillings per kg
-        $salary->estimated_payout = $request->number_of_kgs_harvested * $request->shillings_per_kg; // Calculated estimated payout
-        $salary->save();
+        DB::beginTransaction();
+        try {
+            $salary = StaffSalary::updateOrCreate(['id' => $request->id]);
+            $salary->name = $request->name;
+            $salary->employee_id_auto = $request->employee_id_auto;
+            $salary->phone_number = $request->phone_number;
+            $salary->number_of_kgs_harvested = $request->number_of_kgs_harvested; // Updated field name
+            $salary->shillings_per_kg = $request->shillings_per_kg; // Added field for shillings per kg
+            $salary->estimated_payout = $request->number_of_kgs_harvested * $request->shillings_per_kg; // Calculated estimated payout
+            $salary->save();
 
-        DB::commit();
-        Toastr::success('Created new transaction successfully :)', 'Success');
-        return redirect()->back();
-    } catch (\Exception $e) {
-        DB::rollback();
-        dd($e->getMessage()); // Debugging: Display the error message
-        Toastr::error('Transaction failed :(', 'Error');
-        return redirect()->back();
+            DB::commit();
+            Toastr::success('Created new transaction successfully :)', 'Success');
+            return redirect()->back();
+        } catch (\Exception $e) {
+            DB::rollback();
+            dd($e->getMessage()); // Debugging: Display the error message
+            Toastr::error('Transaction failed :(', 'Error');
+            return redirect()->back();
+        }
+
     }
 
+
+
+        public function advPage()
+{
+    $users = DB::table('staff_salaries_advance')->get();
+
+    $userList = DB::table('users')->select('user_id', 'name', 'phone_number', 'status')->get();
+
+    $permission_lists = DB::table('permission_lists')->get();
+
+    return view('payroll.employeesalaryadvance', compact('users', 'userList', 'permission_lists'));
 }
+
+
+            // save advance paid
+    public function advancePay(Request $request)
+{
+    // Validate the request
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'employee_id_auto' => 'required|string|max:255',
+        'phone_number' => 'required|numeric|digits:10', // Limit the phone number to 10 digits
+        'advance_amount' => 'required|numeric|min:0',
+        'status' => 'required|string|max:100',
+    ]);
+
+    // Start a database transaction
+    DB::beginTransaction();
+
+    // Try to create a new salary advance record
+    try {
+        $data = [
+            'name' => $request->name,
+            'employee_id_auto' => $request->employee_id_auto,
+            'phone_number' => $request->phone_number,
+            'advance_amount' => $request->advance_amount,
+            'status' => $request->status,
+        ];
+
+        $salary = StaffSalaryAdvance::create($data);
+
+        // Commit the database transaction if successful
+        DB::commit();
+
+        // Display a success message
+        Toastr::success('Advance Amount Granted Successfully :)', 'Success');
+
+        // Redirect back
+        return redirect()->back();
+    } catch (\Exception $e) {
+        // Rollback the database transaction if an error occurs
+        DB::rollback();
+
+        // Display an error message
+        Toastr::error('Advance Amount Not Granted :(', 'Error');
+
+        // Return back
+        return redirect()->back();
+    }
+}
+
 
 
     // salary view detail

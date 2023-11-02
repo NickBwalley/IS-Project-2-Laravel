@@ -25,7 +25,7 @@ class RegisterController extends Controller
             'name'      => 'required|string|max:255',
             'email'     => 'required|string|email|max:255|unique:users',
             'phone_number' => 'required|regex:/^\d{10}$/',
-            'department' => 'required|in:picking,cleaning,others',
+            'department' => 'required|string|max:255',
             'role_name' => 'required|string|max:255',
             'password'  => 'required|string|min:8|confirmed',
             'password_confirmation' => 'required',
@@ -45,7 +45,7 @@ class RegisterController extends Controller
             'status'    => 'Active',
             'password'  => Hash::make($request->password),
         ]);
-        Toastr::success('Account Created Successfully :)','Success');
-        return redirect('login');
+        Toastr::success('User Account Created Successfully :)','Success');
+        return redirect()->back();
     }
 }

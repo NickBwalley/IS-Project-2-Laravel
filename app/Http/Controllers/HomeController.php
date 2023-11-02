@@ -1,6 +1,10 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use App\Models\department;
+use App\Models\DepartmentsAssigned;
+use App\Models\LeavesEmployee;
 use App\Models\StaffSalary;
 use App\Models\StaffSalaryPaid;
 use Illuminate\Http\Request;
@@ -30,9 +34,13 @@ class HomeController extends Controller
     {
         $pendingTransactions = StaffSalary::where('status', 'pending')->count();
         $paidTransactions = StaffSalary::where('status', 'paid')->count();
+        $pendingLeaves = LeavesEmployee::where('status', 'pending')->count();
+        $approvedLeaves = LeavesEmployee::where('status', 'approved')->count();
+        $declinedLeaves = LeavesEmployee::where('status', 'declined')->count();
+        $farmSections = department::count();
         $allTransactionsCount = StaffSalaryPaid::count();
         $allUsersCount = User::count();
-        return view('dashboard.dashboard', compact('pendingTransactions', 'paidTransactions', 'allTransactionsCount', 'allUsersCount'));
+        return view('dashboard.dashboard', compact('pendingTransactions', 'paidTransactions', 'allTransactionsCount', 'allUsersCount', 'pendingLeaves', 'approvedLeaves', 'declinedLeaves', 'farmSections'));
     }
     // employee dashboard
     public function emDashboard()

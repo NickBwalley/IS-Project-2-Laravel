@@ -207,44 +207,36 @@ class UserManagementController extends Controller
     // save new user
     public function addNewUserSave(Request $request)
     {
-        $request->validate([
+         $request->validate([
             'name'      => 'required|string|max:255',
             'email'     => 'required|string|email|max:255|unique:users',
-            'phone'     => 'required|min:11|numeric',
+            'phone_number' => 'required|regex:/^\d{10}$/',
+            'department' => 'required|string|max:255',
             'role_name' => 'required|string|max:255',
-            'position'  => 'required|string|max:255',
-            'department'=> 'required|string|max:255',
-            'status'    => 'required|string|max:255',
-            'image'     => 'required|image',
             'password'  => 'required|string|min:8|confirmed',
             'password_confirmation' => 'required',
         ]);
-        DB::beginTransaction();
         try{
-            $dt       = Carbon::now();
-            $todayDate = $dt->toDayDateTimeString();
-
-            $image = time().'.'.$request->image->extension();  
-            $request->image->move(public_path('assets/images'), $image);
-
-            $user = new User;
-            $user->name         = $request->name;
-            $user->email        = $request->email;
-            $user->join_date    = $todayDate;
-            $user->phone_number = $request->phone;
-            $user->role_name    = $request->role_name;
-            $user->position     = $request->position;
-            $user->department   = $request->department;
-            $user->status       = $request->status;
-            $user->avatar       = $image;
-            $user->password     = Hash::make($request->password);
-            $user->save();
+        $dt       = Carbon::now();
+        $todayDate = $dt->toDayDateTimeString();
+        
+        User::create([
+            'name'      => $request->name,
+            'avatar'    => $request->image,
+            'email'     => $request->email,
+            'phone_number' => $request->phone_number,
+            'department' => $request->department,
+            'join_date' => $todayDate,
+            'role_name' => $request->role_name,
+            'status'    => 'Active',
+            'password'  => Hash::make($request->password),
+        ]);
             DB::commit();
-            Toastr::success('Create new account successfully :)','Success');
+            Toastr::success('Account Created Successfully :)','Success');
             return redirect()->route('userManagement');
         }catch(\Exception $e){
             DB::rollback();
-            Toastr::error('User add new account fail :)','Error');
+            Toastr::error('User add new account failed :)','Error');
             return redirect()->back();
         }
     }

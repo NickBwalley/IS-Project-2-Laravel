@@ -31,6 +31,7 @@ class LeavesController extends Controller
             'from_date'    => 'required|string|max:255',
             'to_date'      => 'required|string|max:255',
             'leave_reason' => 'required|string|max:255',
+            'status'       => 'required|string|max:255',
         ]);
 
         DB::beginTransaction();
@@ -48,6 +49,7 @@ class LeavesController extends Controller
             $leaves->to_date       = $request->to_date;
             $leaves->day           = $days;
             $leaves->leave_reason  = $request->leave_reason;
+            $leaves->status  = $request->status;
             $leaves->save();
 
             DB::commit();
@@ -55,7 +57,7 @@ class LeavesController extends Controller
             return redirect()->back();
         } catch(\Exception $e) {
             DB::rollback();
-            Toastr::error('Add Leaves fail :)','Error');
+            Toastr::error('Failed to create Leave :)','Error');
             return redirect()->back();
         }
     }
@@ -157,6 +159,7 @@ class LeavesController extends Controller
             'from_date'    => 'required|string|max:255',
             'to_date'      => 'required|string|max:255',
             'leave_reason' => 'required|string|max:255',
+            'status'       => 'required|string|max:255',
         ]);
 
         DB::beginTransaction();
@@ -174,6 +177,7 @@ class LeavesController extends Controller
             $leavese->to_date       = $request->to_date;
             $leavese->day           = $days;
             $leavese->leave_reason  = $request->leave_reason;
+            $leavese->status  = $request->status;
             $leavese->save();
 
             DB::commit();
@@ -181,7 +185,7 @@ class LeavesController extends Controller
             return redirect()->back();
         } catch(\Exception $e) {
             DB::rollback();
-            Toastr::error('Add Leaves fail :)','Error');
+            Toastr::error('Add Leaves failed :)','Error');
             return redirect()->back();
         }
     }
@@ -207,18 +211,8 @@ class LeavesController extends Controller
         DB::beginTransaction();
         try {
 
-            $from_date = new DateTime($request->from_date);
-            $to_date = new DateTime($request->to_date);
-            $day     = $from_date->diff($to_date);
-            $days    = $day->d;
-
             $update = [
-                'id'           => $request->id,
-                'leave_type'   => $request->leave_type,
-                'from_date'    => $request->from_date,
-                'to_date'      => $request->to_date,
-                'day'          => $days,
-                'leave_reason' => $request->leave_reason,
+                'status' => $request->status,
             ];
 
             LeavesEmployee::where('id',$request->id)->update($update);

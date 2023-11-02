@@ -27,7 +27,7 @@
                 </div>
                 <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
                     <div class="card dash-widget">
-                        <div class="card-body"> <span class="dash-widget-icon"><i class="fa fa-usd"></i></span>
+                        <div class="card-body"> <span class="dash-widget-icon"><i class="fa fa-handshake-o"></i></span>
                             <div class="dash-widget-info">
                                 <h3>{{$paidTransactions}}</h3> <span>Paid Transactions</span>
                             </div>
@@ -36,7 +36,7 @@
                 </div>
                 <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
                     <div class="card dash-widget">
-                        <div class="card-body"> <span class="dash-widget-icon"><i class="fa fa-diamond"></i></span>
+                        <div class="card-body"> <span class="dash-widget-icon"><i class="fa fa-usd"></i></span>
                             <div class="dash-widget-info">
                                 <h3>{{$allTransactionsCount}}</h3> <span>Total Transactions</span>
                             </div>
@@ -48,6 +48,46 @@
                         <div class="card-body"> <span class="dash-widget-icon"><i class="fa fa-user"></i></span>
                             <div class="dash-widget-info">
                                 <h3>{{$allUsersCount}}</h3> <span>Registered Users</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+                    <div class="card dash-widget">
+                        <div class="card-body"> <span class="dash-widget-icon"><i class="fa fa-spinner"></i></span>
+                            <div class="dash-widget-info">
+                                <h3>{{$pendingLeaves}}</h3> <span>Pending Leaves</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+                    <div class="card dash-widget">
+                        <div class="card-body"> <span class="dash-widget-icon"><i class="fa fa-thumbs-up"></i></span>
+                            <div class="dash-widget-info">
+                                <h3>{{$approvedLeaves}}</h3> <span>Approved Leaves</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+                    <div class="card dash-widget">
+                        <div class="card-body"> <span class="dash-widget-icon"><i class="fa fa-thumbs-down"></i></span>
+                            <div class="dash-widget-info">
+                                <h3>{{$declinedLeaves}}</h3> <span>Declined Leaves</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+                    <div class="card dash-widget">
+                        <div class="card-body"> <span class="dash-widget-icon"><i class="fa fa-diamond"></i></span>
+                            <div class="dash-widget-info">
+                                <h3>{{$farmSections}}</h3> <span>Farm Sections</span>
                             </div>
                         </div>
                     </div>
