@@ -177,14 +177,17 @@
                     <div class="row"> 
                         <div class="col-sm-6"> 
                             <div class="form-group">
-                                <label>Advance Amount Paid</label>
+                                <label>Advance Amount Requested</label>
                                 <input class="form-control" type="numeric" name="advance_amount" id="advance_amount">
                             </div>
                             
                             <div class="form-group">
-                                <label>Status</label>
-                                <input class="form-control" type="text" name="status" id="status" value="unpaid" readonly>
+                                <label>Potential Payout Balance</label>
+                                <input class="form-control" type="text" name="potential_payout" id="potential_payout" value="potential_payout" readonly>
                             </div>
+                            
+                            {{-- status by default is set to "unpaid" --}}
+                            <input class="form-control" type="hidden" name="status" id="status" value="unpaid" readonly>
                         </div>
                        
                     </div>

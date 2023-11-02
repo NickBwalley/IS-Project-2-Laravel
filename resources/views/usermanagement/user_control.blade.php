@@ -219,7 +219,7 @@
                                         <option selected disabled>-- Select Department --</option>
                                         <option value="picking">Picking</option>
                                         <option value="cleaning">Cleaning</option>
-                                        <option value="cleaning">Management</option>
+                                        <option value="management">Management</option>
                                         <option value="others">Others</option>
                                     </select>
                                     @error('department')

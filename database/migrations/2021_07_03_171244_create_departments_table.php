@@ -18,11 +18,11 @@ class CreateDepartmentsTable extends Migration
             $table->string('department')->nullable();
             $table->timestamps();
         });
-        DB::table('departments')->insert([
-            ['department' => 'Picking'],
-            ['department' => 'Cleaning'],
-            ['department' => 'Others'],
-        ]);
+        // DB::table('departments')->insert([
+        //     ['department' => 'Picking'],
+        //     ['department' => 'Cleaning'],
+        //     ['department' => 'Others'],
+        // ]);
     }
 
     /**
