@@ -204,6 +204,29 @@ use Illuminate\Support\Facades\Auth;
                     <div class="modal-body">
                         <form action="{{ route('form/leavesemployee/save') }}" method="POST">
                             @csrf
+
+                            <div class="form-group">
+                                <label for="name">Employee Names</label>
+                                <select class="form-control select2s-hidden-accessible @error('name') is-invalid @enderror" id="name" name="name">
+                                    <option value="">-- Select --</option>
+                                    @foreach ($userList as $key => $user)
+                                        @if ($user->status === 'Active' && $user->role_name === 'Employee')
+                                            <option value="{{ $user->name }}" data-employee_id="{{ $user->user_id }}" data-phone_number="{{ $user->phone_number }}">{{ $user->name }}</option>
+                                        @endif
+                                    @endforeach
+                                </select>
+
+                                @error('name')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+
+                            
+                                <input class="form-control" type="hidden" name="user_id" id="employee_id_auto" readonly>
+                            
+
                             <div class="form-group">
                                 <label>Leave Type <span class="text-danger">*</span></label>
                                 <select class="select" id="leaveType" name="leave_type">
@@ -214,7 +237,10 @@ use Illuminate\Support\Facades\Auth;
                                     <option value="Loss of Pay">Others</option>
                                 </select>
                             </div>
-                            <input type="text" class="form-control" id="user_id" name="user_id" value="{{ Auth::user()->user_id }}">
+
+
+
+                            {{-- <input type="text" class="form-control" id="user_id" name="user_id" value="{{ Auth::user()->user_id }}"> --}}
                             <div class="form-group">
                                 <label>From <span class="text-danger">*</span></label>
                                 <div class="cal-icon">
@@ -398,12 +424,17 @@ use Illuminate\Support\Facades\Auth;
 
     <script>
         $(document).ready(function () {
-            // Event listener for changes in the employee_name dropdown
-            $('#employee_name').change(function () {
+            // Populate Employee ID Auto and Phone Number in the "Add Salary" modal
+            $('#name').change(function () {
                 var selectedOption = $(this).find('option:selected');
                 var employeeID = selectedOption.data('employee_id');
-                // Populate the employee_id_auto input field
+                var phoneNumber = selectedOption.data('phone_number');
+
+                // Set the value of the employee_id_auto field
                 $('#employee_id_auto').val(employeeID);
+
+                // Set the value of the phone_number field
+                $('#phone_number').val(phoneNumber);
             });
         });
     </script>
