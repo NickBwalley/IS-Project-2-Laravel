@@ -7,6 +7,7 @@ use DB;
 use Brian2694\Toastr\Facades\Toastr;
 use App\Models\performanceIndicator;
 use App\Models\performance_appraisal;
+use LaravelDaily\LaravelCharts\Classes\LaravelChart;
 use Session;
 use Auth;
 
@@ -15,22 +16,66 @@ class PerformanceController extends Controller
     // view page
     public function index()
     {
-        $user_id = Auth::User()->user_id;
-        Session::put('user_id', $user_id);
+        $chart1_options = [
+            'chart_title' => 'Numbers of kgs per Day (Line Chart)',
+            'report_type' => 'group_by_date',
+            'model' => 'App\Models\StaffSalaryPaid',
+            'group_by_field' => 'created_at',
+            'group_by_period' => 'day',
+            'aggregate_function' => 'sum',
+            'aggregate_field' => 'number_of_kgs_harvested',
+            'chart_type' => 'line',
+        ];
+        $chart2_options = [
+            'chart_title' => 'Amount payable per week (Line Chart)',
+            'report_type' => 'group_by_date',
+            'model' => 'App\Models\StaffSalaryPaid',
+            'group_by_field' => 'created_at',
+            'group_by_period' => 'day',
+            'aggregate_function' => 'sum',
+            'aggregate_field' => 'amount_paid',
+            'filter_days' => 30,
+            'filter_period' => 'week',
 
-        $indicator = DB::table('performance_indicator_lists')->get();
-        $departments = DB::table('departments')->get();
-        $performance_indicators = DB::table('users')
-            ->join('performance_indicators', 'users.user_id', '=', 'performance_indicators.user_id')
-            ->select('users.*', 'performance_indicators.*')
-            ->get(); 
-        return view('performance.performanceindicator',compact('indicator','departments','performance_indicators'));
+            'chart_type' => 'bar',
+        ];
+
+        $chart3_options = [
+            'chart_title' => 'Users by Months (Pie Chart)',
+            'report_type' => 'group_by_string',
+            'model' => 'App\Models\User',
+            'group_by_field' => 'name',
+            'filter_field' => 'join_date',
+            'filter_period' => 'week',
+            'chart_type' => 'pie',
+        ];
+        $chart4_options = [
+            'chart_title' => 'Advance payable per week (Line Chart)',
+            'report_type' => 'group_by_date',
+            'model' => 'App\Models\StaffSalaryAdvance',
+            'group_by_field' => 'created_at',
+            'group_by_period' => 'day',
+            'aggregate_function' => 'sum',
+            'aggregate_field' => 'advance_amount',
+            'filter_days' => 30,
+            'filter_period' => 'week',
+
+            'chart_type' => 'bar',
+        ];
+
+        $chart1 = new LaravelChart($chart1_options);
+        $chart2 = new LaravelChart($chart2_options);
+        $chart3 = new LaravelChart($chart3_options);
+        $chart4 = new LaravelChart($chart4_options);
+
+
+        return view('performance.performanceindicator', compact('chart1', 'chart2', 'chart3' , 'chart4'));
     }
 
     //performance
     public function performance()
     {
-       
+
         return view('performance.performance');
     }
 
@@ -42,7 +87,7 @@ class PerformanceController extends Controller
         $appraisals = DB::table('users')
         ->join('performance_appraisals', 'users.user_id', '=', 'performance_appraisals.user_id')
         ->select('users.*', 'performance_appraisals.*')
-        ->get(); 
+        ->get();
         return view('performance.performanceappraisal',compact('users','indicator','appraisals'));
     }
 
@@ -70,7 +115,7 @@ class PerformanceController extends Controller
 
         DB::beginTransaction();
         try {
-            
+
             $indicator = new performanceIndicator;
             $indicator->user_id             = $request->user_id;
             $indicator->designation        = $request->designation;
@@ -124,11 +169,11 @@ class PerformanceController extends Controller
                 'conflict_management'       => $request->conflict_management,
                 'attendance'                => $request->attendance,
                 'ability_to_meet_deadline'  => $request->ability_to_meet_deadline,
-                'status'                    => $request->status,               
+                'status'                    => $request->status,
             ];
             performanceIndicator::where('id',$request->id)->update($update);
             DB::commit();
-            
+
             DB::commit();
             Toastr::success('Performance indicator deleted successfully :)','Success');
             return redirect()->back();
@@ -147,7 +192,7 @@ class PerformanceController extends Controller
             performanceIndicator::destroy($request->id);
             Toastr::success('Performance indicator deleted successfully :)','Success');
             return redirect()->back();
-        
+
         } catch(\Exception $e) {
 
             DB::rollback();
@@ -161,7 +206,7 @@ class PerformanceController extends Controller
     {
         DB::beginTransaction();
         try {
-            
+
             $appraisal = new performance_appraisal;
             $appraisal->user_id              = $request->user_id;
             $appraisal->date                = $request->date;
@@ -192,7 +237,7 @@ class PerformanceController extends Controller
             return redirect()->back();
         }
     }
-    
+
     // delete record
     public function deleteAppraisal(Request $request)
     {
@@ -201,7 +246,7 @@ class PerformanceController extends Controller
             performance_appraisal::destroy($request->id);
             Toastr::success('Performance Appraisal deleted successfully :)','Success');
             return redirect()->back();
-        
+
         } catch(\Exception $e) {
 
             DB::rollback();
@@ -233,7 +278,7 @@ class PerformanceController extends Controller
                 'conflict_management'       => $request->conflict_management,
                 'attendance'                => $request->attendance,
                 'ability_to_meet_deadline'  => $request->ability_to_meet_deadline,
-                'status'                    => $request->status,               
+                'status'                    => $request->status,
             ];
             performance_appraisal::where('id',$request->id)->update($update);
             DB::commit();
