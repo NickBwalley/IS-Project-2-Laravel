@@ -28,12 +28,11 @@ class PayrollController extends Controller
         ->get();
 
     $userList = DB::table('users')->select('user_id', 'name', 'phone_number', 'status')->get();
-    // Select the 'user_id', 'name', and 'phone_number' fields from the 'users' table
 
     $permission_lists = DB::table('permission_lists')->get();
 
     // Get the employee ID from the `staff_salaries_advance` table
-    $employeeId = DB::table('staff_salaries_advance')->first()->employee_id_auto;
+    $employeeId = DB::table('staff_salaries_advance')->first()->employee_id_auto ?? null;
 
     // Check if there are any records for the employee ID in the `staff_salaries_advance` table
     $advanceExists = DB::table('staff_salaries_advance')
@@ -55,6 +54,7 @@ class PayrollController extends Controller
 
     return view('payroll.employeesalary', compact('users', 'userList', 'permission_lists', 'pendingAdvanceBalance'));
 }
+
 
 
     public function salaryPaid()
