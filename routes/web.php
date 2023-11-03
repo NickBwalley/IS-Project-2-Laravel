@@ -247,6 +247,7 @@ Route::controller(LeavesController::class)->group(function () {
 // ----------------------------- form payroll  ------------------------------//
 Route::controller(PayrollController::class)->group(function () {
     Route::get('form/salary/page', 'salary')->middleware('auth')->name('form/salary/page');
+    Route::get('form/salary/checkout', 'salaryFinal')->middleware('auth')->name('form/salary/checkout');
 
     Route::get('form/salary/advPage', 'advPage')->middleware('auth')->name('form/salary/advPage');
     Route::post('form/salary/advPay', 'advancePay')->middleware('auth')->name('form/salary/advPay');
