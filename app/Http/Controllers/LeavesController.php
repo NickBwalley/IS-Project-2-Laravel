@@ -135,7 +135,17 @@ class LeavesController extends Controller
                     ->join('users', 'users.user_id', '=', 'leaves_employees.user_id')
                     ->select('leaves_employees.*', 'users.position','users.name','users.avatar')
                     ->get();
-        return view('form.leavesemployee',compact('leavese'));
+        
+        $users = DB::table('users')
+        ->join('staff_salaries', 'users.user_id', '=', 'staff_salaries.employee_id_auto')
+        ->select('users.*', 'staff_salaries.*')
+        ->get();
+
+    $userList = DB::table('users')->select('user_id', 'name', 'phone_number', 'status')->get();
+    // Select the 'user_id', 'name', and 'phone_number' fields from the 'users' table
+
+    $permission_lists = DB::table('permission_lists')->get();
+        return view('form.leavesemployee',compact('leavese, userList'));
     }
 
     // leaves Employee

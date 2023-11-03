@@ -214,7 +214,7 @@ use Illuminate\Support\Facades\Auth;
                                     <option value="Loss of Pay">Others</option>
                                 </select>
                             </div>
-                            <input type="hidden" class="form-control" id="user_id" name="user_id" value="{{ Auth::user()->user_id }}">
+                            <input type="text" class="form-control" id="user_id" name="user_id" value="{{ Auth::user()->user_id }}">
                             <div class="form-group">
                                 <label>From <span class="text-danger">*</span></label>
                                 <div class="cal-icon">
@@ -393,6 +393,18 @@ use Illuminate\Support\Facades\Auth;
         {
             var _this = $(this).parents('tr');
             $('.e_id').val(_this.find('.id').text());
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            // Event listener for changes in the employee_name dropdown
+            $('#employee_name').change(function () {
+                var selectedOption = $(this).find('option:selected');
+                var employeeID = selectedOption.data('employee_id');
+                // Populate the employee_id_auto input field
+                $('#employee_id_auto').val(employeeID);
+            });
         });
     </script>
     @endsection
