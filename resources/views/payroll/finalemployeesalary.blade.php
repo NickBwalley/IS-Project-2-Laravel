@@ -126,7 +126,7 @@
                                             <td class="text-right">
                                         <div class="dropdown dropdown-action">
                                             @if ($totalAdvanceAmount > $item->estimated_payout)
-                                                    <span class="btn btn-danger">Arrears of: KSH {{ $totalAdvanceAmount - $item->estimated_payout }}</span>
+                                                    <span class="btn btn-danger">Arrears of: KSH {{ $totalAdvanceAmount - $estimatedPayout }}</span>
                                             @else
                                                     <div class="dropdown dropdown-action">
                                                         @if ($totalAdvanceAmount <= $item->estimated_payout)
