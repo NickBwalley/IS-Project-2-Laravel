@@ -94,8 +94,13 @@
                             </thead>
                             
                             <tbody>
+                                @if ($users->isEmpty())
+                                    <tr>
+                                        <td colspan="7" style="text-align: center;">No records available.</td>
+                                    </tr>
+                                @else
                                 @foreach ($users as $items)
-                                {{-- @if ($items->status === 'unpaid') --}}
+                                @if ($items->status === 'unpaid')
                                 <tr>
                                     <td>
                                         {{ $items->name}}
@@ -112,8 +117,9 @@
                                         </div>
                                     </td> --}}
                                 </tr>
-                                {{-- @endif --}}
+                                @endif
                                 @endforeach
+                                @endif
                             </tbody>
 
 
@@ -181,11 +187,7 @@
                                 <input class="form-control" type="numeric" name="advance_amount" id="advance_amount">
                             </div>
                             
-                            <div class="form-group">
-                                <label>Potential Payout Balance</label>
-                                <input class="form-control" type="text" name="potential_payout" id="potential_payout" value="potential_payout" readonly>
-                            </div>
-                            
+                                                        
                             {{-- status by default is set to "unpaid" --}}
                             <input class="form-control" type="hidden" name="status" id="status" value="unpaid" readonly>
                         </div>

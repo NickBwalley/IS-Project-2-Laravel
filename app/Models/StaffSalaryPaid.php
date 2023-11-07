@@ -16,8 +16,6 @@ class StaffSalaryPaid extends Model
         'employee_id_auto',
         'employee_mpesa_number',
         'senders_mpesa_number',
-        'number_of_kgs_harvested',
-        'shillings_per_kg',
         'amount_paid',
     ];
 

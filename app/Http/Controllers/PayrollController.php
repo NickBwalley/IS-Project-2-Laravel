@@ -74,7 +74,7 @@ public function salaryFinal()
 
     if ($employeeId === null) {
         // If there is no employee ID in the database, return a 404 error
-        abort(404);
+        // abort(404);
     }
 
     // Get the total advance amount for the employee
@@ -232,8 +232,6 @@ public function salaryFinal()
             'name' => 'required|string|max:255',
             'employee_mpesa_number' => 'required|numeric',
             'senders_mpesa_number' => 'required|numeric',
-            'number_of_kgs_harvested' => 'required|numeric|min:0',
-            'shillings_per_kg' => 'required|numeric|min:0',
             'amount_paid' => 'required|numeric|min:0',
         ]);
 
@@ -242,22 +240,24 @@ public function salaryFinal()
             $salary = StaffSalaryPaid::updateOrCreate(['id' => $request->id]);
             $salary->name = $request->name;
             $salary->employee_id_auto = $request->employee_id_auto;
-            $salary->invoice_number = $request->invoice_number;
             $salary->employee_mpesa_number = $request->employee_mpesa_number;
             $salary->senders_mpesa_number = $request->senders_mpesa_number;
-            $salary->number_of_kgs_harvested = $request->number_of_kgs_harvested; 
-            $salary->shillings_per_kg = $request->shillings_per_kg;
-            $salary->amount_paid = $request->number_of_kgs_harvested * $request->shillings_per_kg;
+            $salary->amount_paid = $request->amount_paid;
 
             // Save the staff_salaries_paid record
             $salary->save();
 
-            // Update the 'staff_salaries' record and set the status to 'paid' based on 'invoice_number'
-            $staffSalaries = StaffSalary::where('invoice_number', $request->invoice_number)->first();
-            if ($staffSalaries) {
-                $staffSalaries->status = 'paid';
-                $staffSalaries->save();
-            }
+           // Update the 'staff_salaries' record and set the status to 'paid' based on 'employee_id_auto'
+            StaffSalary::where('employee_id_auto', $request->employee_id_auto)
+                ->where('status', 'pending')
+                ->update(['status' => 'paid']);
+
+            // Update the 'staff_salaries_advance' record and set the status to 'paid' based on 'employee_id_auto'
+            StaffSalaryAdvance::where('employee_id_auto', $request->employee_id_auto)
+                ->where('status', 'unpaid')
+                ->update(['status' => 'paid']);
+
+            
 
             DB::commit();
             Toastr::success('Transaction Paid successfully :)', 'Success');
