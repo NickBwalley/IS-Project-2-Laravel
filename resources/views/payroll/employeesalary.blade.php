@@ -19,7 +19,7 @@
                         </ul>
                     </div>
                     <div class="col-auto float-right ml-auto">
-                        <a href="#" class="btn add-btn" data-toggle="modal" data-target="#add_salary"><i class="fa fa-plus"></i> Pay Employee</a>
+                        <a href="#" class="btn add-btn" data-toggle="modal" data-target="#add_salary"><i class="fa fa-plus"></i> Add Employee Salary</a>
                     </div>
                 </div>
             </div>
@@ -89,11 +89,11 @@
                                     {{-- <th>Phone Number</th> --}}
                                     <th>KGS Harvested</th>
                                     <th>Shilling per KG</th>
-                                    <th>Potential Payout</th>
-                                    <th>Advance Debt Balance</th>
+                                    <th>Amounts To</th>
+                                    {{-- <th>Advance Debt Balance</th> --}}
                                     <th>Transaction Date</th>
                                     <th>Status</th>
-                                    <th>Action</th>
+                                    {{-- <th>Action</th> --}}
                                 </tr>
                             </thead>
                             
@@ -113,10 +113,10 @@
                                     <td>{{ $items->number_of_kgs_harvested }}</td>
                                     <td>{{ $items->shillings_per_kg }}</td>
                                     <td><strong><span class="btn btn-info">KSH {{ $items->estimated_payout }}</span></strong></td>
-                                    <td><strong><span class="btn btn-warning">KSH {{ $pendingAdvanceBalance }}</span></strong></td>
+                                    {{-- <td><strong><span class="btn btn-warning">KSH {{ $pendingAdvanceBalance }}</span></strong></td> --}}
                                     <td>{{ $items->created_at }}</td>
                                     <td><span class="btn btn-secondary">{{ $items->status }}</span></td>
-                                    <td class="text-right">
+                                    {{-- <td class="text-right">
                                         <div class="dropdown dropdown-action">
                                             @if ($pendingAdvanceBalance > $items->estimated_payout)
                                                     <span class="btn btn-danger">Arrears of: KSH {{ $pendingAdvanceBalance - $items->estimated_payout }}</span>
@@ -139,7 +139,7 @@
                                             @endif
 
                                         </div>
-                                    </td>
+                                    </td> --}}
                                 </tr>
                                 @endif
                                 @endforeach

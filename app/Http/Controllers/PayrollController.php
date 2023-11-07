@@ -56,6 +56,44 @@ class PayrollController extends Controller
 }
 
 
+public function salaryFinal()
+{
+    $users = DB::table('staff_salaries')
+        ->select('employee_id_auto', 'name', 'phone_number', 'status')
+        ->unionAll(DB::table('staff_salaries_advance')
+        ->select('employee_id_auto', 'name', 'phone_number', 'status'))
+        ->groupBy('employee_id_auto', 'name', 'phone_number', 'status')
+        ->get();
+
+    $userList = DB::table('users')->select('user_id', 'name', 'phone_number', 'status')->get();
+
+    $permission_lists = DB::table('permission_lists')->get();
+
+    // Get the employee ID from the database
+    $employeeId = DB::table('staff_salaries_advance')->first()->employee_id_auto ?? null;
+
+    if ($employeeId === null) {
+        // If there is no employee ID in the database, return a 404 error
+        abort(404);
+    }
+
+    // Get the total advance amount for the employee
+    $totalAdvanceAmount = DB::table('staff_salaries_advance')
+        ->where('employee_id_auto', $employeeId)
+        ->where('status', 'unpaid')
+        ->sum('advance_amount');
+
+    // Get the estimated payout for the employee
+    $estimatedPayout = DB::table('staff_salaries')
+        ->where('employee_id_auto', $employeeId)
+        ->where('status', 'pending')
+        ->sum('estimated_payout');
+    
+    return view('payroll.finalemployeesalary', compact('users', 'userList', 'permission_lists', 'totalAdvanceAmount', 'estimatedPayout'));
+
+}
+
+
 
     public function salaryPaid()
 {
