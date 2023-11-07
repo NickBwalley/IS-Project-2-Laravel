@@ -125,11 +125,11 @@
 
                                             <td class="text-right">
                                         <div class="dropdown dropdown-action">
-                                            @if ($totalAdvanceAmount > $item->estimated_payout)
+                                            @if ($totalAdvanceAmount > $estimatedPayout)
                                                     <span class="btn btn-danger">Arrears of: KSH {{ $totalAdvanceAmount - $estimatedPayout }}</span>
                                             @else
                                                     <div class="dropdown dropdown-action">
-                                                        @if ($totalAdvanceAmount <= $item->estimated_payout)
+                                                        @if ($totalAdvanceAmount <= $estimatedPayout)
                                                             <a href="#" class="action-icon dropdown-toggle editSalary" data-toggle="modal" data-target="#edit_salary"
                                                                 data-id="{{ $item->id }}"
                                                                 data-name="{{ $item->name }}"
