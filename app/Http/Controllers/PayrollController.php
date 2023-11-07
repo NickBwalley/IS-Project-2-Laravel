@@ -74,7 +74,7 @@ public function salaryFinal()
 
     if ($employeeId === null) {
         // If there is no employee ID in the database, return a 404 error
-        abort(404);
+        // abort(404);
     }
 
     // Get the total advance amount for the employee

@@ -97,6 +97,11 @@
                                 </tr>
                             </thead>
                             
+                            @if ($users->isEmpty())
+                                    <tr>
+                                        <td colspan="7" style="text-align: center;">No records available.</td>
+                                    </tr>
+                            @else
                             <tbody>
                                 @foreach ($users as $items)
                                 @if ($items->status === 'pending')
@@ -143,6 +148,7 @@
                                 </tr>
                                 @endif
                                 @endforeach
+                                @endif
                             </tbody>
 
 

@@ -124,6 +124,11 @@
                             </thead>
                             
                             <tbody>
+                                @if ($users->isEmpty())
+                                    <tr>
+                                        <td colspan="7" style="text-align: center;">No records available.</td>
+                                    </tr>
+                                @else
                                 @foreach ($users as $items)
                                 <tr>
                                     <td>
@@ -146,6 +151,7 @@
                             </td>
                                 </tr>
                                 @endforeach
+                                @endif
                             </tbody>
 
                         </table>
