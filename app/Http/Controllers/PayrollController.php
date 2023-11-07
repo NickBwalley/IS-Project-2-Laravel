@@ -58,9 +58,11 @@ class PayrollController extends Controller
 
 public function salaryFinal()
 {
-    $users = DB::table('users')
-        ->join('staff_salaries', 'users.user_id', '=', 'staff_salaries.employee_id_auto')
-        ->select('users.*', 'staff_salaries.*')
+    $users = DB::table('staff_salaries')
+        ->select('employee_id_auto', 'name', 'phone_number', 'status')
+        ->unionAll(DB::table('staff_salaries_advance')
+        ->select('employee_id_auto', 'name', 'phone_number', 'status'))
+        ->groupBy('employee_id_auto', 'name', 'phone_number', 'status')
         ->get();
 
     $userList = DB::table('users')->select('user_id', 'name', 'phone_number', 'status')->get();
