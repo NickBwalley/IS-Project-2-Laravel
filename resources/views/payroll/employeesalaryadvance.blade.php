@@ -100,7 +100,7 @@
                                     </tr>
                                 @else
                                 @foreach ($users as $items)
-                                {{-- @if ($items->status === 'unpaid') --}}
+                                @if ($items->status === 'unpaid')
                                 <tr>
                                     <td>
                                         {{ $items->name}}
@@ -117,7 +117,7 @@
                                         </div>
                                     </td> --}}
                                 </tr>
-                                {{-- @endif --}}
+                                @endif
                                 @endforeach
                                 @endif
                             </tbody>
