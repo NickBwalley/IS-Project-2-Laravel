@@ -93,7 +93,7 @@
                                     {{-- <th>Advance Debt Balance</th> --}}
                                     <th>Transaction Date</th>
                                     <th>Status</th>
-                                    {{-- <th>Action</th> --}}
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             
@@ -138,13 +138,14 @@
                                                                 data-shillings_per_kg="{{ $items->shillings_per_kg }}"
                                                                 data-estimated_payout="{{ $items->estimated_payout }}"
                                                             ><span class="btn btn-success">Pay</span></a>
-                                                            <a class="#" href="#" data-toggle="modal" data-target="#delete_salary" data-id="{{ $items->id }}"><span class="btn btn-danger">Delete</span></a>
+                                                            
                                                         @endif
                                                     </div>
                                             @endif
 
                                         </div>
                                     </td> --}}
+                                    <td><a class="#" href="#" data-toggle="modal" data-target="#delete_salary" data-id="{{ $items->employee_id_auto }}"><span class="btn btn-danger">Delete</span></a></td>
                                 </tr>
                                 @endif
                                 @endforeach
@@ -331,13 +332,13 @@
                 <div class="modal-content">
                     <div class="modal-body">
                         <div class="form-header">
-                            <h3>Delete Salary</h3>
+                            <h3>Delete Remuneration Pay</h3>
                             <p>Are you sure want to delete?</p>
                         </div>
                         <div class="modal-btn delete-action">
                             <form action="{{ route('form/salary/delete') }}" method="POST">
                                 @csrf
-                                <input type="hidden" name="id" class="e_id" value="">
+                                <input type="hidden" name="" id="e_employee_id_auto" value="">
                                 <div class="row">
                                     <div class="col-6">
                                         <button type="submit" class="btn btn-primary continue-btn submit-btn">Delete</button>
@@ -406,8 +407,8 @@
 
         // Handle the click event for the "Delete" button in the "Delete Salary" modal
         $('.salaryDelete').click(function () {
-            var id = $(this).data('id');
-            $('.e_id').val(id); // Set the value of the hidden input field
+            var employee_id_auto = $(this).data('employee_id_auto');
+            $('.e_employee_id_auto').val(employee_id_auto); // Set the value of the hidden input field
         });
     });
 </script>

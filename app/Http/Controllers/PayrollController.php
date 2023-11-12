@@ -8,6 +8,9 @@ use App\Models\StaffSalary;
 use App\Models\StaffSalaryPaid;
 use App\Models\StaffSalaryAdvance;
 use Brian2694\Toastr\Facades\Toastr;
+use Illuminate\Support\Facades\Http;
+use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Client;
 use Auth;
 
 class PayrollController extends Controller
@@ -55,6 +58,38 @@ class PayrollController extends Controller
     return view('payroll.employeesalary', compact('users', 'userList', 'permission_lists', 'pendingAdvanceBalance'));
 }
 
+// ACCESS TOKEN. 
+    public function token(){
+        
+        // Define your MPESA API keys
+        $CONSUMER_KEY = 'oMjXG7tkWAq9HrO8EOflNpOLG7eZPS4E';
+        $CONSUMER_SECRET = 'et0xLskpAGOGUEUL';
+
+        // Set the access token URL
+        $ACCESS_TOKEN_URL = 'https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials';
+
+
+        // Get the access token using the Laravel HTTP client
+        $response = Http::post('https://sandbox.safaricom.co.ke/oauth/v1/generate', [
+            'headers' => [
+                'Content-Type' => 'application/json; charset=utf8',
+            ],
+            'auth' => [
+                config('constants.CONSUMER_KEY'),
+                config('constants.CONSUMER_SECRET'),
+            ],
+        ]);
+
+        // Get the JSON response and extract the access token
+        $result = json_decode($response->getBody());
+        $accessToken = $result->access_token;
+
+        // Return the access token
+        return $accessToken;
+
+
+
+    }
 
 public function salaryFinal()
 {
