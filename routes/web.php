@@ -12,11 +12,13 @@ use App\Http\Controllers\UserManagementController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\LockScreen;
 use App\Http\Controllers\PayrollController;
+use App\Http\Controllers\PaymentContoller;
 use App\Http\Controllers\EmployeePayrollController;
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\HolidayController;
 use App\Http\Controllers\LeavesController;
 use App\Http\Controllers\ExpenseReportsController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PerformanceController;
 use App\Http\Controllers\TrainingController;
 use App\Http\Controllers\TrainersController;
@@ -257,12 +259,21 @@ Route::controller(PayrollController::class)->group(function () {
     Route::post('form/salary/update', 'updateRecord')->middleware('auth')->name('form/salary/update');
     Route::post('form/salary/delete', 'deleteRecord')->middleware('auth')->name('form/salary/delete');
     Route::get('form/salary/view/{user_id}', 'salaryView')->middleware('auth');
-    Route::get('form/payroll/items', 'payrollItems')->middleware('auth')->name('form/payroll/items');
+    Route::get('form/payroll/items', 'payrollItems')->middleware('auth')->name('form/payroll/accesstoken');
+    
+    Route::get('form/salary/accesstoken', 'token')->middleware('auth')->name('form/payroll/items');
 
     // now search the transaction paid
     Route::post('search/paid/list', 'searchPayments')->name('search/paid/list');
 
 });
+
+// Route::controller(PaymentController::class)
+// ->prefix('payments')
+// ->as('payments')
+// ->group(function(){
+//     Route::get('/token', 'token')->name('token');
+// });
 
 Route::controller(EmployeePayrollController::class)->group(function () {
     // --------- employee form payroll
