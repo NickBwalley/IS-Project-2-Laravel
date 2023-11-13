@@ -122,7 +122,12 @@
                                                 <td>{{ $items->created_at }}</td>
                                                 <td><span class="btn btn-secondary">{{ $items->status }}</span></td>
                                                 <!-- DELETE FUNCTIONALITY -->
-                                                <td><a class="#" href="#" data-toggle="modal" data-target="#delete_salary" data-id="{{ $items->employee_id_auto }}"><span class="btn btn-danger">Delete</span></a></td>
+                                                <td>
+                                                    <a class="#" href="#" data-toggle="modal" data-target="#delete_salary" data-id="{{ $items->invoice_number }}">
+                                                        <span class="btn btn-danger">Delete</span>
+                                                    </a>
+                                                </td>
+
                                             </tr>
                                         @endif
                                     @endforeach
@@ -228,77 +233,6 @@
 
         <!-- /Add Salary Modal -->
         
-        <!-- Edit Salary Modal -->
-    <div id="edit_salary" class="modal custom-modal fade" role="dialog">
-        <div class="modal-dialog modal-dialog-centered modal-md" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Employee Payment</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form action="{{ route('form/salary/update') }}" method="POST">
-                    @csrf
-                    {{-- <input class="form-control" type="text" name="id" id="e_id" value="" > --}}
-                    <div class="row"> 
-                        <div class="col-sm-6"> 
-                            <div class="form-group">
-                                <label>Employee Name</label>
-                                <input class="form-control" type="text" name="name" id="e_name" value="" readonly>
-                            </div>
-                            @error('name')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
-                        </div>
-                        <div class="col-sm-6"> 
-                            <label>Employees M-Pesa Number</label>
-                            <input class="form-control" type="text" name="employee_mpesa_number" id="e_phone_number" value="" >
-                        </div>
-                        <div class="col-sm-6"> 
-                                <label>Employee ID </label>
-                                <input class="form-control" type="text" name="employee_id_auto" id="e_employee_id_auto" value="" readonly>
-                        </div>
-                        <div class="col-sm-6"> 
-                                <label>Sender's M-Pesa Number </label>
-                                <input class="form-control" type="text" name="senders_mpesa_number" id="sender_phone_number" value="" >
-                        </div>
-                    </div>
-                    <div class="row"> 
-                        <div class="col-sm-6"> 
-                            
-                            <div class="form-group">
-                                <label>Invoice Number</label>
-                                <input class="form-control" type="text" name="invoice_number" id="e_invoice_number" value="" readonly >
-                            </div>
-                            
-                            <div class="form-group">
-                                <label>Number of Kgs Harvested</label>
-                                <input class="form-control" type="text" name="number_of_kgs_harvested" id="e_number_of_kgs_harvested" value="" readonly >
-                            </div>
-
-                            
-                            <div class="form-group">
-                                <label>Shillings per Kg</label>
-                                <input class="form-control" type="text"  name="shillings_per_kg" id="e_shillings_per_kg" value="" readonly>
-                            </div>
-                            <div class="form-group">
-                                <label>Total Amount to Pay</label>
-                                <input class="form-control" type="text"  name="amount_paid" id="e_estimated_payout" value="" readonly>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="submit-section">
-                        <button type="submit" class="btn btn-primary submit-btn">Confirm Pay</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
 
         <!-- /Edit Salary Modal -->
         
@@ -314,7 +248,7 @@
                         <div class="modal-btn delete-action">
                             <form action="{{ route('form/salary/delete') }}" method="POST">
                                 @csrf
-                                <input type="hidden" name="" id="e_employee_id_auto" value="">
+                                <input type="hidden" name="invoice_number" id="e_invoice_number" value="">
                                 <div class="row">
                                     <div class="col-6">
                                         <button type="submit" class="btn btn-primary continue-btn submit-btn">Delete</button>
@@ -381,13 +315,21 @@
             $('#e_estimated_payout').val(estimated_payout);
         });
 
-        // Handle the click event for the "Delete" button in the "Delete Salary" modal
-        $('.salaryDelete').click(function () {
-            var employee_id_auto = $(this).data('employee_id_auto');
-            $('.e_employee_id_auto').val(employee_id_auto); // Set the value of the hidden input field
+    });
+</script>
+
+<script>
+    $(document).ready(function() {
+        $('#delete_salary').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget); // Button that triggered the modal
+            var invoice_number = button.data('id'); // Extract info from data-* attributes
+            var modal = $(this);
+            modal.find('#e_invoice_number').val(invoice_number);
         });
     });
 </script>
+
+
 
 <script>
     document.getElementById('downloadPdfButton').addEventListener('click', function () {

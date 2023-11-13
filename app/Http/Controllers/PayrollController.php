@@ -361,15 +361,15 @@ public function salaryFinal()
         DB::beginTransaction();
         try {
 
-            StaffSalary::destroy($request->id);
+            StaffSalary::destroy($request->invoice_number);
 
             DB::commit();
-            Toastr::success('Salary deleted successfully :)','Success');
+            Toastr::success('Remuneration deleted successfully :)','Success');
             return redirect()->back();
             
         } catch(\Exception $e) {
             DB::rollback();
-            Toastr::error('Salary deleted fail :)','Error');
+            Toastr::error('Failed to delete Remuneration :)','Error');
             return redirect()->back();
         }
     }
