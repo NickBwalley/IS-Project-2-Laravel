@@ -248,7 +248,7 @@
                         <div class="modal-btn delete-action">
                             <form action="{{ route('form/salary/delete') }}" method="POST">
                                 @csrf
-                                <input type="hidden" name="invoice_number" id="e_invoice_number" value="">
+                                <input type="text" name="invoice_number" id="e_invoice_number" value="">
                                 <div class="row">
                                     <div class="col-6">
                                         <button type="submit" class="btn btn-primary continue-btn submit-btn">Delete</button>
