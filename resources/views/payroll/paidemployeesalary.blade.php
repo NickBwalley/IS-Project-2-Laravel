@@ -12,16 +12,16 @@
             <div class="page-header">
                 <div class="row align-items-center">
                     <div class="col">
-                        <h3 class="page-title">Remuneration Pay <span id="year"></span></h3>
+                        <h3 class="page-title">Paid Remuneration <span id="year"></span></h3>
                         <ul class="breadcrumb">
                             <li class="breadcrumb-item"><a href="{{ route('home') }}">Dashboard</a></li>
-                            <li class="breadcrumb-item active">Salary</li>
+                            <li class="breadcrumb-item active">Paid</li>
                         </ul>
                     </div>
-                    <div class="col-auto float-right ml-auto">
+                    {{-- <div class="col-auto float-right ml-auto">
                         <a href="#" class="btn add-btn" data-toggle="modal" data-target="#add_salary"><i class="fa fa-plus"></i> Add Remuneration Pay</a>
-                        {{-- <button id="downloadPdfButton" class="btn btn-primary">Download PDF</button> --}}
-                    </div>
+                        
+                    </div> --}}
                 </div>
             </div>
 
@@ -88,26 +88,27 @@
                                     <th>Invoice Number</th>
                                     <th>KGS Harvested</th>
                                     <th>Shilling per KG</th>
-                                    <th>Total Amount</th>
+                                    <th>Amount Paid</th>
                                     <th>Transaction Date</th>
                                     <th>Status</th>
-                                    <th>Action</th>
                                 </tr>
                             </thead>
-
-                            @php
-                                // Sort the $users array by created_at in descending order
-                                $sortedUsers = $users->sortByDesc('created_at');
-                            @endphp
-
-                            <tbody>
-                                @if ($sortedUsers->isEmpty())
+                            
+                            @if ($users->isEmpty())
+                                <tbody>
                                     <tr>
-                                        <td colspan="8" style="text-align: center;">No records available.</td>
+                                        <td colspan="7" style="text-align: center;">No records available.</td>
                                     </tr>
-                                @else
+                                </tbody>
+                            @else
+                                <tbody>
+                                    @php
+                                        // Sort the $users array by updated_at in descending order
+                                        $sortedUsers = $users->sortByDesc('updated_at');
+                                    @endphp
+
                                     @foreach ($sortedUsers as $items)
-                                        @if ($items->status === 'pending')
+                                        @if ($items->status === 'paid')
                                             <tr>
                                                 <td>
                                                     <h2 class="table-avatar">
@@ -118,16 +119,14 @@
                                                 <td>{{ $items->invoice_number }}</td>
                                                 <td>{{ $items->number_of_kgs_harvested }}</td>
                                                 <td>{{ $items->shillings_per_kg }}</td>
-                                                <td><strong><span class="btn btn-info">KSH {{ $items->estimated_payout }}</span></strong></td>
-                                                <td>{{ $items->created_at }}</td>
-                                                <td><span class="btn btn-secondary">{{ $items->status }}</span></td>
-                                                <!-- DELETE FUNCTIONALITY -->
-                                                <td><a class="#" href="#" data-toggle="modal" data-target="#delete_salary" data-id="{{ $items->employee_id_auto }}"><span class="btn btn-danger">Delete</span></a></td>
+                                                <td><strong><span class="btn btn-success">KSH {{ $items->estimated_payout }}</span></strong></td>
+                                                <td>{{ $items->updated_at }}</td>
+                                                <td><span class="btn btn-success">{{ $items->status }}</span></td>
                                             </tr>
                                         @endif
                                     @endforeach
-                                @endif
-                            </tbody>
+                                </tbody>
+                            @endif
                         </table>
                     </div>
                 </div>

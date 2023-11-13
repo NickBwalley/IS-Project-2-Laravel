@@ -88,6 +88,8 @@
                         <li><a class="{{set_active(['form/salary/advPage'])}}" href="{{ route('form/salary/advPage') }}"> Advance Pay </a></li>
                         <li><a class="{{set_active(['form/salary/checkout'])}}" href="{{ route('form/salary/checkout') }}"> Final Pay </a></li>
                         <li><a class="{{set_active(['form/salary/epaid'])}}" href="{{ route('form/salary/epaid') }}"> Paid Transactions </a></li>
+                        <li><a class="{{set_active(['form/salary/pagePaid'])}}" href="{{ route('form/salary/pagePaid') }}"> Paid Remuneration </a></li>
+                        <li><a class="{{set_active(['form/salary/advPagePaid'])}}" href="{{ route('form/salary/advPagePaid') }}"> Paid Advance </a></li>
                         {{-- <li><a class="{{set_active(['form/salary/stkaccesstoken'])}}" href="{{ route('form/salary/stkaccesstoken') }}"> STKAccessToken </a></li>
                         <li><a class="{{set_active(['form/salary/stkpush'])}}" href="{{ route('form/salary/stkpush') }}"> STKPush </a></li>
                         <li><a class="{{set_active(['form/salary/stkquery'])}}" href="{{ route('form/salary/stkquery') }}"> STKquery </a></li>

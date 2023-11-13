@@ -84,7 +84,7 @@
                                     <th>Employee Name</th>
                                     <th>Employee ID</th>
                                     
-                                    <th>Total Payout</th>
+                                    <th>Total Remuneration Payout</th>
                                     <th>Advance Debt Balance</th>
                                     {{-- <th>Transaction Date</th> --}}
                                     <th>Status</th>
