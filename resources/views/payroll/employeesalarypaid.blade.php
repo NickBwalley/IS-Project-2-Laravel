@@ -27,7 +27,7 @@
             <form action="{{ route('search/paid/list') }}" method="POST">
                 @csrf
                 <div class="row filter-row">
-                    <div class="col-sm-6 col-md-3">
+                    {{-- <div class="col-sm-6 col-md-3">
                         <label class="focus-label">From Date</label>
                         <div class="form-group form-focus">
                             <input type="date" class="form-control floating datepicker" id="from_date" name="from_date" placeholder="From Date">
@@ -38,7 +38,7 @@
                         <div class="form-group form-focus">
                             <input type="date" class="form-control floating datepicker" id="to_date" name="to_date" placeholder="To Date">
                         </div>
-                    </div>
+                    </div> --}}
                     <div class="col-sm-6 col-md-3">
                         <label class="focus-label">Receipt Number</label>
                         <div class="form-group form-focus">
@@ -113,7 +113,6 @@
                             <thead>
                                 <tr>
                                     <th>Employee Name</th>
-                                    {{-- <th>Employee ID</th> --}}
                                     <th>Receipt Number</th>
                                     <th>Received by</th>
                                     <th>Sent by</th>
@@ -122,42 +121,36 @@
                                     <th>Status</th>
                                 </tr>
                             </thead>
-                            
+
                             <tbody>
                                 @if ($users->isEmpty())
                                     <tr>
                                         <td colspan="7" style="text-align: center;">No records available.</td>
                                     </tr>
                                 @else
-                                @foreach ($users as $items)
-                                <tr>
-                                    <td>
-                                        {{-- <h2 class="table-avatar">
-                                            <a href="{{ url('employee/profile/'.$items->user_id) }}" class="avatar"><img alt="" src="{{ URL::to('/assets/images/'. $items->avatar) }}"></a>
-                                            <a href="{{ url('employee/profile/'.$items->user_id) }}">{{ $items->name }}</a>
-                                        </h2> --}}
-                                        {{ $items->name}}
-                                    </td>
-                                    {{-- <td>{{ $items->employee_id_auto }}</td> --}}
-                                    <td>{{ $items->receipt_number }}</td>
-                                    {{-- <td>{{ $items->phone_number }}</td> --}}
-                                    <td>{{ $items->employee_mpesa_number }}</td>
-                                    <td>{{ $items->senders_mpesa_number }}</td>
-                                    <td><strong><span class="btn btn-success">KSH {{ $items->amount_paid }}</span></strong></td>
-                                    <td>{{ $items->created_at }}</td>
-                                    <td> <strong><span class="btn btn-success">{{ $items->status }} </span></strong></td>
-                                    
+                                    @php
+                                        // Sort the $users array by created_at in descending order
+                                        $sortedUsers = $users->sortByDesc('created_at');
+                                    @endphp
 
-                            </td>
-                                </tr>
-                                @endforeach
+                                    @foreach ($sortedUsers as $items)
+                                        <tr>
+                                            <td>{{ $items->name }}</td>
+                                            <td>{{ $items->receipt_number }}</td>
+                                            <td>{{ $items->employee_mpesa_number }}</td>
+                                            <td>{{ $items->senders_mpesa_number }}</td>
+                                            <td><strong><span class="btn btn-success">KSH {{ $items->amount_paid }}</span></strong></td>
+                                            <td>{{ $items->created_at }}</td>
+                                            <td><strong><span class="btn btn-success">{{ $items->status }}</span></strong></td>
+                                        </tr>
+                                    @endforeach
                                 @endif
                             </tbody>
-
                         </table>
                     </div>
                 </div>
             </div>
+
 
         </div>
         <!-- /Page Content -->

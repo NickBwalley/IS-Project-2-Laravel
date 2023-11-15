@@ -87,32 +87,32 @@
                                 <th>EmployeeID</th>
                                 <th>Phone Number</th>
                                 <th>Advance Amount Taken</th>
-                                <th>Advance Taken on Date</th>
+                                <th>Transaction Date</th>
                                 <th>Status</th>
                                 {{-- <th>Action</th> --}}
                             </tr>
                         </thead>
                         
                         <tbody>
-                            @php
-                                // Sort the $users array by created_at in descending order
-                                $sortedUsers = $users->sortByDesc('created_at');
-                            @endphp
-
-                            @if ($sortedUsers->isEmpty())
+                            @if ($users->isEmpty())
                                 <tr>
                                     <td colspan="7" style="text-align: center;">No records available.</td>
                                 </tr>
                             @else
+                                @php
+                                    // Sort the $users array by updated_at in descending order
+                                    $sortedUsers = $users->sortByDesc('updated_at');
+                                @endphp
+
                                 @foreach ($sortedUsers as $items)
-                                    @if ($items->status === 'unpaid')
+                                    @if ($items->status === 'paid')
                                         <tr>
-                                            <td>{{ $items->name }}</td>
+                                            <td>{{ $items->name}}</td>
                                             <td>{{ $items->employee_id_auto }}</td>
                                             <td>{{ $items->phone_number }}</td>
-                                            <td><strong><span class="btn btn-warning">KSH {{ $items->advance_amount }}</span></strong></td>
-                                            <td>{{ $items->created_at }}</td>
-                                            <td><span class="btn btn-secondary">{{ $items->status }}</span></td>
+                                            <td><strong><span class="btn btn-success">KSH {{ $items->advance_amount }}</span></strong></td>
+                                            <td>{{ $items->updated_at }}</td>
+                                            <td><span class="btn btn-success">{{ $items->status }}</span></td>
                                             {{-- <td class="text-right">
                                                 <div class="dropdown dropdown-action">
                                                     <a class="#" href="#" data-toggle="modal" data-target="#delete_salary" data-id="{{ $items->id }}"><span class="btn btn-danger">Delete</span></a>
