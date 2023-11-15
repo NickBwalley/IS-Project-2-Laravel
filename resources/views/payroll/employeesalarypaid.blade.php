@@ -23,6 +23,7 @@
                     </div> --}}
                 </div>
             </div>
+            
 
             <form action="{{ route('search/paid/list') }}" method="POST">
                 @csrf
@@ -61,9 +62,14 @@
                         <label class="focus-label">Search</label>
                         <button type="submit" class="btn btn-success btn-block">Search</button>
                     </div>
+                    <div class="col-auto float-right ml-auto">
+                        <a href="#" class="btn add-btn" data-toggle="modal" data-target="#print_report"><i class="fa fa-print"></i> PRINT REPORT</a>
+                        {{-- <button id="downloadPdfButton" class="btn btn-primary">Download PDF</button> --}}
+                    </div>
+
                 </div>
             </form>
-
+            
 
             {{-- <!-- Search Filter -->
             <div class="row filter-row">
