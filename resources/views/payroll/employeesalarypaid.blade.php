@@ -40,9 +40,21 @@
                         </div>
                     </div> --}}
                     <div class="col-sm-6 col-md-3">
-                        <label class="focus-label">Receipt Number</label>
+                        <label class="focus-label">Search By Name</label>
                         <div class="form-group form-focus">
-                            <input type="text" class="form-control floating" id="receipt_number" name="receipt_number" placeholder="Receipt Number">
+                            <input type="text" class="form-control floating" id="name" name="name" placeholder="Enter Name">
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-3">
+                        <label class="focus-label">Search By Receipt Number</label>
+                        <div class="form-group form-focus">
+                            <input type="text" class="form-control floating" id="receipt_number" name="receipt_number" placeholder="Enter Receipt Number">
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-3">
+                        <label class="focus-label">Search By Date</label>
+                        <div class="form-group form-focus">
+                            <input type="text" class="form-control floating" id="created_at" name="created_at" placeholder="Enter Date (yyyy-mm-dd)">
                         </div>
                     </div>
                     <div class="col-sm-6 col-md-3">
