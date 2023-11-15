@@ -23,6 +23,7 @@
                     </div> --}}
                 </div>
             </div>
+            
 
             <form action="{{ route('search/paid/list') }}" method="POST">
                 @csrf
@@ -40,18 +41,35 @@
                         </div>
                     </div> --}}
                     <div class="col-sm-6 col-md-3">
-                        <label class="focus-label">Receipt Number</label>
+                        <label class="focus-label">Search By Name</label>
                         <div class="form-group form-focus">
-                            <input type="text" class="form-control floating" id="receipt_number" name="receipt_number" placeholder="Receipt Number">
+                            <input type="text" class="form-control floating" id="name" name="name" placeholder="Enter Name">
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-3">
+                        <label class="focus-label">Search By Receipt Number</label>
+                        <div class="form-group form-focus">
+                            <input type="text" class="form-control floating" id="receipt_number" name="receipt_number" placeholder="Enter Receipt Number">
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-3">
+                        <label class="focus-label">Search By Date</label>
+                        <div class="form-group form-focus">
+                            <input type="text" class="form-control floating" id="created_at" name="created_at" placeholder="Enter Date (yyyy-mm-dd)">
                         </div>
                     </div>
                     <div class="col-sm-6 col-md-3">
                         <label class="focus-label">Search</label>
                         <button type="submit" class="btn btn-success btn-block">Search</button>
                     </div>
+                    <div class="col-auto float-right ml-auto">
+                        <a href="#" class="btn add-btn" data-toggle="modal" data-target="#print_report"><i class="fa fa-print"></i> PRINT REPORT</a>
+                        {{-- <button id="downloadPdfButton" class="btn btn-primary">Download PDF</button> --}}
+                    </div>
+
                 </div>
             </form>
-
+            
 
             {{-- <!-- Search Filter -->
             <div class="row filter-row">

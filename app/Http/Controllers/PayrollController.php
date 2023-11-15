@@ -399,14 +399,27 @@ public function salaryFinal()
                 $users = StaffSalaryPaid::where('receipt_number','LIKE','%'.$request->receipt_number.'%')->get();
             }
 
-            if ($request->from_date) {
-                $users = StaffSalaryPaid::where(function ($query) use ($request) {
-                    $date = $request->from_date;
-                    $date = str_replace('/', '-', $date);
-                    $query->where('created_at', 'LIKE', '%' . substr($date, 0, 10) . '%')
-                        ->orWhere('created_at', 'LIKE', '%' . substr($date, 6, 10) . '%');
-                })->get();
+            if($request->name)
+            {
+                $users = StaffSalaryPaid::where('name','LIKE','%'.$request->name.'%')->get();
             }
+
+            if ($request->created_at) {
+                $users = StaffSalaryPaid::where('created_at', 'LIKE', $request->created_at . '%')
+                    ->whereDate('created_at', $request->created_at)
+                    ->get();
+            }
+
+
+            
+            // if ($request->from_date) {
+            //     $users = StaffSalaryPaid::where(function ($query) use ($request) {
+            //         $date = $request->from_date;
+            //         $date = str_replace('/', '-', $date);
+            //         $query->where('created_at', 'LIKE', '%' . substr($date, 0, 10) . '%')
+            //             ->orWhere('created_at', 'LIKE', '%' . substr($date, 6, 10) . '%');
+            //     })->get();
+            // }
 
 
 
