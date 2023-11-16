@@ -63,7 +63,7 @@
                         <button type="submit" class="btn btn-success btn-block">Search</button>
                     </div>
                     <div class="col-auto float-right ml-auto">
-                        <a href="#" class="btn add-btn" onclick="printPDF()" data-toggle="modal" data-target="#print_report"><i class="fa fa-file-pdf"></i> PRINT PDF</a>
+                        <a href="#" class="btn add-btn" onclick="printPDF()" data-toggle="modal" data-target="#print_report"><i class="fa fa-print"></i> PRINT REPORT</a>
                     </div>
 
                 </div>
