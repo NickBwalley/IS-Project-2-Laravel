@@ -445,7 +445,7 @@
                 tempContainer.innerHTML = content;
 
                 // Adjust font size and margins for better fitting on A4
-                tempContainer.style.fontSize = '10px';
+                tempContainer.style.fontSize = '12px';
                 tempContainer.style.margin = '2mm';
 
                 // Use html2pdf to convert the composite content to a PDF
