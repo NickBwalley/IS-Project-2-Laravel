@@ -124,7 +124,8 @@
                                                 <!-- DELETE FUNCTIONALITY -->
                                                 <td>
                                                     <a class="#" href="#" data-toggle="modal" data-target="#delete_salary" data-id="{{ $items->invoice_number }}">
-                                                        <span class="btn btn-danger">Delete</span>
+                                                        <span class="btn btn-outline-danger">
+                                                            Delete</span>
                                                     </a>
                                                 </td>
 
@@ -158,24 +159,24 @@
                     @csrf
                     <div class="row"> 
                         <div class="col-sm-6">
-    <div class="form-group">
-        <label for="name">Employee Names</label>
-        <select class="form-control select2s-hidden-accessible @error('name') is-invalid @enderror" id="name" name="name">
-            <option value="">-- Select --</option>
-            @foreach ($userList as $key => $user)
-                @if (isset($user->status) && $user->status === 'Active')
-                    <option value="{{ $user->name }}" data-employee_id="{{ $user->user_id }}" data-phone_number="{{ $user->phone_number }}">{{ $user->name }}</option>
-                @endif
-            @endforeach
-        </select>
+                <div class="form-group">
+                    <label for="name">Employee Names</label>
+                    <select class="form-control select2s-hidden-accessible @error('name') is-invalid @enderror" id="name" name="name">
+                        <option value="">-- Select --</option>
+                        @foreach ($userList as $key => $user)
+                            @if (isset($user->status) && $user->status === 'Active')
+                                <option value="{{ $user->name }}" data-employee_id="{{ $user->user_id }}" data-phone_number="{{ $user->phone_number }}">{{ $user->name }}</option>
+                            @endif
+                        @endforeach
+                    </select>
 
-        @error('name')
-            <span class="invalid-feedback" role="alert">
-                <strong>{{ $message }}</strong>
-            </span>
-        @enderror
-    </div>
-</div>
+                    @error('name')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+                </div>
+            </div>
 
 
                         <div class="col-sm-6"> 
@@ -271,9 +272,6 @@
     @section('script')
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-    <!-- Include jQuery once -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
 <script>
     $(document).ready(function () {
         // Populate Employee ID Auto and Phone Number in the "Add Salary" modal
@@ -319,15 +317,17 @@
 </script>
 
 <script>
-    $(document).ready(function() {
-        $('#delete_salary').on('show.bs.modal', function (event) {
-            var button = $(event.relatedTarget); // Button that triggered the modal
-            var invoice_number = button.data('id'); // Extract info from data-* attributes
-            var modal = $(this);
-            modal.find('#e_invoice_number').val(invoice_number);
+    $(document).ready(function () {
+        // Add a click event handler for the delete button
+        $('#deleteSalary').click(function () {
+            var invoice_number = $(this).data('invoice_number');
+            
+            $('#e_invoice_number').val(invoice_number);
+            
         });
     });
 </script>
+
 
 
 
