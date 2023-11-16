@@ -482,4 +482,49 @@ public function salaryFinal()
         }
     
     }
+
+    // search payments
+    public function searchAdvance(Request $request)
+    {
+        if (Auth::user()->role_name=='Admin')
+        {
+            
+            $users     = DB::table('staff_salaries_advance')->get();
+            $userList = DB::table('users')->get();
+            // $user_id  = DB::table('users')->get();
+            // $position   = DB::table('position_types')->get();
+            // $department = DB::table('departments')->get();
+            // $status_user = DB::table('user_types')->get();
+
+            
+            if($request->name)
+            {
+                $users = StaffSalaryAdvance::where('name','LIKE','%'.$request->name.'%')->get();
+            }
+
+            if ($request->updated_at) {
+                $users = StaffSalaryAdvance::where('updated_at', 'LIKE', $request->updated_at . '%')
+                    ->whereDate('updated_at', $request->updated_at)
+                    ->get();
+            }
+
+            
+            // if ($request->from_date) {
+            //     $users = StaffSalaryPaid::where(function ($query) use ($request) {
+            //         $date = $request->from_date;
+            //         $date = str_replace('/', '-', $date);
+            //         $query->where('created_at', 'LIKE', '%' . substr($date, 0, 10) . '%')
+            //             ->orWhere('created_at', 'LIKE', '%' . substr($date, 6, 10) . '%');
+            //     })->get();
+            // }
+
+           
+            return view('payroll.paidemployeesalaryadvance',compact('users','users', 'userList'));
+        }
+        else
+        {
+            return redirect()->route('form/salary/advPagePaid');
+        }
+    
+    }
 }

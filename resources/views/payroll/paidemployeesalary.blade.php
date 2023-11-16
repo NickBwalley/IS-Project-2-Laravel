@@ -417,44 +417,36 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.js"></script>
 
-<script>
-    function printPDF() {
-        var title = 'Paid Remuneration Report';
-        var dateTime = new Date().toLocaleString();
+    <script>
+        function printPDF() {
+            var title = 'Paid Remuneration Report';
+            var dateTime = new Date().toLocaleString();
 
-        // Get the table content by its ID
-        var tableContent = document.getElementById('paidRemunerationTable').outerHTML;
+            // Get the table content by its ID
+            var tableContent = document.getElementById('paidRemunerationTable').outerHTML;
 
-        // Create a temporary container for the composite content
-        var tempContainer = document.createElement('div');
-        tempContainer.innerHTML = `
-            <h2>${title}</h2>
-            <p>Printed on: ${dateTime}</p>
-            ${tableContent}
-        `;
+            // Create a temporary container for the composite content
+            var tempContainer = document.createElement('div');
+            tempContainer.innerHTML = `
+                <h2>${title}</h2>
+                <p>Printed on: ${dateTime}</p>
+                ${tableContent}
+            `;
 
-        // Adjust font size and margins for better fitting on A4
-        tempContainer.style.fontSize = '12px'; // Increased font size
-        tempContainer.style.margin = '2mm'; // Increased margins
+            // Adjust font size and margins for better fitting on A4
+            tempContainer.style.fontSize = '12px'; // Increased font size
+            tempContainer.style.margin = '2mm'; // Increased margins
 
-        // Use html2pdf to convert the composite content to a PDF
-        html2pdf(tempContainer, {
-            margin: 10,
-            filename: 'knj_remuneration_paid.pdf',
-            image: { type: 'jpeg', quality: 0.98 },
-            html2canvas: { scale: 2 },
-            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-        });
-    }
-</script>
-
-
-
-
-
-
-
-
+            // Use html2pdf to convert the composite content to a PDF
+            html2pdf(tempContainer, {
+                margin: 10,
+                filename: 'knj_remuneration_paid.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            });
+        }
+    </script>
 
 
     @endsection
