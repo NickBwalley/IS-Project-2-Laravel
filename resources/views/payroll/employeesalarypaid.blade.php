@@ -63,8 +63,7 @@
                         <button type="submit" class="btn btn-success btn-block">Search</button>
                     </div>
                     <div class="col-auto float-right ml-auto">
-                        <a href="#" class="btn add-btn" data-toggle="modal" data-target="#print_report"><i class="fa fa-print"></i> PRINT REPORT</a>
-                        {{-- <button id="downloadPdfButton" class="btn btn-primary">Download PDF</button> --}}
+                        <a href="#" class="btn add-btn" onclick="printReport()" data-toggle="modal" data-target="#print_report"><i class="fa fa-print"></i> PRINT REPORT</a>
                     </div>
 
                 </div>
@@ -127,7 +126,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="table-responsive">
-                        <table class="table table-striped custom-table datatable">
+                        <table id="reportTable" class="table table-striped custom-table datatable">
                             <thead>
                                 <tr>
                                     <th>Employee Name</th>
@@ -426,6 +425,19 @@
             });
             
         </script>
+
+        <script>
+            function printReport() {
+                var printWindow = window.open('', '_blank');
+                printWindow.document.write('<html><head><title>Kinyanjui Report</title></head><body>');
+                printWindow.document.write('<h2>Transactions Paid</h2>');
+                printWindow.document.write(document.getElementById('reportTable').outerHTML);
+                printWindow.document.write('</body></html>');
+                printWindow.document.close();
+                printWindow.print();
+            }
+        </script>
+
 
 
 
