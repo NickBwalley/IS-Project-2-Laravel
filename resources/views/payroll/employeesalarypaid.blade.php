@@ -63,7 +63,7 @@
                         <button type="submit" class="btn btn-success btn-block">Search</button>
                     </div>
                     <div class="col-auto float-right ml-auto">
-                        <a href="#" class="btn add-btn" onclick="printReport()" data-toggle="modal" data-target="#print_report"><i class="fa fa-print"></i> PRINT REPORT</a>
+                        <a href="#" class="btn add-btn" onclick="printPDF()" data-toggle="modal" data-target="#print_report"><i class="fa fa-file-pdf"></i> PRINT PDF</a>
                     </div>
 
                 </div>
@@ -426,17 +426,42 @@
             
         </script>
 
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.js"></script>
+
         <script>
-            function printReport() {
-                var printWindow = window.open('', '_blank');
-                printWindow.document.write('<html><head><title>Kinyanjui Report</title></head><body>');
-                printWindow.document.write('<h2>Transactions Paid</h2>');
-                printWindow.document.write(document.getElementById('reportTable').outerHTML);
-                printWindow.document.write('</body></html>');
-                printWindow.document.close();
-                printWindow.print();
+            function printPDF() {
+                var title = 'Paid Transactions Report';
+                var dateTime = new Date().toLocaleString();
+                var content = `
+                    <h2>${title}</h2>
+                    <p>Printed on: ${dateTime}</p>
+                    ${document.getElementById('reportTable').outerHTML}
+                    <p>PrintedBy: Acers Team</p>
+                `;
+
+                // Create a temporary container for the composite content
+                var tempContainer = document.createElement('div');
+                tempContainer.innerHTML = content;
+
+                // Adjust font size and margins for better fitting on A4
+                tempContainer.style.fontSize = '10px';
+                tempContainer.style.margin = '2mm';
+
+                // Use html2pdf to convert the composite content to a PDF
+                html2pdf(tempContainer, {
+                    margin: 10,
+                    filename: 'knj_paid_transactions.pdf',
+                    image: { type: 'jpeg', quality: 0.98 },
+                    html2canvas: { scale: 2 },
+                    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+                });
             }
         </script>
+
+
+
+
 
 
 
