@@ -269,6 +269,8 @@ Route::controller(PayrollController::class)->group(function () {
 
     // now search the transaction paid
     Route::post('search/paid/list', 'searchPayments')->name('search/paid/list');
+    // search remuneration paid
+    Route::post('search/paid/remuneration', 'searchRemuneration')->name('search/paid/remuneration');
 
 });
 
