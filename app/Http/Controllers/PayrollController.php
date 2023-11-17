@@ -355,7 +355,7 @@ public function salaryFinal()
 
 
 
-        public function deleteRecord(Request $request)
+        public function deleteRemunerationPay(Request $request)
     {
         DB::beginTransaction();
         try {
@@ -368,7 +368,7 @@ public function salaryFinal()
             
         } catch (\Exception $e) {
             DB::rollback();
-            Toastr::error('Failed to delete Remuneration :)', 'Error');
+            Toastr::error('Failed to delete Remuneration :<', 'Error');
             return redirect()->back();
         }
     }
