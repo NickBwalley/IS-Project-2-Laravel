@@ -355,24 +355,24 @@ public function salaryFinal()
 
 
 
-    // delete record
-    public function deleteRecord(Request $request)
+        public function deleteRecord(Request $request)
     {
         DB::beginTransaction();
         try {
-
-            StaffSalary::destroy($request->invoice_number);
+            $invoiceNumber = $request->invoice_number;
+            StaffSalary::where('invoice_number', $invoiceNumber)->delete();
 
             DB::commit();
-            Toastr::success('Remuneration deleted successfully :)','Success');
+            Toastr::success('Remuneration deleted successfully :)', 'Success');
             return redirect()->back();
             
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             DB::rollback();
-            Toastr::error('Failed to delete Remuneration :)','Error');
+            Toastr::error('Failed to delete Remuneration :)', 'Error');
             return redirect()->back();
         }
     }
+
 
     // payroll Items
     public function payrollItems()
