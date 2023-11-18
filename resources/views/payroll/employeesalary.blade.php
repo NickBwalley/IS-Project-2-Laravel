@@ -123,9 +123,10 @@
                                                 <td><span class="btn btn-secondary">{{ $items->status }}</span></td>
                                                 <!-- DELETE FUNCTIONALITY -->
                                                 <td>
-                                                    <a class="#" href="#" data-toggle="modal" data-target="#delete_salary" data-id="{{ $items->invoice_number }}">
-                                                        <span class="btn btn-danger">Delete</span>
+                                                    <a class="delete-btn" href="#" data-toggle="modal" data-target="#delete_salary" data-invoice="{{ $items->invoice_number }}">
+                                                        <span class="btn btn-outline-danger">Delete</span>
                                                     </a>
+
                                                 </td>
 
                                             </tr>
@@ -141,6 +142,36 @@
 
         </div>
         <!-- /Page Content -->
+
+         <!-- Delete Salary Modal -->
+        <div class="modal custom-modal fade" id="delete_salary" role="dialog">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="form-header">
+                            <h3>Delete Remuneration Pay</h3>
+                            <p>Are you sure want to delete?</p>
+                        </div>
+                        <div class="modal-btn delete-action">
+                            <form action="{{ route('form/salary/deleteRemPay') }}" method="POST">
+                                @csrf
+                                <input type="hidden" name="invoice_number" id="e_invoice_number" value="">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <button type="submit" class="btn btn-primary continue-btn submit-btn">Delete</button>
+                                    </div>
+                                    <div class="col-6">
+                                        <a href="javascript:void(0);" data-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</a>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- /Delete Salary Modal -->
 
         <!-- Add Salary Modal -->
 
@@ -158,24 +189,24 @@
                     @csrf
                     <div class="row"> 
                         <div class="col-sm-6">
-    <div class="form-group">
-        <label for="name">Employee Names</label>
-        <select class="form-control select2s-hidden-accessible @error('name') is-invalid @enderror" id="name" name="name">
-            <option value="">-- Select --</option>
-            @foreach ($userList as $key => $user)
-                @if (isset($user->status) && $user->status === 'Active')
-                    <option value="{{ $user->name }}" data-employee_id="{{ $user->user_id }}" data-phone_number="{{ $user->phone_number }}">{{ $user->name }}</option>
-                @endif
-            @endforeach
-        </select>
+                <div class="form-group">
+                    <label for="name">Employee Names</label>
+                    <select class="form-control select2s-hidden-accessible @error('name') is-invalid @enderror" id="name" name="name">
+                        <option value="">-- Select --</option>
+                        @foreach ($userList as $key => $user)
+                            @if (isset($user->status) && $user->status === 'Active')
+                                <option value="{{ $user->name }}" data-employee_id="{{ $user->user_id }}" data-phone_number="{{ $user->phone_number }}">{{ $user->name }}</option>
+                            @endif
+                        @endforeach
+                    </select>
 
-        @error('name')
-            <span class="invalid-feedback" role="alert">
-                <strong>{{ $message }}</strong>
-            </span>
-        @enderror
-    </div>
-</div>
+                    @error('name')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+                </div>
+            </div>
 
 
                         <div class="col-sm-6"> 
@@ -234,45 +265,11 @@
         <!-- /Add Salary Modal -->
         
 
-        <!-- /Edit Salary Modal -->
-        
-        <!-- Delete Salary Modal -->
-        <div class="modal custom-modal fade" id="delete_salary" role="dialog">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-body">
-                        <div class="form-header">
-                            <h3>Delete Remuneration Pay</h3>
-                            <p>Are you sure want to delete?</p>
-                        </div>
-                        <div class="modal-btn delete-action">
-                            <form action="{{ route('form/salary/delete') }}" method="POST">
-                                @csrf
-                                <input type="text" name="invoice_number" id="e_invoice_number" value="">
-                                <div class="row">
-                                    <div class="col-6">
-                                        <button type="submit" class="btn btn-primary continue-btn submit-btn">Delete</button>
-                                    </div>
-                                    <div class="col-6">
-                                        <a href="javascript:void(0);" data-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</a>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- /Delete Salary Modal -->
      
     </div>
     <!-- /Page Wrapper -->
     @section('script')
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-    <!-- Include jQuery once -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script>
     $(document).ready(function () {
@@ -319,15 +316,15 @@
 </script>
 
 <script>
-    $(document).ready(function() {
-        $('#delete_salary').on('show.bs.modal', function (event) {
-            var button = $(event.relatedTarget); // Button that triggered the modal
-            var invoice_number = button.data('id'); // Extract info from data-* attributes
-            var modal = $(this);
-            modal.find('#e_invoice_number').val(invoice_number);
+    $(document).ready(function(){
+        $('.delete-btn').on('click', function(){
+            var invoiceNumber = $(this).data('invoice');
+            $('#e_invoice_number').val(invoiceNumber);
         });
     });
 </script>
+
+
 
 
 

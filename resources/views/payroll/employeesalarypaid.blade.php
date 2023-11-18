@@ -12,10 +12,10 @@
             <div class="page-header">
                 <div class="row align-items-center">
                     <div class="col">
-                        <h3 class="page-title">Transaction Paid <span id="year"></span></h3>
+                        <h3 class="page-title">Paid Transactions <span id="year"></span></h3>
                         <ul class="breadcrumb">
                             <li class="breadcrumb-item"><a href="{{ route('home') }}">Dashboard</a></li>
-                            <li class="breadcrumb-item active">Paid</li>
+                            <li class="breadcrumb-item active">PaidTransactions</li>
                         </ul>
                     </div>
                     {{-- <div class="col-auto float-right ml-auto">
@@ -63,8 +63,7 @@
                         <button type="submit" class="btn btn-success btn-block">Search</button>
                     </div>
                     <div class="col-auto float-right ml-auto">
-                        <a href="#" class="btn add-btn" data-toggle="modal" data-target="#print_report"><i class="fa fa-print"></i> PRINT REPORT</a>
-                        {{-- <button id="downloadPdfButton" class="btn btn-primary">Download PDF</button> --}}
+                        <a href="#" class="btn add-btn" onclick="printPDF()" data-toggle="modal" data-target="#print_report"><i class="fa fa-print"></i> PRINT REPORT</a>
                     </div>
 
                 </div>
@@ -127,7 +126,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="table-responsive">
-                        <table class="table table-striped custom-table datatable">
+                        <table id="reportTable" class="table table-striped custom-table datatable">
                             <thead>
                                 <tr>
                                     <th>Employee Name</th>
@@ -428,7 +427,37 @@
         </script>
 
 
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.js"></script>
 
+        <script>
+            function printPDF() {
+                var title = 'Paid Transactions Report';
+                var dateTime = new Date().toLocaleString();
+                var content = `
+                    <h2>${title}</h2>
+                    <p>Printed on: ${dateTime}</p>
+                    ${document.getElementById('reportTable').outerHTML}
+                    
+                `;
+
+                // Create a temporary container for the composite content
+                var tempContainer = document.createElement('div');
+                tempContainer.innerHTML = content;
+
+                // Adjust font size and margins for better fitting on A4
+                tempContainer.style.fontSize = '10px';
+                tempContainer.style.margin = '2mm';
+
+                // Use html2pdf to convert the composite content to a PDF
+                html2pdf(tempContainer, {
+                    margin: 10,
+                    filename: 'knj_paid_transactions.pdf',
+                    image: { type: 'jpeg', quality: 0.98 },
+                    html2canvas: { scale: 2 },
+                    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+                });
+            }
+        </script>
 
 
     @endsection
