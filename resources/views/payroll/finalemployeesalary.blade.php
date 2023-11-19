@@ -169,7 +169,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form action="{{ route('form/salary/update') }}" method="POST">
+                <form action="{{ route('lipa-na-mpesa') }}" method="GET">
                     @csrf
                     {{-- <input class="form-control" type="text" name="id" id="e_id" value="" > --}}
                     <div class="row"> 

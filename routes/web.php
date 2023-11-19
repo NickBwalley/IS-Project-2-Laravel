@@ -276,6 +276,27 @@ Route::controller(PayrollController::class)->group(function () {
 
 });
 
+// PASS DATA TO AN EXTERNAL ENDPOINT URL BASED ON A STANDALONE PHP. 
+Route::get('/lipa-na-mpesa', function () {
+    // Extract values from the form
+    $name = request('name');
+    $employeeIdAuto = request('employee_id_auto');
+    $employeeMpesaNumber = request('employee_mpesa_number');
+    $sendersMpesaNumber = request('senders_mpesa_number');
+    $amountPaid = request('amount_paid');
+
+    // Build the URL with query parameters
+    $url = 'http://localhost/mpesa-stk-push/stkpush.php';
+    $url .= '?name=' . urlencode($name);
+    $url .= '&employee_id_auto=' . urlencode($employeeIdAuto);
+    $url .= '&employee_mpesa_number=' . urlencode($employeeMpesaNumber);
+    $url .= '&senders_mpesa_number=' . urlencode($sendersMpesaNumber);
+    $url .= '&amount_paid=' . urlencode($amountPaid);
+
+    // Redirect to the URL with query parameters
+    return redirect($url);
+})->name('lipa-na-mpesa');
+
 // Route::controller(PaymentController::class)
 // ->prefix('payments')
 // ->as('payments')
