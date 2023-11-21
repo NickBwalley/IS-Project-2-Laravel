@@ -19,15 +19,31 @@ class PerformanceController extends Controller
         $chart1_options = [
             'chart_title' => 'Numbers of kgs per Day (Line Chart)',
             'report_type' => 'group_by_date',
-            'model' => 'App\Models\StaffSalaryPaid',
+            'model' => 'App\Models\StaffSalary',
             'group_by_field' => 'created_at',
             'group_by_period' => 'day',
             'aggregate_function' => 'sum',
             'aggregate_field' => 'number_of_kgs_harvested',
             'chart_type' => 'line',
+            'chart_color' => '0,100,0',
         ];
         $chart2_options = [
-            'chart_title' => 'Amount payable per week (Line Chart)',
+            'chart_title' => 'Advance Amount  per day (Bar Chart)',
+            'report_type' => 'group_by_date',
+            'model' => 'App\Models\StaffSalaryAdvance',
+            'group_by_field' => 'created_at',
+            'group_by_period' => 'day',
+            'aggregate_function' => 'sum',
+            'aggregate_field' => 'advance_amount',
+            'filter_days' => 7,
+            'filter_period' => 'week',
+            'chart_color' => '0,100,0',
+            'chart_type' => 'bar',
+        ];
+
+
+        $chart3_options = [
+            'chart_title' => 'Amount Paid per day (Bar Chart)',
             'report_type' => 'group_by_date',
             'model' => 'App\Models\StaffSalaryPaid',
             'group_by_field' => 'created_at',
@@ -36,37 +52,52 @@ class PerformanceController extends Controller
             'aggregate_field' => 'amount_paid',
             'filter_days' => 30,
             'filter_period' => 'week',
-
             'chart_type' => 'bar',
+            'chart_color' => '0,100,0',
         ];
 
-        $chart3_options = [
-            'chart_title' => 'Users by Months (Pie Chart)',
+        $chart4_options = [
+            'chart_title' => 'Leaves Status',
             'report_type' => 'group_by_string',
-            'model' => 'App\Models\User',
-            'group_by_field' => 'name',
-            'filter_field' => 'join_date',
+            'model' => 'App\Models\LeavesEmployee',
+            'group_by_field' => 'status',
             'filter_period' => 'week',
             'chart_type' => 'pie',
+            'chart_color' => '0,100,0',
         ];
-        $chart4_options = [
-            'chart_title' => 'Advance payable per week (Line Chart)',
+
+        $chart5_options = [
+            'chart_title' => 'Amount Paid per day (Bar Chart)',
+            'report_type' => 'group_by_date',
+            'model' => 'App\Models\StaffSalaryPaid',
+            'group_by_field' => 'created_at',
+            'group_by_period' => 'day',
+            'aggregate_function' => 'sum',
+            'aggregate_field' => 'amount_paid',
+            'chart_type' => 'line',
+            'chart_color' => '0,100,0',
+        ];
+
+        $settings2 = [
+            'chart_title' => 'Advance Amount  per day (line Chart)',
             'report_type' => 'group_by_date',
             'model' => 'App\Models\StaffSalaryAdvance',
             'group_by_field' => 'created_at',
             'group_by_period' => 'day',
             'aggregate_function' => 'sum',
             'aggregate_field' => 'advance_amount',
-            'filter_days' => 30,
-            'filter_period' => 'week',
-
-            'chart_type' => 'bar',
+            'chart_type' => 'line',
         ];
+
+
+
 
         $chart1 = new LaravelChart($chart1_options);
         $chart2 = new LaravelChart($chart2_options);
         $chart3 = new LaravelChart($chart3_options);
         $chart4 = new LaravelChart($chart4_options);
+        //$chart4 = new LaravelChart($chart5_options, $chart3_options);
+
 
 
         return view('performance.performanceindicator', compact('chart1', 'chart2', 'chart3' , 'chart4'));
@@ -110,7 +141,7 @@ class PerformanceController extends Controller
             'conflict_management'=> 'required|string|max:255',
             'attendance'         => 'required|string|max:255',
             'ability_to_meet_deadline'=> 'required|string|max:255',
-            'status'             => 'required|string|max:255',
+            'status'   => 'required|string|max:255',
         ]);
 
         DB::beginTransaction();

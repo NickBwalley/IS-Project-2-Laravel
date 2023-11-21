@@ -4,7 +4,6 @@
     {{-- Display any messages --}}
     {!! Toastr::message() !!}
 
-    <!-- Page Wrapper -->
     <div class="page-wrapper">
         <!-- Page Content -->
         <div class="content container-fluid">
@@ -21,47 +20,45 @@
                 </div>
             </div>
 
-            <!-- Cards for Charts -->
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="card">
-                        <div class="card-body">
-                            <!-- Display Chart 1 -->
-                            {!! $chart1->renderHtml() !!}
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-6">
-                    <div class="card">
-                        <div class="card-body">
-                            <!-- Display Chart 2 -->
-                            {!! $chart2->renderHtml() !!}
-                        </div>
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <!-- Display Chart 1 -->
+                        {!! $chart1->renderHtml() !!}
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="card">
-                        <div class="card-body">
-                            <!-- Display Chart 1 -->
-                            {!! $chart3->renderHtml() !!}
-                        </div>
+
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <!-- Display Chart 2 -->
+                        {!! $chart2->renderHtml() !!}
                     </div>
                 </div>
+            </div>
 
-                <div class="col-md-6">
-                    <div class="card">
-                        <div class="card-body">
-                            <!-- Display Chart 2 -->
-                            {!! $chart4->renderHtml() !!}
-                        </div>
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <!-- Display Chart 3 -->
+                        {!! $chart3->renderHtml() !!}
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <!-- Display Chart 4 -->
+                        {!! $chart4->renderHtml() !!}
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+
         </div>
 
     </div>
