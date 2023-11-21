@@ -88,7 +88,9 @@
                                     <th>Advance Debt Balance</th>
                                     {{-- <th>Transaction Date</th> --}}
                                     <th>Status</th>
+                                    @if (Auth::user()->role_name == 'Admin')
                                     <th>Action</th>
+                                    @endif
                                 </tr>
                             </thead>
                             
@@ -120,29 +122,30 @@
                                             <td><strong><span class="btn btn-warning">KSH {{ $totalAdvanceAmount }}</span></strong></td>
                                             {{-- <td>{{ $item->created_at }}</td> --}}
                                             <td><span class="btn btn-secondary">{{ $item->status }}</span></td>
-
+                                            @if (Auth::user()->role_name == 'Admin')
                                             <td >
-                                        <div class="dropdown dropdown-action">
-                                            @if ($totalAdvanceAmount > $estimatedPayout)
-                                                    <span class="btn btn-danger">Arrears of: KSH {{ $totalAdvanceAmount - $estimatedPayout }}</span>
-                                            @else
-                                                    <div class="dropdown dropdown-action">
-                                                        @if ($totalAdvanceAmount <= $estimatedPayout)
-                                                            <a href="#" class="action-icon dropdown-toggle editSalary" data-toggle="modal" data-target="#edit_salary"
-                                                                
-                                                                data-name="{{ $item->name }}"
-                                                                data-phone_number="{{ $item->phone_number }}"
-                                                                data-employee_id_auto="{{ $item->employee_id_auto }}"
-                                                                data-estimated_payout="{{ $estimatedPayout - $totalAdvanceAmount }}"
-                                                                
-                                                            ><span style="width: 150px;" class="btn btn-outline-success">Proceed to Pay</span></a>
-                                                            {{-- <a class="#" href="#" data-toggle="modal" data-target="#delete_salary" ><span class="btn btn-outline-danger">Delete</span></a> --}}
-                                                        @endif
-                                                    </div>
-                                            @endif
+                                                <div class="dropdown dropdown-action">
+                                                    @if ($totalAdvanceAmount > $estimatedPayout)
+                                                            <span class="btn btn-danger">Arrears of: KSH {{ $totalAdvanceAmount - $estimatedPayout }}</span>
+                                                    @else
+                                                            <div class="dropdown dropdown-action">
+                                                                @if ($totalAdvanceAmount <= $estimatedPayout)
+                                                                    <a href="#" class="action-icon dropdown-toggle editSalary" data-toggle="modal" data-target="#edit_salary"
+                                                                        
+                                                                        data-name="{{ $item->name }}"
+                                                                        data-phone_number="{{ $item->phone_number }}"
+                                                                        data-employee_id_auto="{{ $item->employee_id_auto }}"
+                                                                        data-estimated_payout="{{ $estimatedPayout - $totalAdvanceAmount }}"
+                                                                        
+                                                                    ><span style="width: 150px;" class="btn btn-outline-success">Proceed to Pay</span></a>
+                                                                    {{-- <a class="#" href="#" data-toggle="modal" data-target="#delete_salary" ><span class="btn btn-outline-danger">Delete</span></a> --}}
+                                                                @endif
+                                                            </div>
+                                                    @endif
 
-                                        </div>
-                                    </td>
+                                                </div>
+                                            </td>
+                                            @endif
                                         </tr>
                                     @endif
                                 @endforeach

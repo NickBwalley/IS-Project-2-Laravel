@@ -58,6 +58,11 @@ class PayrollController extends Controller
     return view('payroll.employeesalary', compact('users', 'userList', 'permission_lists', 'pendingAdvanceBalance'));
 }
 
+    public function mpesaComplete()
+{
+    return view('payroll.mpesacomplete');
+}
+
 
     public function remunerationPaid()
 {

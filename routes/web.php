@@ -266,6 +266,7 @@ Route::controller(PayrollController::class)->group(function () {
     Route::get('form/payroll/items', 'payrollItems')->middleware('auth')->name('form/payroll/accesstoken');
     
     Route::get('form/salary/accesstoken', 'token')->middleware('auth')->name('form/payroll/items');
+    Route::get('form/salary/mpesacomplete', 'mpesaComplete')->middleware('auth')->name('form/salary/mpesacomplete');
 
     // now search the transaction paid
     Route::post('search/paid/list', 'searchPayments')->name('search/paid/list');

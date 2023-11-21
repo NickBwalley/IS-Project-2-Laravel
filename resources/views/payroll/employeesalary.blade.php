@@ -91,7 +91,9 @@
                                     <th>Total Amount</th>
                                     <th>Transaction Date</th>
                                     <th>Status</th>
+                                    @if (Auth::user()->role_name == 'Admin')
                                     <th>Action</th>
+                                    @endif
                                 </tr>
                             </thead>
 
@@ -122,12 +124,14 @@
                                                 <td>{{ $items->created_at }}</td>
                                                 <td><span class="btn btn-secondary">{{ $items->status }}</span></td>
                                                 <!-- DELETE FUNCTIONALITY -->
+                                                @if (Auth::user()->role_name == 'Admin')
                                                 <td>
                                                     <a class="delete-btn" href="#" data-toggle="modal" data-target="#delete_salary" data-invoice="{{ $items->invoice_number }}">
                                                         <span class="btn btn-outline-danger">Delete</span>
                                                     </a>
 
                                                 </td>
+                                                @endif
 
                                             </tr>
                                         @endif
