@@ -250,7 +250,7 @@ public function salaryFinal()
     $request->validate([
         'name' => 'required|string|max:255',
         'employee_id_auto' => 'required|string|max:255',
-        'phone_number' => 'required|numeric|digits:10', // Limit the phone number to 10 digits
+        'phone_number' => 'required|numeric|digits:12', // Limit the phone number to 10 digits
         'advance_amount' => 'required|numeric|min:0',
         'status' => 'required|string|max:100',
     ]);

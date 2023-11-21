@@ -191,10 +191,12 @@
                         <div class="col-sm-6"> 
                             <label>Employees M-Pesa Number</label>
                             <input class="form-control" type="text" name="employee_mpesa_number" id="e_phone_number" value="" >
+                            <p style="font-size: 12px; font-style: italic; color: red;">Please Note: Format (254722000000)</p>
                         </div>
                         <div class="col-sm-6"> 
                                 <label>Sender's M-Pesa Number </label>
                                 <input class="form-control" type="text" name="senders_mpesa_number" id="sender_phone_number" value="" >
+                                <p style="font-size: 12px; font-style: italic; color: red;">Please Note: Format (254722000000)</p>
                         </div>
                     </div>
                     <br>
