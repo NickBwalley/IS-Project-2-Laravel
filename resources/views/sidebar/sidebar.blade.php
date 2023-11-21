@@ -67,11 +67,12 @@
                     <ul style="{{ request()->is('/*') ? 'display: block;' : 'display: none;' }}">
                         <li><a class="{{set_active(['form/salary/page'])}}" href="{{ route('form/salary/page') }}"> Remuneration Pay </a></li>
                         <li><a class="{{set_active(['form/salary/advPage'])}}" href="{{ route('form/salary/advPage') }}"> Advance Pay </a></li>
+                        @if (Auth::user()->role_name == 'Admin')
                         <li><a class="{{set_active(['form/salary/checkout'])}}" href="{{ route('form/salary/checkout') }}"> Final Pay </a></li>
                         <li><a class="{{set_active(['form/salary/epaid'])}}" href="{{ route('form/salary/epaid') }}"> Paid Transactions </a></li>
                         <li><a class="{{set_active(['form/salary/pagePaid'])}}" href="{{ route('form/salary/pagePaid') }}"> Paid Remuneration </a></li>
                         <li><a class="{{set_active(['form/salary/advPagePaid'])}}" href="{{ route('form/salary/advPagePaid') }}"> Paid Advance </a></li>
-                        
+                        @endif
                     </ul>
                 </li>
                 
