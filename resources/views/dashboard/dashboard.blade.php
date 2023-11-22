@@ -116,41 +116,46 @@
                     </div>
                 </div>
             </div> --}}
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-body">
-                        <!-- Display Chart 1 -->
-                        {!! $chart1->renderHtml() !!}
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <!-- Display Chart 1 -->
+                            {!! $chart1->renderHtml() !!}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <!-- Display Chart 2 -->
+                            {!! $chart2->renderHtml() !!}
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-body">
-                        <!-- Display Chart 2 -->
-                        {!! $chart2->renderHtml() !!}
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <!-- Display Chart 3 -->
+                            {!! $chart3->renderHtml() !!}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <!-- Display Chart 4 -->
+                            {!! $chart4->renderHtml() !!}
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-body">
-                        <!-- Display Chart 3 -->
-                        {!! $chart3->renderHtml() !!}
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-body">
-                        <!-- Display Chart 4 -->
-                        {!! $chart4->renderHtml() !!}
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 

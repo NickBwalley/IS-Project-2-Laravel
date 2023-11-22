@@ -236,7 +236,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form action="{{ route('form/salary/update') }}" method="POST">
+                <form action="{{ route('form/salary/save') }}" method="POST">
                     @csrf
                     <input class="form-control" type="hidden" name="id" id="e_id" value="" readonly>
                     <div class="row"> 
