@@ -349,7 +349,9 @@ public function salaryFinal()
 
             DB::commit();
             Toastr::success('Transaction Paid successfully :)', 'Success');
-            return redirect()->back();
+            // Wait for 5 seconds
+            // sleep(5);
+            return redirect('/form/salary/epaid');
         } catch (\Exception $e) {
             DB::rollback();
             dd($e->getMessage()); // Debugging: Display the error message
