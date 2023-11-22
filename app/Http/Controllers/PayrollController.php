@@ -58,6 +58,11 @@ class PayrollController extends Controller
     return view('payroll.employeesalary', compact('users', 'userList', 'permission_lists', 'pendingAdvanceBalance'));
 }
 
+    public function mpesaComplete()
+{
+    return view('payroll.mpesacomplete');
+}
+
 
     public function remunerationPaid()
 {
@@ -250,7 +255,7 @@ public function salaryFinal()
     $request->validate([
         'name' => 'required|string|max:255',
         'employee_id_auto' => 'required|string|max:255',
-        'phone_number' => 'required|numeric|digits:10', // Limit the phone number to 10 digits
+        'phone_number' => 'required|numeric|digits:12', // Limit the phone number to 10 digits
         'advance_amount' => 'required|numeric|min:0',
         'status' => 'required|string|max:100',
     ]);
@@ -344,7 +349,9 @@ public function salaryFinal()
 
             DB::commit();
             Toastr::success('Transaction Paid successfully :)', 'Success');
-            return redirect()->back();
+            // Wait for 5 seconds
+            // sleep(5);
+            return redirect('/form/salary/epaid');
         } catch (\Exception $e) {
             DB::rollback();
             dd($e->getMessage()); // Debugging: Display the error message
