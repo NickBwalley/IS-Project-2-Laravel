@@ -1,11 +1,8 @@
-<?php use App\Models\StaffSalary;
-?>
+
 @extends('layouts.master')
 @section('content')
-
     {{-- message --}}
     {!! Toastr::message() !!}
-    
 
     <!-- Page Wrapper -->
     <div class="page-wrapper">
@@ -15,14 +12,15 @@
             <div class="page-header">
                 <div class="row align-items-center">
                     <div class="col">
-                        <h3 class="page-title">My Statements <span id="year"></span></h3>
+                        <h3 class="page-title">Paid Remuneration <span id="year"></span></h3>
                         <ul class="breadcrumb">
                             <li class="breadcrumb-item"><a href="{{ route('home') }}">Dashboard</a></li>
-                            <li class="breadcrumb-item active">All Transactions</li>
+                            <li class="breadcrumb-item active">PaidRemuneration</li>
                         </ul>
                     </div>
                     {{-- <div class="col-auto float-right ml-auto">
-                        <a href="#" class="btn add-btn" data-toggle="modal" data-target="#add_salary"><i class="fa fa-plus"></i> Pay Employee</a>
+                        <a href="#" class="btn add-btn" data-toggle="modal" data-target="#add_salary"><i class="fa fa-plus"></i> Add Remuneration Pay</a>
+                        
                     </div> --}}
                 </div>
             </div>
@@ -76,6 +74,39 @@
                     <a href="#" class="btn btn-success btn-block"> Search </a>  
                 </div>     
             </div> --}}
+
+            <form action="{{ route('search/paid/remuneration') }}" method="POST">
+                @csrf
+                <div class="row filter-row">
+                    
+                    <div class="col-sm-6 col-md-3">
+                        <label class="focus-label">Search By Name</label>
+                        <div class="form-group form-focus">
+                            <input type="text" class="form-control floating" id="name" name="name" placeholder="Enter Name">
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-3">
+                        <label class="focus-label">Search By Invoice Number</label>
+                        <div class="form-group form-focus">
+                            <input type="text" class="form-control floating" id="invoice_number" name="invoice_number" placeholder="Enter Invoice Number">
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-3">
+                        <label class="focus-label">Search By Date</label>
+                        <div class="form-group form-focus">
+                            <input type="text" class="form-control floating" id="updated_at" name="updated_at" placeholder="Enter Date (yyyy-mm-dd)">
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-3">
+                        <label class="focus-label">Search</label>
+                        <button type="submit" class="btn btn-success btn-block">Search</button>
+                    </div>
+                    <div class="col-auto float-right ml-auto">
+                        <a href="#" class="btn add-btn" onclick="printPDF()" data-toggle="modal" data-target="#print_report"><i class="fa fa-print"></i> PRINT REPORT</a>
+                    </div>
+
+                </div>
+            </form>
             <!-- /Search Filter -->  
 
             {{-- ADD SALARY EMPLOYEE --}}
@@ -83,56 +114,52 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="table-responsive">
-                        <table class="table table-striped custom-table datatable">
+                        <table id="paidRemunerationTable" class="table table-striped custom-table datatable">
                             <thead>
                                 <tr>
-                                    {{-- <th>Employee Name</th> --}}
-                                    {{-- <th>Employee ID</th> --}}
+                                    <th>Employee Name</th>
                                     <th>Invoice Number</th>
-                                    <th>Phone Number</th>
                                     <th>KGS Harvested</th>
-                                    <th>Shillings per KG</th>
-                                    <th>Amount to be Paid</th>
-                                    <th>Transaction Time</th>
+                                    <th>Shilling per KG</th>
+                                    <th>Amount Paid</th>
+                                    <th>Transaction Date</th>
                                     <th>Status</th>
-                                    {{-- <th class="text-right">Action</th> --}}
                                 </tr>
                             </thead>
                             
-                            <?php 
-                                // $users = StaffSalary::where('employee_id_auto', auth()->id())->get();
-                                $users = StaffSalary::where('employee_id_auto', auth()->user()->user_id)->get();
-                            ?>
-                            
-                            <tbody>
-                                @foreach ($users as $items)
-                                @if ($items->status === 'pending')
-                                <tr>
-                                    {{-- <td>
-                                        <h2 class="table-avatar">
-                                            <a href="{{ url('employee/profile/'.$items->user_id) }}" class="avatar"><img alt="" src="{{ URL::to('/assets/images/'. $items->avatar) }}"></a>
-                                            <a href="{{ url('employee/profile/'.$items->user_id) }}">{{ $items->name }}</a>
-                                        </h2>
-                                    </td> --}}
-                                    {{-- <td>{{ $items->employee_id_auto }}</td> --}}
-                                    <td>{{ $items->invoice_number }}</td>
-                                    <td>{{ $items->phone_number }}</td>
-                                    <td>{{ $items->number_of_kgs_harvested }}</td>
-                                    <td>{{ $items->shillings_per_kg }}</td>
-                                    <td><span class="btn btn-warning">KSH {{ $items->estimated_payout }}</span></td>
-                                    <td>{{ $items->created_at }}</td>
-                                    <td><span class="btn btn-secondary">{{ $items->status }}</span></td>
-                                    
-                            </td>
-                                </tr>
-                                @endif
-                                @endforeach
-                            </tbody>
+                            @if ($users->isEmpty())
+                                <tbody>
+                                    <tr>
+                                        <td colspan="7" style="text-align: center;">No records available.</td>
+                                    </tr>
+                                </tbody>
+                            @else
+                                <tbody>
+                                    @php
+                                        // Sort the $users array by updated_at in descending order
+                                        $sortedUsers = $users->sortByDesc('updated_at');
+                                    @endphp
 
+                                    @foreach ($sortedUsers as $items)
+                                        @if ($items->status === 'paid')
+                                            <tr>
+                                                <td>{{$items->name}}</td>
+                                                <td>{{ $items->invoice_number }}</td>
+                                                <td>{{ $items->number_of_kgs_harvested }}</td>
+                                                <td>{{ $items->shillings_per_kg }}</td>
+                                                <td><strong><span class="btn btn-success">KSH {{ $items->estimated_payout }}</span></strong></td>
+                                                <td>{{ $items->updated_at }}</td>
+                                                <td><span class="btn btn-success">{{ $items->status }}</span></td>
+                                            </tr>
+                                        @endif
+                                    @endforeach
+                                </tbody>
+                            @endif
                         </table>
                     </div>
                 </div>
             </div>
+
 
         </div>
         <!-- /Page Content -->
@@ -153,22 +180,25 @@
                     @csrf
                     <div class="row"> 
                         <div class="col-sm-6">
-                            <div class="form-group">
-                                <label for="name">Employee Name</label>
-                               <select class="form-control select2s-hidden-accessible @error('name') is-invalid @enderror" id="name" name="name">
-                                    <option value="">-- Select --</option>
-                                    @foreach ($userList as $key => $user)
-                                        <option value="{{ $user->name }}" data-employee_id="{{ $user->user_id }}" data-phone_number="{{ $user->phone_number }}">{{ $user->name }}</option>
-                                    @endforeach
-                                </select>
+    <div class="form-group">
+        <label for="name">Employee Names</label>
+        <select class="form-control select2s-hidden-accessible @error('name') is-invalid @enderror" id="name" name="name">
+            <option value="">-- Select --</option>
+            @foreach ($userList as $key => $user)
+                @if (isset($user->status) && $user->status === 'Active')
+                    <option value="{{ $user->name }}" data-employee_id="{{ $user->user_id }}" data-phone_number="{{ $user->phone_number }}">{{ $user->name }}</option>
+                @endif
+            @endforeach
+        </select>
 
-                                @error('name')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
+        @error('name')
+            <span class="invalid-feedback" role="alert">
+                <strong>{{ $message }}</strong>
+            </span>
+        @enderror
+    </div>
+</div>
+
 
                         <div class="col-sm-6"> 
                             <label>Employee ID Auto</label>
@@ -230,7 +260,7 @@
         <div class="modal-dialog modal-dialog-centered modal-md" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Edit Employee Salary</h5>
+                <h5 class="modal-title">Employee Payment</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -238,7 +268,7 @@
             <div class="modal-body">
                 <form action="{{ route('form/salary/update') }}" method="POST">
                     @csrf
-                    <input class="form-control" type="hidden" name="id" id="e_id" value="" readonly>
+                    {{-- <input class="form-control" type="text" name="id" id="e_id" value="" > --}}
                     <div class="row"> 
                         <div class="col-sm-6"> 
                             <div class="form-group">
@@ -252,21 +282,31 @@
                             @enderror
                         </div>
                         <div class="col-sm-6"> 
-                            <label>Employees Telephone Number</label>
-                            <input class="form-control" type="text" name="phone_number" id="e_phone_number" value="" readonly>
+                            <label>Employees M-Pesa Number</label>
+                            <input class="form-control" type="text" name="employee_mpesa_number" id="e_phone_number" value="" >
                         </div>
                         <div class="col-sm-6"> 
                                 <label>Employee ID </label>
                                 <input class="form-control" type="text" name="employee_id_auto" id="e_employee_id_auto" value="" readonly>
+                        </div>
+                        <div class="col-sm-6"> 
+                                <label>Sender's M-Pesa Number </label>
+                                <input class="form-control" type="text" name="senders_mpesa_number" id="sender_phone_number" value="" >
                         </div>
                     </div>
                     <div class="row"> 
                         <div class="col-sm-6"> 
                             
                             <div class="form-group">
-                                <label>Number of Kgs Harvested</label>
-                                <input class="form-control" type="text" name="number_of_kgs_harvested" id="e_number_of_kgs_harvested" value="" readonly>
+                                <label>Invoice Number</label>
+                                <input class="form-control" type="text" name="invoice_number" id="e_invoice_number" value="" readonly >
                             </div>
+                            
+                            <div class="form-group">
+                                <label>Number of Kgs Harvested</label>
+                                <input class="form-control" type="text" name="number_of_kgs_harvested" id="e_number_of_kgs_harvested" value="" readonly >
+                            </div>
+
                             
                             <div class="form-group">
                                 <label>Shillings per Kg</label>
@@ -274,7 +314,7 @@
                             </div>
                             <div class="form-group">
                                 <label>Total Amount to Pay</label>
-                                <input class="form-control" type="text"  name="estimated_payout" id="e_estimated_payout" value="" readonly>
+                                <input class="form-control" type="text"  name="amount_paid" id="e_estimated_payout" value="" readonly>
                             </div>
                         </div>
                     </div>
@@ -295,13 +335,13 @@
                 <div class="modal-content">
                     <div class="modal-body">
                         <div class="form-header">
-                            <h3>Delete Salary</h3>
+                            <h3>Delete Remuneration Pay</h3>
                             <p>Are you sure want to delete?</p>
                         </div>
                         <div class="modal-btn delete-action">
                             <form action="{{ route('form/salary/delete') }}" method="POST">
                                 @csrf
-                                <input type="hidden" name="id" class="e_id" value="">
+                                <input type="hidden" name="" id="e_employee_id_auto" value="">
                                 <div class="row">
                                     <div class="col-6">
                                         <button type="submit" class="btn btn-primary continue-btn submit-btn">Delete</button>
@@ -322,60 +362,91 @@
     </div>
     <!-- /Page Wrapper -->
     @section('script')
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <!-- Include jQuery once -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-<script>
-    $(document).ready(function () {
-        // Populate Employee ID Auto and Phone Number in the "Add Salary" modal
-        $('#name').change(function () {
-            var selectedOption = $(this).find('option:selected');
-            var employeeID = selectedOption.data('employee_id');
-            var phoneNumber = selectedOption.data('phone_number');
-            
-            $('#employee_id_auto').val(employeeID);
-            $('#phone_number').val(phoneNumber);
+    <script>
+        $(document).ready(function () {
+            // Populate Employee ID Auto and Phone Number in the "Add Salary" modal
+            $('#name').change(function () {
+                var selectedOption = $(this).find('option:selected');
+                var employeeID = selectedOption.data('employee_id');
+                var phoneNumber = selectedOption.data('phone_number');
+                
+                $('#employee_id_auto').val(employeeID);
+                $('#phone_number').val(phoneNumber);
+            });
+
+            // Calculate Estimated Payout in real-time
+            $('#number_of_kgs_harvested, #shillings_per_kg').on('input', function () {
+                var kgsHarvested = parseFloat($('#number_of_kgs_harvested').val()) || 0;
+                var shillingsPerKg = parseFloat($('#shillings_per_kg').val()) || 0;
+                var estimatedPayout = kgsHarvested * shillingsPerKg;
+                $('#estimated_payout').val(estimatedPayout.toFixed(2));
+            });
+
+            // Handle the click event for the "Pay" button in the "Edit Salary" modal
+            $('.editSalary').click(function () {
+                var id = $(this).data('id');
+                var name = $(this).data('name');
+                var employee_id_auto = $(this).data('employee_id_auto');
+                var invoice_number = $(this).data('invoice_number');
+                var phone_number = $(this).data('phone_number');
+                var number_of_kgs_harvested = $(this).data('number_of_kgs_harvested');
+                var shillings_per_kg = $(this).data('shillings_per_kg');
+                var estimated_payout = $(this).data('estimated_payout');
+
+                $('#e_id').val(id);
+                $('#e_name').val(name);
+                $('#e_employee_id_auto').val(employee_id_auto);
+                $('#e_invoice_number').val(invoice_number);
+                $('#e_phone_number').val(phone_number);
+                $('#e_number_of_kgs_harvested').val(number_of_kgs_harvested);
+                $('#e_shillings_per_kg').val(shillings_per_kg);
+                $('#e_estimated_payout').val(estimated_payout);
+            });
+
+            // Handle the click event for the "Delete" button in the "Delete Salary" modal
+            $('.salaryDelete').click(function () {
+                var employee_id_auto = $(this).data('employee_id_auto');
+                $('.e_employee_id_auto').val(employee_id_auto); // Set the value of the hidden input field
+            });
         });
+    </script>
 
-        // Calculate Estimated Payout in real-time
-        $('#number_of_kgs_harvested, #shillings_per_kg').on('input', function () {
-            var kgsHarvested = parseFloat($('#number_of_kgs_harvested').val()) || 0;
-            var shillingsPerKg = parseFloat($('#shillings_per_kg').val()) || 0;
-            var estimatedPayout = kgsHarvested * shillingsPerKg;
-            $('#estimated_payout').val(estimatedPayout.toFixed(2));
-        });
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.js"></script>
 
-        // Handle the click event for the "Pay" button in the "Edit Salary" modal
-        $('.editSalary').click(function () {
-            var id = $(this).data('id');
-            var name = $(this).data('name');
-            var employee_id_auto = $(this).data('employee_id_auto');
-            var phone_number = $(this).data('phone_number');
-            var number_of_kgs_harvested = $(this).data('number_of_kgs_harvested');
-            var shillings_per_kg = $(this).data('shillings_per_kg');
-            var estimated_payout = $(this).data('estimated_payout');
+    <script>
+        function printPDF() {
+            var title = 'Paid Remuneration Report';
+            var dateTime = new Date().toLocaleString();
 
-            $('#e_id').val(id);
-            $('#e_name').val(name);
-            $('#e_employee_id_auto').val(employee_id_auto);
-            $('#e_phone_number').val(phone_number);
-            $('#e_number_of_kgs_harvested').val(number_of_kgs_harvested);
-            $('#e_shillings_per_kg').val(shillings_per_kg);
-            $('#e_estimated_payout').val(estimated_payout);
-        });
+            // Get the table content by its ID
+            var tableContent = document.getElementById('paidRemunerationTable').outerHTML;
 
-        // Handle the click event for the "Delete" button in the "Delete Salary" modal
-        $('.salaryDelete').click(function () {
-            var id = $(this).data('id');
-            $('.e_id').val(id); // Set the value of the hidden input field
-        });
-    });
-</script>
+            // Create a temporary container for the composite content
+            var tempContainer = document.createElement('div');
+            tempContainer.innerHTML = `
+                <h2>${title}</h2>
+                <p>Printed on: ${dateTime}</p>
+                ${tableContent}
+            `;
 
+            // Adjust font size and margins for better fitting on A4
+            tempContainer.style.fontSize = '12px'; // Increased font size
+            tempContainer.style.margin = '2mm'; // Increased margins
 
-
+            // Use html2pdf to convert the composite content to a PDF
+            html2pdf(tempContainer, {
+                margin: 10,
+                filename: 'knj_remuneration_paid.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            });
+        }
+    </script>
 
 
     @endsection

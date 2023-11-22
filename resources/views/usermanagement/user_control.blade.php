@@ -197,6 +197,7 @@
                                 <div class="col-sm-6"> 
                                     <div class="form-group">
                                                 <label>Phone Number</label>
+                                                <p style="font-size: 12px; font-style: italic; color: red;">Please Note: Format (254722000000)</p>
                                         <input
                                             type="tel"
                                             class="form-control @error('phone_number') is-invalid @enderror"
@@ -229,7 +230,7 @@
                                     @enderror
                                 </div>
                             
-
+                                @if (Auth::user()->role_name=='Admin')
                                 <div class="col-sm-6">
                                     <label>Role Name</label>
                                     <select class="select" name="role_name" id="role_name">
@@ -241,7 +242,15 @@
                                         @endforeach
                                     </select>
                                 </div>
+                                @endif
+                                
 
+                                @if (Auth::user()->role_name=='Manager')
+                                <input type="hidden" name="role_name" value="Employee">
+                                @endif
+                                
+                                
+                                @if (Auth::user()->role_name=='Admin')
                                 <div class="col-sm-6"> 
                                     <label>Status</label>
                                     <select class="select" name="status" id="status">
@@ -253,7 +262,11 @@
                                         @endforeach
                                     </select>
                                 </div>
+                                @endif
 
+                                @if (Auth::user()->role_name=='Manager')
+                                <input type="hidden" name="status" value="Active">
+                                @endif
                                 
                             </div>
                             
@@ -303,6 +316,7 @@
                                     <input class="form-control" type="text" name="email" id="e_email" value=""/>
                                 </div>
                             </div>
+                            @if (Auth::user()->role_name=='Admin')
                             <div class="row"> 
                                 <div class="col-sm-6"> 
                                     <label>Role Name</label>
@@ -321,6 +335,7 @@
                                     </select>
                                 </div>
                             </div>
+                            @endif
                             <br>
                             <div class="row"> 
                                 <div class="col-sm-6"> 
@@ -338,6 +353,7 @@
                                     </select>
                                 </div>
                             </div>
+                            @if (Auth::user()->role_name=='Admin')
                             <div class="row"> 
                                 <div class="col-sm-6"> 
                                     <label>Status</label>
@@ -347,6 +363,7 @@
                                         @endforeach
                                     </select>
                                 </div>
+                                @endif
                                 <div class="col-sm-6"> 
                                     <label>Photo</label>
                                     <input class="form-control" type="file" id="image" name="images">

@@ -12,11 +12,13 @@ use App\Http\Controllers\UserManagementController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\LockScreen;
 use App\Http\Controllers\PayrollController;
+use App\Http\Controllers\PaymentContoller;
 use App\Http\Controllers\EmployeePayrollController;
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\HolidayController;
 use App\Http\Controllers\LeavesController;
 use App\Http\Controllers\ExpenseReportsController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PerformanceController;
 use App\Http\Controllers\TrainingController;
 use App\Http\Controllers\TrainersController;
@@ -247,22 +249,61 @@ Route::controller(LeavesController::class)->group(function () {
 // ----------------------------- form payroll  ------------------------------//
 Route::controller(PayrollController::class)->group(function () {
     Route::get('form/salary/page', 'salary')->middleware('auth')->name('form/salary/page');
+    Route::get('form/salary/pagePaid', 'remunerationPaid')->middleware('auth')->name('form/salary/pagePaid');
+
     Route::get('form/salary/checkout', 'salaryFinal')->middleware('auth')->name('form/salary/checkout');
 
     Route::get('form/salary/advPage', 'advPage')->middleware('auth')->name('form/salary/advPage');
+    Route::get('form/salary/advPagePaid', 'advancePaid')->middleware('auth')->name('form/salary/advPagePaid');
+
     Route::post('form/salary/advPay', 'advancePay')->middleware('auth')->name('form/salary/advPay');
 
     Route::get('form/salary/epaid', 'salaryPaid')->middleware('auth')->name('form/salary/epaid');
     Route::post('form/salary/save','saveRecord')->middleware('auth')->name('form/salary/save');
     Route::post('form/salary/update', 'updateRecord')->middleware('auth')->name('form/salary/update');
-    Route::post('form/salary/delete', 'deleteRecord')->middleware('auth')->name('form/salary/delete');
+    Route::post('form/salary/deleteRemPay', 'deleteRemunerationPay')->middleware('auth')->name('form/salary/deleteRemPay');
     Route::get('form/salary/view/{user_id}', 'salaryView')->middleware('auth');
-    Route::get('form/payroll/items', 'payrollItems')->middleware('auth')->name('form/payroll/items');
+    Route::get('form/payroll/items', 'payrollItems')->middleware('auth')->name('form/payroll/accesstoken');
+    
+    Route::get('form/salary/accesstoken', 'token')->middleware('auth')->name('form/payroll/items');
+    Route::get('form/salary/mpesacomplete', 'mpesaComplete')->middleware('auth')->name('form/salary/mpesacomplete');
 
     // now search the transaction paid
     Route::post('search/paid/list', 'searchPayments')->name('search/paid/list');
+    // search remuneration paid
+    Route::post('search/paid/remuneration', 'searchRemuneration')->name('search/paid/remuneration');
+     // search remuneration paid
+    Route::post('search/paid/advance', 'searchAdvance')->name('search/paid/advance');
 
 });
+
+// PASS DATA TO AN EXTERNAL ENDPOINT URL BASED ON A STANDALONE PHP. 
+Route::get('/lipa-na-mpesa', function () {
+    // Extract values from the form
+    $name = request('name');
+    $employeeIdAuto = request('employee_id_auto');
+    $employeeMpesaNumber = request('employee_mpesa_number');
+    $sendersMpesaNumber = request('senders_mpesa_number');
+    $amountPaid = request('amount_paid');
+
+    // Build the URL with query parameters
+    $url = 'http://localhost/mpesa-stk-push/stkpush.php';
+    $url .= '?name=' . urlencode($name);
+    $url .= '&employee_id_auto=' . urlencode($employeeIdAuto);
+    $url .= '&employee_mpesa_number=' . urlencode($employeeMpesaNumber);
+    $url .= '&senders_mpesa_number=' . urlencode($sendersMpesaNumber);
+    $url .= '&amount_paid=' . urlencode($amountPaid);
+
+    // Redirect to the URL with query parameters
+    return redirect($url);
+})->name('lipa-na-mpesa');
+
+// Route::controller(PaymentController::class)
+// ->prefix('payments')
+// ->as('payments')
+// ->group(function(){
+//     Route::get('/token', 'token')->name('token');
+// });
 
 Route::controller(EmployeePayrollController::class)->group(function () {
     // --------- employee form payroll

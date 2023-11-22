@@ -8,6 +8,9 @@ use App\Models\StaffSalary;
 use App\Models\StaffSalaryPaid;
 use App\Models\StaffSalaryAdvance;
 use Brian2694\Toastr\Facades\Toastr;
+use Illuminate\Support\Facades\Http;
+use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Client;
 use Auth;
 
 class PayrollController extends Controller
@@ -55,6 +58,79 @@ class PayrollController extends Controller
     return view('payroll.employeesalary', compact('users', 'userList', 'permission_lists', 'pendingAdvanceBalance'));
 }
 
+    public function mpesaComplete()
+{
+    return view('payroll.mpesacomplete');
+}
+
+
+    public function remunerationPaid()
+{
+    $users = DB::table('users')
+        ->join('staff_salaries', 'users.user_id', '=', 'staff_salaries.employee_id_auto')
+        ->select('users.*', 'staff_salaries.*')
+        ->get();
+
+    $userList = DB::table('users')->select('user_id', 'name', 'phone_number', 'status')->get();
+
+    $permission_lists = DB::table('permission_lists')->get();
+
+    // Get the employee ID from the `staff_salaries_advance` table
+    $employeeId = DB::table('staff_salaries_advance')->first()->employee_id_auto ?? null;
+
+    // Check if there are any records for the employee ID in the `staff_salaries_advance` table
+    $advanceExists = DB::table('staff_salaries_advance')
+        ->where('employee_id_auto', $employeeId)
+        ->exists();
+
+    // If there are any records, get the total advance amount for the employee
+    if ($advanceExists) {
+        $totalAdvanceAmount = DB::table('staff_salaries_advance')
+            ->where('employee_id_auto', $employeeId)
+            ->sum('advance_amount');
+
+        // Set the value of the `Pending Advance Balance` input field
+        $pendingAdvanceBalance = $totalAdvanceAmount;
+    } else {
+        // If there are no records, set the `Pending Advance Balance` input field to 0
+        $pendingAdvanceBalance = 0;
+    }
+
+    return view('payroll.paidemployeesalary', compact('users', 'userList', 'permission_lists', 'pendingAdvanceBalance'));
+}
+
+// ACCESS TOKEN. 
+    public function token(){
+        
+        // Define your MPESA API keys
+        $CONSUMER_KEY = 'oMjXG7tkWAq9HrO8EOflNpOLG7eZPS4E';
+        $CONSUMER_SECRET = 'et0xLskpAGOGUEUL';
+
+        // Set the access token URL
+        $ACCESS_TOKEN_URL = 'https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials';
+
+
+        // Get the access token using the Laravel HTTP client
+        $response = Http::post('https://sandbox.safaricom.co.ke/oauth/v1/generate', [
+            'headers' => [
+                'Content-Type' => 'application/json; charset=utf8',
+            ],
+            'auth' => [
+                config('constants.CONSUMER_KEY'),
+                config('constants.CONSUMER_SECRET'),
+            ],
+        ]);
+
+        // Get the JSON response and extract the access token
+        $result = json_decode($response->getBody());
+        $accessToken = $result->access_token;
+
+        // Return the access token
+        return $accessToken;
+
+
+
+    }
 
 public function salaryFinal()
 {
@@ -160,6 +236,18 @@ public function salaryFinal()
 }
 
 
+        public function advancePaid()
+{
+    $users = DB::table('staff_salaries_advance')->get();
+
+    $userList = DB::table('users')->select('user_id', 'name', 'phone_number', 'status')->get();
+
+    $permission_lists = DB::table('permission_lists')->get();
+
+    return view('payroll.paidemployeesalaryadvance', compact('users', 'userList', 'permission_lists'));
+}
+
+
             // save advance paid
     public function advancePay(Request $request)
 {
@@ -167,7 +255,7 @@ public function salaryFinal()
     $request->validate([
         'name' => 'required|string|max:255',
         'employee_id_auto' => 'required|string|max:255',
-        'phone_number' => 'required|numeric|digits:10', // Limit the phone number to 10 digits
+        'phone_number' => 'required|numeric|digits:12', // Limit the phone number to 10 digits
         'advance_amount' => 'required|numeric|min:0',
         'status' => 'required|string|max:100',
     ]);
@@ -261,7 +349,9 @@ public function salaryFinal()
 
             DB::commit();
             Toastr::success('Transaction Paid successfully :)', 'Success');
-            return redirect()->back();
+            // Wait for 5 seconds
+            // sleep(5);
+            return redirect('/form/salary/epaid');
         } catch (\Exception $e) {
             DB::rollback();
             dd($e->getMessage()); // Debugging: Display the error message
@@ -272,24 +362,24 @@ public function salaryFinal()
 
 
 
-    // delete record
-    public function deleteRecord(Request $request)
+        public function deleteRemunerationPay(Request $request)
     {
         DB::beginTransaction();
         try {
-
-            StaffSalary::destroy($request->id);
+            $invoiceNumber = $request->invoice_number;
+            StaffSalary::where('invoice_number', $invoiceNumber)->delete();
 
             DB::commit();
-            Toastr::success('Salary deleted successfully :)','Success');
+            Toastr::success('Remuneration deleted successfully :)', 'Success');
             return redirect()->back();
             
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             DB::rollback();
-            Toastr::error('Salary deleted fail :)','Error');
+            Toastr::error('Failed to delete Remuneration :<', 'Error');
             return redirect()->back();
         }
     }
+
 
     // payroll Items
     public function payrollItems()
@@ -316,14 +406,27 @@ public function salaryFinal()
                 $users = StaffSalaryPaid::where('receipt_number','LIKE','%'.$request->receipt_number.'%')->get();
             }
 
-            if ($request->from_date) {
-                $users = StaffSalaryPaid::where(function ($query) use ($request) {
-                    $date = $request->from_date;
-                    $date = str_replace('/', '-', $date);
-                    $query->where('created_at', 'LIKE', '%' . substr($date, 0, 10) . '%')
-                        ->orWhere('created_at', 'LIKE', '%' . substr($date, 6, 10) . '%');
-                })->get();
+            if($request->name)
+            {
+                $users = StaffSalaryPaid::where('name','LIKE','%'.$request->name.'%')->get();
             }
+
+            if ($request->created_at) {
+                $users = StaffSalaryPaid::where('created_at', 'LIKE', $request->created_at . '%')
+                    ->whereDate('created_at', $request->created_at)
+                    ->get();
+            }
+
+
+            
+            // if ($request->from_date) {
+            //     $users = StaffSalaryPaid::where(function ($query) use ($request) {
+            //         $date = $request->from_date;
+            //         $date = str_replace('/', '-', $date);
+            //         $query->where('created_at', 'LIKE', '%' . substr($date, 0, 10) . '%')
+            //             ->orWhere('created_at', 'LIKE', '%' . substr($date, 6, 10) . '%');
+            //     })->get();
+            // }
 
 
 
@@ -333,6 +436,101 @@ public function salaryFinal()
         else
         {
             return redirect()->route('form/salary/epaid');
+        }
+    
+    }
+
+    // search payments
+    public function searchRemuneration(Request $request)
+    {
+        if (Auth::user()->role_name=='Admin')
+        {
+            // $users     = DB::table('staff_salaries_paid')->get();
+            $users     = DB::table('staff_salaries')->get();
+            $userList = DB::table('users')->get();
+            // $user_id  = DB::table('users')->get();
+            // $position   = DB::table('position_types')->get();
+            // $department = DB::table('departments')->get();
+            // $status_user = DB::table('user_types')->get();
+
+            // search by invoice_number
+            if($request->invoice_number)
+            {
+                $users = StaffSalary::where('invoice_number','LIKE','%'.$request->invoice_number.'%')->get();
+            }
+
+            if($request->name)
+            {
+                $users = StaffSalary::where('name','LIKE','%'.$request->name.'%')->get();
+            }
+
+            if ($request->updated_at) {
+                $users = StaffSalary::where('updated_at', 'LIKE', $request->updated_at . '%')
+                    ->whereDate('updated_at', $request->updated_at)
+                    ->get();
+            }
+
+            
+            // if ($request->from_date) {
+            //     $users = StaffSalaryPaid::where(function ($query) use ($request) {
+            //         $date = $request->from_date;
+            //         $date = str_replace('/', '-', $date);
+            //         $query->where('created_at', 'LIKE', '%' . substr($date, 0, 10) . '%')
+            //             ->orWhere('created_at', 'LIKE', '%' . substr($date, 6, 10) . '%');
+            //     })->get();
+            // }
+
+           
+            return view('payroll.paidemployeesalary',compact('users','users', 'userList'));
+        }
+        else
+        {
+            return redirect()->route('form/salary/pagePaid');
+        }
+    
+    }
+
+    // search payments
+    public function searchAdvance(Request $request)
+    {
+        if (Auth::user()->role_name=='Admin')
+        {
+            
+            $users     = DB::table('staff_salaries_advance')->get();
+            $userList = DB::table('users')->get();
+            // $user_id  = DB::table('users')->get();
+            // $position   = DB::table('position_types')->get();
+            // $department = DB::table('departments')->get();
+            // $status_user = DB::table('user_types')->get();
+
+            
+            if($request->name)
+            {
+                $users = StaffSalaryAdvance::where('name','LIKE','%'.$request->name.'%')->get();
+            }
+
+            if ($request->updated_at) {
+                $users = StaffSalaryAdvance::where('updated_at', 'LIKE', $request->updated_at . '%')
+                    ->whereDate('updated_at', $request->updated_at)
+                    ->get();
+            }
+
+            
+            // if ($request->from_date) {
+            //     $users = StaffSalaryPaid::where(function ($query) use ($request) {
+            //         $date = $request->from_date;
+            //         $date = str_replace('/', '-', $date);
+            //         $query->where('created_at', 'LIKE', '%' . substr($date, 0, 10) . '%')
+            //             ->orWhere('created_at', 'LIKE', '%' . substr($date, 6, 10) . '%');
+            //     })->get();
+            // }
+
+           
+            return view('payroll.paidemployeesalaryadvance',compact('users','users', 'userList'));
+        }
+        else
+        {
+            return redirect()->route('form/salary/advPagePaid');
         }
     
     }

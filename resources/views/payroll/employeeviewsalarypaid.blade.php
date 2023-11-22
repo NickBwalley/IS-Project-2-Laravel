@@ -25,57 +25,7 @@
                 </div>
             </div>
 
-            {{-- <!-- Search Filter -->
-            <div class="row filter-row">
-                <div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">  
-                    <div class="form-group form-focus">
-                        <input type="text" class="form-control floating">
-                        <label class="focus-label">Employee Name</label>
-                    </div>
-                </div>
-                <div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">  
-                    <div class="form-group form-focus select-focus">
-                        <select class="select floating"> 
-                            <option value=""> -- Select -- </option>
-                            <option value="">Employee</option>
-                            <option value="1">Manager</option>
-                        </select>
-                        <label class="focus-label">Role</label>
-                    </div>
-                </div>
-                <div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12"> 
-                    <div class="form-group form-focus select-focus">
-                        <select class="select floating"> 
-                            <option> -- Select -- </option>
-                            <option> Pending </option>
-                            <option> Approved </option>
-                            <option> Rejected </option>
-                        </select>
-                        <label class="focus-label">Leave Status</label>
-                    </div>
-                </div>
-                <div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">  
-                    <div class="form-group form-focus">
-                        <div class="cal-icon">
-                            <input class="form-control floating datetimepicker" type="text">
-                        </div>
-                        <label class="focus-label">From</label>
-                    </div>
-                </div>
-                <div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">  
-                    <div class="form-group form-focus">
-                        <div class="cal-icon">
-                            <input class="form-control floating datetimepicker" type="text">
-                        </div>
-                        <label class="focus-label">To</label>
-                    </div>
-                </div>
-                <div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">  
-                    <a href="#" class="btn btn-success btn-block"> Search </a>  
-                </div>     
-            </div> --}}
-            <!-- /Search Filter -->  
-
+            
             {{-- ADD SALARY EMPLOYEE --}}
 
             <div class="row">
@@ -289,7 +239,7 @@
         <!-- /Edit Salary Modal -->
         
         <!-- Delete Salary Modal -->
-        <div class="modal custom-modal fade" id="delete_salary" role="dialog">
+        {{-- <div class="modal custom-modal fade" id="delete_salary" role="dialog">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-body">
@@ -314,7 +264,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> --}}
 
         <!-- /Delete Salary Modal -->
      

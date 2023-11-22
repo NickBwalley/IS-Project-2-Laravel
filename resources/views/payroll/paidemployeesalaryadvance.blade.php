@@ -12,15 +12,15 @@
             <div class="page-header">
                 <div class="row align-items-center">
                     <div class="col">
-                        <h3 class="page-title">Pay In Advance <span id="year"></span></h3>
+                        <h3 class="page-title">Paid Advance <span id="year"></span></h3>
                         <ul class="breadcrumb">
                             <li class="breadcrumb-item"><a href="{{ route('home') }}">Dashboard</a></li>
-                            <li class="breadcrumb-item active">Advance Payment</li>
+                            <li class="breadcrumb-item active">PaidAdvance</li>
                         </ul>
                     </div>
-                    <div class="col-auto float-right ml-auto">
+                    {{-- <div class="col-auto float-right ml-auto">
                         <a href="#" class="btn add-btn" data-toggle="modal" data-target="#add_salary"><i class="fa fa-plus"></i> Pay Advance</a>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
 
@@ -73,6 +73,34 @@
                     <a href="#" class="btn btn-success btn-block"> Search </a>  
                 </div>     
             </div> --}}
+
+            <form action="{{ route('search/paid/advance') }}" method="POST">
+                @csrf
+                <div class="row filter-row">
+                    
+                    <div class="col-sm-6 col-md-3">
+                        <label class="focus-label">Search By Name</label>
+                        <div class="form-group form-focus">
+                            <input type="text" class="form-control floating" id="name" name="name" placeholder="Enter Name">
+                        </div>
+                    </div>
+                    
+                    <div class="col-sm-6 col-md-3">
+                        <label class="focus-label">Search By Date</label>
+                        <div class="form-group form-focus">
+                            <input type="text" class="form-control floating" id="updated_at" name="updated_at" placeholder="Enter Date (yyyy-mm-dd)">
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-3">
+                        <label class="focus-label">Search</label>
+                        <button type="submit" class="btn btn-success btn-block">Search</button>
+                    </div>
+                    <div class="col-auto float-right ml-auto">
+                        <a href="#" class="btn add-btn" onclick="printPDF()" data-toggle="modal" data-target="#print_report"><i class="fa fa-print"></i> PRINT REPORT</a>
+                    </div>
+
+                </div>
+            </form>
             <!-- /Search Filter -->  
 
             {{-- ADD SALARY EMPLOYEE --}}
@@ -80,39 +108,39 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="table-responsive">
-                    <table class="table table-striped custom-table datatable">
+                    <table id="paidAdvanceTable" class="table table-striped custom-table datatable">
                         <thead>
                             <tr>
                                 <th>Employee Name</th>
                                 <th>EmployeeID</th>
                                 <th>Phone Number</th>
                                 <th>Advance Amount Taken</th>
-                                <th>Advance Taken on Date</th>
+                                <th>Transaction Date</th>
                                 <th>Status</th>
                                 {{-- <th>Action</th> --}}
                             </tr>
                         </thead>
                         
                         <tbody>
-                            @php
-                                // Sort the $users array by created_at in descending order
-                                $sortedUsers = $users->sortByDesc('created_at');
-                            @endphp
-
-                            @if ($sortedUsers->isEmpty())
+                            @if ($users->isEmpty())
                                 <tr>
                                     <td colspan="7" style="text-align: center;">No records available.</td>
                                 </tr>
                             @else
+                                @php
+                                    // Sort the $users array by updated_at in descending order
+                                    $sortedUsers = $users->sortByDesc('updated_at');
+                                @endphp
+
                                 @foreach ($sortedUsers as $items)
-                                    @if ($items->status === 'unpaid')
+                                    @if ($items->status === 'paid')
                                         <tr>
-                                            <td>{{ $items->name }}</td>
+                                            <td>{{ $items->name}}</td>
                                             <td>{{ $items->employee_id_auto }}</td>
                                             <td>{{ $items->phone_number }}</td>
-                                            <td><strong><span class="btn btn-warning">KSH {{ $items->advance_amount }}</span></strong></td>
-                                            <td>{{ $items->created_at }}</td>
-                                            <td><span class="btn btn-secondary">{{ $items->status }}</span></td>
+                                            <td><strong><span class="btn btn-success">KSH {{ $items->advance_amount }}</span></strong></td>
+                                            <td>{{ $items->updated_at }}</td>
+                                            <td><span class="btn btn-success">{{ $items->status }}</span></td>
                                             {{-- <td class="text-right">
                                                 <div class="dropdown dropdown-action">
                                                     <a class="#" href="#" data-toggle="modal" data-target="#delete_salary" data-id="{{ $items->id }}"><span class="btn btn-danger">Delete</span></a>
@@ -242,46 +270,58 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <!-- Include jQuery once -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-<script>
-    $(document).ready(function () {
-        // Populate Employee ID Auto and Phone Number in the "Add Salary" modal
-        $('#name').change(function () {
-            var selectedOption = $(this).find('option:selected');
-            var employeeID = selectedOption.data('employee_id');
-            var phoneNumber = selectedOption.data('phone_number');
-            
-            $('#employee_id_auto').val(employeeID);
-            $('#phone_number').val(phoneNumber);
+    <script>
+        $(document).ready(function () {
+            // Populate Employee ID Auto and Phone Number in the "Add Salary" modal
+            $('#name').change(function () {
+                var selectedOption = $(this).find('option:selected');
+                var employeeID = selectedOption.data('employee_id');
+                var phoneNumber = selectedOption.data('phone_number');
+                
+                $('#employee_id_auto').val(employeeID);
+                $('#phone_number').val(phoneNumber);
+            });
+
         });
+    </script>
 
-        // Handle the click event for the "Pay" button in the "Edit Salary" modal
-        // $('.editSalary').click(function () {
-        //     var id = $(this).data('id');
-        //     var name = $(this).data('name');
-        //     var employee_id_auto = $(this).data('employee_id_auto');
-        //     var phone_number = $(this).data('phone_number');
-        //     var advance_on_date = $(this).data('advance_on_date');
-        //     var status = $(this).data('status');
-            
-        //     $('#e_id').val(id);
-        //     $('#e_name').val(name);
-        //     $('#e_employee_id_auto').val(employee_id_auto);
-        //     $('#e_phone_number').val(phone_number);
-        //     $('#e_phone_number').val(phone_number);
-        //     $('#e_advance_amount').val(advance_amount);
-        //     $('#e_shillings_per_kg').val(shillings_per_kg);
-        //     $('#e_estimated_payout').val(estimated_payout);
-        // });
 
-        // Handle the click event for the "Delete" button in the "Delete Salary" modal
-        // $('.salaryDelete').click(function () {
-        //     var id = $(this).data('id');
-        //     $('.e_id').val(id); // Set the value of the hidden input field
-        // });
-    });
-</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.js"></script>
+
+    <script>
+        function printPDF() {
+            var title = 'Paid Advance Report';
+            var dateTime = new Date().toLocaleString();
+
+            // Get the table content by its ID
+            var tableContent = document.getElementById('paidAdvanceTable').outerHTML;
+
+            // Create a temporary container for the composite content
+            var tempContainer = document.createElement('div');
+            tempContainer.innerHTML = `
+                <h2>${title}</h2>
+                <p>Printed on: ${dateTime}</p>
+                ${tableContent}
+            `;
+
+            // Adjust font size and margins for better fitting on A4
+            tempContainer.style.fontSize = '12px'; // Increased font size
+            tempContainer.style.margin = '2mm'; // Increased margins
+
+            // Use html2pdf to convert the composite content to a PDF
+            html2pdf(tempContainer, {
+                margin: 10,
+                filename: 'knj_paid_advance.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            });
+        }
+    </script>
+
+
 
 
 

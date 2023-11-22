@@ -12,10 +12,10 @@
             <div class="page-header">
                 <div class="row align-items-center">
                     <div class="col">
-                        <h3 class="page-title">Transaction Paid <span id="year"></span></h3>
+                        <h3 class="page-title">Paid Transactions <span id="year"></span></h3>
                         <ul class="breadcrumb">
                             <li class="breadcrumb-item"><a href="{{ route('home') }}">Dashboard</a></li>
-                            <li class="breadcrumb-item active">Paid</li>
+                            <li class="breadcrumb-item active">PaidTransactions</li>
                         </ul>
                     </div>
                     {{-- <div class="col-auto float-right ml-auto">
@@ -23,11 +23,12 @@
                     </div> --}}
                 </div>
             </div>
+            
 
             <form action="{{ route('search/paid/list') }}" method="POST">
                 @csrf
                 <div class="row filter-row">
-                    <div class="col-sm-6 col-md-3">
+                    {{-- <div class="col-sm-6 col-md-3">
                         <label class="focus-label">From Date</label>
                         <div class="form-group form-focus">
                             <input type="date" class="form-control floating datepicker" id="from_date" name="from_date" placeholder="From Date">
@@ -38,20 +39,36 @@
                         <div class="form-group form-focus">
                             <input type="date" class="form-control floating datepicker" id="to_date" name="to_date" placeholder="To Date">
                         </div>
+                    </div> --}}
+                    <div class="col-sm-6 col-md-3">
+                        <label class="focus-label">Search By Name</label>
+                        <div class="form-group form-focus">
+                            <input type="text" class="form-control floating" id="name" name="name" placeholder="Enter Name">
+                        </div>
                     </div>
                     <div class="col-sm-6 col-md-3">
-                        <label class="focus-label">Receipt Number</label>
+                        <label class="focus-label">Search By Receipt Number</label>
                         <div class="form-group form-focus">
-                            <input type="text" class="form-control floating" id="receipt_number" name="receipt_number" placeholder="Receipt Number">
+                            <input type="text" class="form-control floating" id="receipt_number" name="receipt_number" placeholder="Enter Receipt Number">
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-3">
+                        <label class="focus-label">Search By Date</label>
+                        <div class="form-group form-focus">
+                            <input type="text" class="form-control floating" id="created_at" name="created_at" placeholder="Enter Date (yyyy-mm-dd)">
                         </div>
                     </div>
                     <div class="col-sm-6 col-md-3">
                         <label class="focus-label">Search</label>
                         <button type="submit" class="btn btn-success btn-block">Search</button>
                     </div>
+                    <div class="col-auto float-right ml-auto">
+                        <a href="#" class="btn add-btn" onclick="printPDF()" data-toggle="modal" data-target="#print_report"><i class="fa fa-print"></i> PRINT REPORT</a>
+                    </div>
+
                 </div>
             </form>
-
+            
 
             {{-- <!-- Search Filter -->
             <div class="row filter-row">
@@ -109,11 +126,10 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="table-responsive">
-                        <table class="table table-striped custom-table datatable">
+                        <table id="reportTable" class="table table-striped custom-table datatable">
                             <thead>
                                 <tr>
                                     <th>Employee Name</th>
-                                    {{-- <th>Employee ID</th> --}}
                                     <th>Receipt Number</th>
                                     <th>Received by</th>
                                     <th>Sent by</th>
@@ -122,42 +138,36 @@
                                     <th>Status</th>
                                 </tr>
                             </thead>
-                            
+
                             <tbody>
                                 @if ($users->isEmpty())
                                     <tr>
                                         <td colspan="7" style="text-align: center;">No records available.</td>
                                     </tr>
                                 @else
-                                @foreach ($users as $items)
-                                <tr>
-                                    <td>
-                                        {{-- <h2 class="table-avatar">
-                                            <a href="{{ url('employee/profile/'.$items->user_id) }}" class="avatar"><img alt="" src="{{ URL::to('/assets/images/'. $items->avatar) }}"></a>
-                                            <a href="{{ url('employee/profile/'.$items->user_id) }}">{{ $items->name }}</a>
-                                        </h2> --}}
-                                        {{ $items->name}}
-                                    </td>
-                                    {{-- <td>{{ $items->employee_id_auto }}</td> --}}
-                                    <td>{{ $items->receipt_number }}</td>
-                                    {{-- <td>{{ $items->phone_number }}</td> --}}
-                                    <td>{{ $items->employee_mpesa_number }}</td>
-                                    <td>{{ $items->senders_mpesa_number }}</td>
-                                    <td><strong><span class="btn btn-success">KSH {{ $items->amount_paid }}</span></strong></td>
-                                    <td>{{ $items->created_at }}</td>
-                                    <td> <strong><span class="btn btn-success">{{ $items->status }} </span></strong></td>
-                                    
+                                    @php
+                                        // Sort the $users array by created_at in descending order
+                                        $sortedUsers = $users->sortByDesc('created_at');
+                                    @endphp
 
-                            </td>
-                                </tr>
-                                @endforeach
+                                    @foreach ($sortedUsers as $items)
+                                        <tr>
+                                            <td>{{ $items->name }}</td>
+                                            <td>{{ $items->receipt_number }}</td>
+                                            <td>{{ $items->employee_mpesa_number }}</td>
+                                            <td>{{ $items->senders_mpesa_number }}</td>
+                                            <td><strong><span class="btn btn-success">KSH {{ $items->amount_paid }}</span></strong></td>
+                                            <td>{{ $items->created_at }}</td>
+                                            <td><strong><span class="btn btn-success">{{ $items->status }}</span></strong></td>
+                                        </tr>
+                                    @endforeach
                                 @endif
                             </tbody>
-
                         </table>
                     </div>
                 </div>
             </div>
+
 
         </div>
         <!-- /Page Content -->
@@ -319,7 +329,7 @@
         <!-- /Edit Salary Modal -->
         
         <!-- Delete Salary Modal -->
-        <div class="modal custom-modal fade" id="delete_salary" role="dialog">
+        {{-- <div class="modal custom-modal fade" id="delete_salary" role="dialog">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-body">
@@ -344,7 +354,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> --}}
 
         <!-- /Delete Salary Modal -->
      
@@ -417,7 +427,37 @@
         </script>
 
 
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.js"></script>
 
+        <script>
+            function printPDF() {
+                var title = 'Paid Transactions Report';
+                var dateTime = new Date().toLocaleString();
+                var content = `
+                    <h2>${title}</h2>
+                    <p>Printed on: ${dateTime}</p>
+                    ${document.getElementById('reportTable').outerHTML}
+                    
+                `;
+
+                // Create a temporary container for the composite content
+                var tempContainer = document.createElement('div');
+                tempContainer.innerHTML = content;
+
+                // Adjust font size and margins for better fitting on A4
+                tempContainer.style.fontSize = '10px';
+                tempContainer.style.margin = '2mm';
+
+                // Use html2pdf to convert the composite content to a PDF
+                html2pdf(tempContainer, {
+                    margin: 10,
+                    filename: 'knj_paid_transactions.pdf',
+                    image: { type: 'jpeg', quality: 0.98 },
+                    html2canvas: { scale: 2 },
+                    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+                });
+            }
+        </script>
 
 
     @endsection
